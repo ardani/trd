@@ -1,0 +1,12 @@
+ul.dropdown-menu.dropdown-menu-right li {
+    margin: 0 5px !important;
+    
+}
+
+div.dataTables_wrapper div.dataTables_processing {
+    padding: 3px 0;
+    background: #FA424A;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+}
