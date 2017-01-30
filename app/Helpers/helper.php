@@ -11,7 +11,7 @@ function form_value($var,$name) {
 }
 
 function safe_array($array,$key) {
-    return $array ? array_key_exists($key,$array) ? $array[$key] : null : null;
+    return $array ? $array[$key] : null;
 }
 
 function alerts($type, $text) {

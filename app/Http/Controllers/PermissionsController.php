@@ -47,7 +47,7 @@ class PermissionsController extends Controller
     public function update(Request $request, $id) {
         $data = $request->all();
         $this->service->update($data,$id);
-        return redirect()->to()->with('message','Update Success');
+        return redirect()->back()->with('message','Update Success');
     }
 
     public function delete($id) {

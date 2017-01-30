@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\ProductDiscount;
 use App\Models\User;
 
 Route::group(['namespace' => 'Auth'], function () {
@@ -60,6 +61,58 @@ Route::group(['middleware' => 'auth'], function () {
 
 // custom
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('product/unit/{id}','ProductsController@loadUnit');
+    Route::get('product/ajax/load','ProductsController@load');
+
+    Route::get('products/prices/{id}', [
+        'middleware' => ['permission:view.products'],
+        'uses'       => 'ProductPricesController@index'
+    ]);
+    Route::get('products/prices/{id}/create', [
+        'middleware' => ['permission:create.products'],
+        'uses'       => 'ProductPricesController@create'
+    ]);
+    Route::post('products/prices/{id}/create', [
+        'middleware' => ['permission:create.products'],
+        'uses'       => 'ProductPricesController@store'
+    ]);
+    Route::get('products/prices/{product_id}/edit/{id}', [
+        'middleware' => ['permission:edit.products'],
+        'uses'       => 'ProductPricesController@edit'
+    ]);
+    Route::post('products/prices/{product_id}/edit/{id}', [
+        'middleware' => ['permission:edit.products'],
+        'uses'       => 'ProductPricesController@update'
+    ]);
+    Route::post('products/prices/{product_id}/delete/{id}', [
+        'middleware' => ['permission:delete.products'],
+        'uses'       => 'ProductPricesController@delete'
+    ]);
+
+    Route::get('units/components/{unit_id}', [
+        'middleware' => ['permission:view.units'],
+        'uses'       => 'ComponentUnitsController@index'
+    ]);
+    Route::get('units/components/{unit_id}/edit/{id}', [
+        'middleware' => ['permission:edit.units'],
+        'uses'       => 'ComponentUnitsController@edit'
+    ]);
+    Route::post('units/components/{unit_id}/edit/{id}', [
+        'middleware' => ['permission:edit.units'],
+        'uses'       => 'ComponentUnitsController@update'
+    ]);
+    Route::get('units/components/{unit_id}/create', [
+        'middleware' => ['permission:create.units'],
+        'uses'       => 'ComponentUnitsController@create'
+    ]);
+    Route::post('units/components/{unit_id}/create', [
+        'middleware' => ['permission:create.units'],
+        'uses'       => 'ComponentUnitsController@store'
+    ]);
+    Route::post('units/components/{unit_id}/delete/{id}', [
+        'middleware' => ['permission:delete.units'],
+        'uses'       => 'ComponentUnitsController@delete'
+    ]);
     Route::get('roles/permissions/{id}', [
         'middleware' => ['permission:edit.roles'],
         'uses'       => 'RolesController@hasPermission'
@@ -71,7 +124,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('debug', function () {
-    $admin = User::find(999);
-    $role = $admin->roles->first();
-    echo $role->display_name;
+    $discount = ProductDiscount::find(1);
+    return $discount->expired_at->format('d/m/Y');
 });

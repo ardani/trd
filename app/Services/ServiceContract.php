@@ -19,7 +19,7 @@ interface ServiceContract
 
     public function filter($data);
 
-    public function datatables();
+    public function datatables($param =  array());
 
     public function meta();
 }

@@ -8,8 +8,10 @@ class Product extends Model {
     use SoftDeletes;
     protected $fillable = [
         'code','name', 'start_stock','min_stock','description','selling_price_default','supplier_id',
-        'category_id'
+        'purchase_price_default','category_id','unit_id'
     ];
+
+    protected $appends = ['stock'];
 
     public function product_unit() {
         return $this->hasMany(ProductUnit::class);
@@ -28,10 +30,15 @@ class Product extends Model {
     }
 
     public function category() {
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function supplier() {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function getStockAttribute() {
+        $stock = ProductStock::where('product_id',$this->attributes['id'])->sum('value');
+        return $this->attributes['stock'] = $this->attributes['start_stock'] + $stock;
     }
 }

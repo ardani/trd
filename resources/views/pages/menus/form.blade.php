@@ -1,6 +1,4 @@
-@if(session('message'))
-    {!! alerts('success',session('message')) !!}
-@endif
+@include('includes.alert')
 <fieldset class="form-group">
     <label class="form-control-label">Name <span class="text-danger">*</span></label>
     <input type="text" name="name" class="form-control"
@@ -44,7 +42,7 @@
 </fieldset>
 <fieldset class="form-group ">
     <label class="form-control-label">Parent</label>
-    <select name="parent" class="form-control">
+    <select name="parent" class="form-control bootstrap-select">
         <option value="0"> default </option>
         @foreach($parents as $parent)
             @if($parent->id == safe_array($model,'parent'))

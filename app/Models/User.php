@@ -10,6 +10,8 @@ class User extends Authenticatable
 {
     use Notifiable;
     use EntrustUserTrait;
+    public $incrementing = false;
+
     protected $appends = ['role_id'];
 
     /**
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id','username', 'email', 'password',
     ];
 
     /**

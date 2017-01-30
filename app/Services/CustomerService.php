@@ -21,7 +21,7 @@ class CustomerService extends Service {
         $this->model = $model;
     }
 
-    public function datatables() {
+    public function datatables($param = array()) {
         return Datatables::eloquent($this->model->query())
             ->addColumn('type',function($model){
                 return $model->customer_type->name;

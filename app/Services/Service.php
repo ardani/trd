@@ -9,7 +9,7 @@ class Service implements ServiceContract {
     protected $model;
     protected $name;
 
-    public function datatables() {
+    public function datatables($param = array()) {
         return Datatables::queryBuilder(DB::table($this->name))
             ->addColumn('action','actions.'.$this->name)
             ->make(true);

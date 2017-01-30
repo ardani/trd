@@ -4,17 +4,25 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-6 dahsboard-column">
-                    <section class="box-typical box-typical-dashboard panel panel-default scrollable">
+                    <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
                             <h3 class="panel-title">Recent orders</h3>
                         </header>
                         <div class="box-typical-body panel-body">
                             <table class="tbl-typical">
                                 <tr>
-                                    <th><div>Status</div></th>
-                                    <th><div>Clients</div></th>
-                                    <th align="center"><div>Orders#</div></th>
-                                    <th align="center"><div>Date</div></th>
+                                    <th>
+                                        <div>Status</div>
+                                    </th>
+                                    <th>
+                                        <div>Clients</div>
+                                    </th>
+                                    <th align="center">
+                                        <div>Orders#</div>
+                                    </th>
+                                    <th align="center">
+                                        <div>Date</div>
+                                    </th>
                                 </tr>
                                 <tr>
                                     <td>
@@ -23,7 +31,9 @@
                                     </td>
                                     <td>John Doe</td>
                                     <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span class="semibold">Today</span> 8:30</td>
+                                    <td class="color-blue-grey" nowrap align="center"><span
+                                            class="semibold">Today</span> 8:30
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -32,7 +42,9 @@
                                     </td>
                                     <td>Thomas Bayer</td>
                                     <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span class="semibold">Today</span> 16:30</td>
+                                    <td class="color-blue-grey" nowrap align="center"><span
+                                            class="semibold">Today</span> 16:30
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -41,7 +53,8 @@
                                     </td>
                                     <td>Nicolas Karabat</td>
                                     <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span class="semibold">Yesterday</span></td>
+                                    <td class="color-blue-grey" nowrap align="center"><span
+                                            class="semibold">Yesterday</span></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -59,7 +72,9 @@
                                     </td>
                                     <td>John Doe</td>
                                     <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span class="semibold">Today</span> 8:30</td>
+                                    <td class="color-blue-grey" nowrap align="center"><span
+                                            class="semibold">Today</span> 8:30
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -68,7 +83,9 @@
                                     </td>
                                     <td>Thomas Bayer</td>
                                     <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span class="semibold">Today</span> 16:30</td>
+                                    <td class="color-blue-grey" nowrap align="center"><span
+                                            class="semibold">Today</span> 16:30
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -77,7 +94,8 @@
                                     </td>
                                     <td>Nicolas Karabat</td>
                                     <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span class="semibold">Yesterday</span></td>
+                                    <td class="color-blue-grey" nowrap align="center"><span
+                                            class="semibold">Yesterday</span></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -91,7 +109,7 @@
                             </table>
                         </div><!--.box-typical-body-->
                     </section><!--.box-typical-dashboard-->
-                    <section class="box-typical box-typical-dashboard panel panel-default scrollable">
+                    <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
                             <h3 class="panel-title">Comments</h3>
                         </header>
@@ -114,7 +132,8 @@
                                     </div>
                                 </div>
                                 <div class="comment-item-txt">
-                                    <p>That’s a great idea! I’m sure we could start this project as soon as possible.</p>
+                                    <p>That’s a great idea! I’m sure we could start this project as soon as
+                                        possible.</p>
                                     <p>Let’s meet tomorow!</p>
                                 </div>
                                 <div class="comment-item-meta">
@@ -151,7 +170,8 @@
                                     </div>
                                 </div>
                                 <div class="comment-item-txt">
-                                    <p>That’s a great idea! I’m sure we could start this project as soon as possible.</p>
+                                    <p>That’s a great idea! I’m sure we could start this project as soon as
+                                        possible.</p>
                                     <p>Let’s meet tomorow!</p>
                                 </div>
                                 <div class="comment-item-meta">
@@ -174,17 +194,25 @@
                     </section>
                 </div><!--.col-->
                 <div class="col-xl-6 dahsboard-column">
-                    <section class="box-typical box-typical-dashboard panel panel-default scrollable">
+                    <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
                             <h3 class="panel-title">Recent tickets</h3>
                         </header>
                         <div class="box-typical-body panel-body">
                             <table class="tbl-typical">
                                 <tr>
-                                    <th><div>Status</div></th>
-                                    <th><div>Subject</div></th>
-                                    <th align="center"><div>Department</div></th>
-                                    <th align="center"><div>Date</div></th>
+                                    <th>
+                                        <div>Status</div>
+                                    </th>
+                                    <th>
+                                        <div>Subject</div>
+                                    </th>
+                                    <th align="center">
+                                        <div>Department</div>
+                                    </th>
+                                    <th align="center">
+                                        <div>Date</div>
+                                    </th>
                                 </tr>
                                 <tr>
                                     <td>
@@ -221,7 +249,7 @@
                             </table>
                         </div><!--.box-typical-body-->
                     </section><!--.box-typical-dashboard-->
-                    <section class="box-typical box-typical-dashboard panel panel-default scrollable">
+                    <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
                             <h3 class="panel-title">Contacts</h3>
                         </header>
@@ -362,22 +390,4 @@
             </div>
         </div><!--.container-fluid-->
     </div><!--.page-content-->
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.panel').lobiPanel({
-                sortable: false,
-                unpin:false,
-                draggable:false,
-                editTitle: false,
-                reload: false,
-                close: false
-            });
-            $('.panel').on('dragged.lobiPanel', function (ev, lobiPanel) {
-                $('.dahsboard-column').matchHeight();
-            });
-        });
-    </script>
 @endsection

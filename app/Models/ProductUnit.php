@@ -6,4 +6,8 @@ class ProductUnit extends Model {
     protected $fillable = [
         'product_id','component_unit_code','value'
     ];
+
+    public function component_unit() {
+        return $this->belongsTo(ComponentUnit::class);
+    }
 }

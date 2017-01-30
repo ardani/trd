@@ -47,9 +47,43 @@ $(document).ready(function () {
         }
     });
 
+    $('#unit').change(function(e){
+        var val = $(this).val();
+        var url = $(this).data('url');
+        $.get(url+'/'+val, function( data ) {
+            $('#componentUnit').html(data);
+        });
+    })
+
     $('.checkui').click(function(e){
         var checkbox = $(this).find('input[type=checkbox]');
         checkbox.prop('checked',!checkbox.prop('checked'));
+    });
+
+    $('.daterange').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+            format: 'DD/MM/YYYY'
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: '/products/ajax/load',
+        data: {},
+        success: function (response) {
+            alert(response);
+            $('#players1').html(response);
+            console.log((response));
+            $('.selectpicker').selectpicker({
+                style: 'btn-primary',
+                size: 2
+            });
+        },
+        error: function () {
+            $('#players1').html('There was an error!');
+        }
     });
 
     // menus
@@ -153,4 +187,32 @@ $(document).ready(function () {
         { data: 'action', searchable: false, orderable: false },
     ];
     buildDatatables($('#table-suppliers'),suppliers);
+
+    var componentUnits = [
+        { data: 'code'},
+        { data: 'name'},
+        { data: 'action', searchable: false, orderable: false },
+    ];
+    buildDatatables($('#table-component-units'),componentUnits);
+
+    var products = [
+        { data: 'code'},
+        { data: 'name'},
+        { data: 'category', searchable: false, orderable: false},
+        { data: 'selling_price', searchable: false, orderable: false},
+        { data: 'min_stock', searchable: false, orderable: false},
+        { data: 'stock', searchable: false, orderable: false},
+        { data: 'supplier', searchable: false, orderable: false},
+        { data: 'action', searchable: false, orderable: false },
+    ];
+    buildDatatables($('#table-products'),products);
+
+    var discounts = [
+        { data: 'product',searchable: false, orderable: false},
+        { data: 'amount', searchable: false, orderable: false},
+        { data: 'expired_at', searchable: false, orderable: false},
+        { data: 'action', searchable: false, orderable: false },
+    ];
+    buildDatatables($('#table-discounts'),discounts);
+
 });

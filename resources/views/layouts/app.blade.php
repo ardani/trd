@@ -15,7 +15,7 @@
     <![endif]-->
     <link rel="stylesheet" href="{{ asset('css/default.css') }}">
 </head>
-<body class="with-side-menu control-panel control-panel-compact">
+<body class="with-side-menu wet-aspalt-theme chrome-browser">
 @include('includes.header')
 @include('includes.nav')
 <div class="mobile-menu-left-overlay"></div>
