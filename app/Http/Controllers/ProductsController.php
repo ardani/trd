@@ -89,6 +89,23 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             return '';
         }
+    }
 
+    public function load() {
+        $q = request()->input('q');
+        if ($q) {
+            $where =  function($query) use ($q){
+                $query->where('name','like','%'.$q.'%')
+                    ->orWhere('code','like','%'.$q.'%');
+            };
+            $product = $this->service->filter($where,20);
+            return $product->map(function($val,$key) {
+                return [
+                    'value' => $val->id,
+                    'text' => $val->code.' - '.$val->name
+                ];
+            })->toArray();
+        }
+        return [];
     }
 }

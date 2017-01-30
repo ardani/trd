@@ -61,18 +61,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 // custom
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('product/unit/{id}','ProductsController@loadUnit');
-    Route::get('product/ajax/load','ProductsController@load');
+    Route::get('products/units/{id}','ProductsController@loadUnit');
+    Route::get('products/ajaxs/load','ProductsController@load');
 
-    Route::get('products/prices/{id}', [
+    Route::get('products/prices/{product_id}', [
         'middleware' => ['permission:view.products'],
         'uses'       => 'ProductPricesController@index'
     ]);
-    Route::get('products/prices/{id}/create', [
+    Route::get('products/prices/{product_id}/create', [
         'middleware' => ['permission:create.products'],
         'uses'       => 'ProductPricesController@create'
     ]);
-    Route::post('products/prices/{id}/create', [
+    Route::post('products/prices/{product_id}/create', [
         'middleware' => ['permission:create.products'],
         'uses'       => 'ProductPricesController@store'
     ]);

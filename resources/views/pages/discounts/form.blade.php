@@ -2,7 +2,10 @@
 <div class="col-md-4">
     <fieldset class="form-group">
         <label class="form-control-label">Product <span class="text-danger">*</span></label>
-        <select name="product_id" class="form-control bootstrap-select" data-live-search="true">
+        <select name="product_id" class="form-control select-product" data-live-search="true">
+            @if($model)
+                <option value="{{$model['product_id']}}">{{$model->product->name}}</option>
+            @endif
         </select>
         {{ csrf_field() }}
     </fieldset>

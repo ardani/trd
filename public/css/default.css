@@ -1016,3 +1016,16 @@ div.dataTables_wrapper div.dataTables_processing {
     color: white;
     font-weight: bold;
 }
+
+.bootstrap-select .status {
+    background: #f0f0f0;
+    clear: both;
+    color: #999;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: -5px;
+    padding: 10px 20px;
+}
+

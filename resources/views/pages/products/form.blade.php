@@ -98,7 +98,7 @@
             <div class="col-md-6">
                 <fieldset class="form-group">
                     <label class="form-control-label">Units</label>
-                    <select id="unit" data-url="{{url('product/unit/')}}" name="unit_id" class="form-control bootstrap-select" data-validation="[NOTEMPTY]">
+                    <select id="unit" data-url="{{url('products/units/')}}" name="unit_id" class="form-control bootstrap-select" data-validation="[NOTEMPTY]">
                         <option value="0">-</option>
                         @foreach($units as $unit)
                             @if($unit->id == safe_array($model,'unit_id'))

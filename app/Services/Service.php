@@ -33,8 +33,8 @@ class Service implements ServiceContract {
         return $model->save();
     }
 
-    public function filter($data) {
-        return $this->model->where($data)->get();
+    public function filter($data, $limit = 10) {
+        return $this->model->where($data)->take($limit)->get();
     }
 
     public function meta() {

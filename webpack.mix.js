@@ -38,6 +38,7 @@ mix.combine([
     'resources/assets/js/lib/daterangepicker/daterangepicker.js',
     'resources/assets/js/lib/bootstrap-sweetalert/sweetalert.min.js',
     'resources/assets/js/lib/bootstrap-select/bootstrap-select.min.js',
+    'resources/assets/js/lib/bootstrap-select/ajax-bootstrap-select.min.js',
     'resources/assets/js/plugins.js',
     'resources/assets/js/app.js',
     'resources/assets/js/custom.js'

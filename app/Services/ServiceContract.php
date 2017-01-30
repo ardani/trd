@@ -17,7 +17,7 @@ interface ServiceContract
 
     public function update($data,$id);
 
-    public function filter($data);
+    public function filter($data,$limit = 10);
 
     public function datatables($param =  array());
 

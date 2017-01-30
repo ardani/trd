@@ -10,4 +10,8 @@ class ProductPrice extends Model {
     public function customer_type() {
         return $this->belongsTo(CustomerType::class);
     }
+
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
 }

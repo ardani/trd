@@ -1,6 +1,6 @@
 <div class="btn-group btn-group-sm">
     @permission(('edit.products'))
-    <a title="edit" href="{{url('products/pricing/'.$id)}}" class="btn btn-sm btn-info"><span
+    <a title="edit" href="{{url('products/prices/'.$id)}}" class="btn btn-sm btn-info"><span
             class="glyphicon glyphicon-usd"></span></a>
     <a title="edit" href="{{url('products/edit/'.$id)}}" class="btn btn-sm btn-primary"><span
             class="glyphicon glyphicon-pencil"></span></a>
