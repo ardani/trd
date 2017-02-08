@@ -23,3 +23,10 @@ div.dataTables_wrapper div.dataTables_processing {
     padding: 10px 20px;
 }
 
+.hr-form {
+    border-top-color: #d8e2e7;
+    margin: 0 0 10px 0;
+}
+.form-control:focus,.bootstrap-select:focus {
+    border-color: crimson;
+}

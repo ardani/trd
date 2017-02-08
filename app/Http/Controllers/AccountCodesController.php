@@ -54,4 +54,21 @@ class AccountCodesController extends Controller
         $deleted = $this->service->delete($id);
         return ['status' => $deleted];
     }
+
+    public function load() {
+        $q = request()->input('q');
+        if ($q) {
+            $where =  function($query) use ($q){
+                $query->where('name','like','%'.$q.'%')->orWhere('id','like','%'.$q.'%');
+            };
+            $data = $this->service->filter($where,20);
+            return $data->map(function($val,$key) {
+                return [
+                    'value' => $val->id,
+                    'text' => $val->id.' - '.$val->name,
+                ];
+            })->toArray();
+        }
+        return [];
+    }
 }

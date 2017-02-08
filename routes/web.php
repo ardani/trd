@@ -12,6 +12,7 @@
 */
 
 use App\Models\ProductDiscount;
+use App\Models\PurchaseOrder;
 use App\Models\User;
 
 Route::group(['namespace' => 'Auth'], function () {
@@ -61,8 +62,38 @@ Route::group(['middleware' => 'auth'], function () {
 
 // custom
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('customers/ajaxs/load','CustomersController@load');
     Route::get('products/units/{id}','ProductsController@loadUnit');
     Route::get('products/ajaxs/load','ProductsController@load');
+    Route::get('account_codes/ajaxs/load','AccountCodesController@load');
+
+    // temp create
+    Route::post('purchase_orders/actions/addTemp', [
+            'middleware' => ['permission:create.purchase_orders'],
+            'uses'       => 'PurchaseOrdersController@addTempPODetail'
+    ]);
+    Route::post('purchase_orders/actions/deleteTemp', [
+        'middleware' => ['permission:create.purchase_orders'],
+        'uses'       => 'PurchaseOrdersController@deleteTempPODetail'
+    ]);
+    Route::get('purchase_orders/actions/viewTemp/{no}', [
+        'middleware' => ['permission:create.purchase_orders'],
+        'uses'       => 'PurchaseOrdersController@viewTempPODetail'
+    ]);
+
+    // edit PO
+    Route::post('purchase_orders/actions/add', [
+    'middleware' => ['permission:create.purchase_orders'],
+            'uses'       => 'PurchaseOrdersController@addPODetail'
+    ]);
+    Route::post('purchase_orders/actions/delete', [
+        'middleware' => ['permission:create.purchase_orders'],
+        'uses'       => 'PurchaseOrdersController@deletePODetail'
+    ]);
+    Route::get('purchase_orders/actions/view/{no}', [
+        'middleware' => ['permission:create.purchase_orders'],
+        'uses'       => 'PurchaseOrdersController@viewPODetail'
+    ]);
 
     Route::get('products/prices/{product_id}', [
         'middleware' => ['permission:view.products'],
@@ -124,6 +155,19 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('debug', function () {
-    $discount = ProductDiscount::find(1);
-    return $discount->expired_at->format('d/m/Y');
+    $PO = PurchaseOrder::where('no','00003/PO/MV/II/2017')->first();
+    $transactions = $PO->transactions->map(function($val,$key){
+        return  [
+            'product_id'     => $val->product->id,
+            'code'           => $val->product->code,
+            'name'           => $val->product->name,
+            'qty'            => $val->qty,
+            'disc'           => $val->disc ? number_format($val->disc) : '0',
+            'selling_price'  => number_format($val->selling_price),
+            'purchase_price' => number_format($val->purchase_price),
+            'subtotal'       => number_format($val->qty * $val->selling_price)
+        ];
+    });
+
+    return $transactions->keyBy('product_id')->toArray();
 });

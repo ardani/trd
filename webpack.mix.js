@@ -39,8 +39,10 @@ mix.combine([
     'resources/assets/js/lib/bootstrap-sweetalert/sweetalert.min.js',
     'resources/assets/js/lib/bootstrap-select/bootstrap-select.min.js',
     'resources/assets/js/lib/bootstrap-select/ajax-bootstrap-select.min.js',
+    'resources/assets/js/lib/jquery.loadTemplate.min.js',
+    'resources/assets/js/lib/numeral.min.js',
     'resources/assets/js/plugins.js',
     'resources/assets/js/app.js',
     'resources/assets/js/custom.js'
-], 'public/js/main.js').sourceMaps()
+], 'public/js/main.js')
 .js('resources/assets/js/index.js','public/js/index.js');

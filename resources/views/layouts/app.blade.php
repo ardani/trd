@@ -20,7 +20,7 @@
 @include('includes.nav')
 <div class="mobile-menu-left-overlay"></div>
 @yield('content')
-<script async src="{{asset('js/main.js')}}"></script>
+<script src="{{asset('js/main.js')}}"></script>
 @yield('scripts')
 </body>
 </html>

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CustomerService;
-use App\Services\CustomerTypeService;
+use App\Services\AccountCodeService;
+use App\Services\CashFlowService;
 use Illuminate\Http\Request;
-class CustomersController extends Controller
+class CashFlowsController extends Controller
 {
-    private $page = 'customers';
+    private $page = 'cash_flows';
     private $service;
-    private $types;
+    private $account;
 
-    public function __construct(CustomerService $service, CustomerTypeService $types) {
+    public function __construct(CashFlowService $service, AccountCodeService $account) {
         $this->service = $service;
-        $this->types = $types;
+        $this->account = $account;
     }
 
     public function index() {
@@ -30,7 +30,6 @@ class CustomersController extends Controller
 
     public function create() {
         $data = $this->service->meta();
-        $data['types'] = $this->types->all();
         return view('pages.'.$this->page.'.create',$data);
     }
 
@@ -45,7 +44,6 @@ class CustomersController extends Controller
         $data = $this->service->meta();
         $data['id'] = $id;
         $data['model'] = $model;
-        $data['types'] = $this->types->all();
         return view('pages.'.$this->page.'.edit', $data);
     }
 
@@ -58,25 +56,5 @@ class CustomersController extends Controller
     public function delete($id) {
         $deleted = $this->service->delete($id);
         return ['status' => $deleted];
-    }
-
-    public function load() {
-        $q = request()->input('q');
-        if ($q) {
-            $where =  function($query) use ($q){
-                $query->where('name','like','%'.$q.'%');
-            };
-            $customer = $this->service->filter($where,20);
-            return $customer->map(function($val,$key) {
-                return [
-                    'value' => $val->id,
-                    'text' => $val->name,
-                    'data' => [
-                        'customer_type_id' => $val->customer_type_id
-                    ]
-                ];
-            })->toArray();
-        }
-        return [];
     }
 }

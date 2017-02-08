@@ -52,4 +52,8 @@ class Service implements ServiceContract {
     public function all() {
         return $this->model->get();
     }
+
+    public function where($search) {
+        return $this->model->where($search)->first();
+    }
 }
