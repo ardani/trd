@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MenusRequest extends FormRequest
 {
@@ -23,9 +24,10 @@ class MenusRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('id');
         return [
             'name' => 'required',
-            'path' => 'required',
+            'path' => 'required',Rule::unique('menus','path')->ignore($id),
             'class' => 'required',
             'icon' => 'required'
         ];

@@ -15,6 +15,7 @@
                 <form id="formValid" method="post" action="{{ url($path.'/edit/'.$id) }}">
                     @include('pages.menus.form')
                     <button class="btn btn-primary" type="submit">Update</button>
+                    <a class="pull-right btn btn-default" href="{{url($path)}}">Back</a>
                 </form>
             </div>
         </div>

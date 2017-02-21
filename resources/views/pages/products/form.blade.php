@@ -81,6 +81,12 @@
         </select>
     </fieldset>
 </div>
+<div class="col-md-6">
+    <fieldset class="form-group">
+        <label class="form-control-label"><input type="checkbox" name="can_sale" value="1"
+                {{ $model ? $model['can_sale'] == 1 ? 'checked' : '' : 'checked'}}> Can Sale</label>
+    </fieldset>
+</div>
 <section class="tabs-section">
     <div class="tabs-section-nav tabs-section-nav-inline">
         <ul class="nav" role="tablist">

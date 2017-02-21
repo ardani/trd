@@ -1,28 +1,15 @@
-function deleteAction(oTable) {
-    $('table').on('click', 'a.delete-action', function (e) {
-        e.preventDefault();
-        var el = $(this);
-        swal({
-            title: "Confirmation",
-            text: "Are you sure delete this data?",
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonClass: "btn-default",
-            confirmButtonText: "Delete",
-            confirmButtonClass: "btn-danger"
-        }, function (isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    type: "POST",
-                    url: el.data('url'),
-                    data: {_token: Laravel.csrfToken}
-                })
-                .done(function () {
-                    oTable.ajax.reload();
-                });
-            }
-        });
+var sProduct = $('.select-product');
+var sCustomer = $('.select-customer');
+var sSupplier = $('.select-supplier');
+var sAccountCode = $('.select-account-code');
+
+function calculateTotal(el) {
+    var sum = 0;
+    el.find('tbody tr').each(function () {
+        var subtotal = numeral($(this).find('.subtotal').text()).value();
+        sum += parseInt(subtotal);
     });
+    $('#total').text(numeral(sum).format('0,0'));
 }
 
 function buildDatatables(el, columns) {
@@ -35,27 +22,25 @@ function buildDatatables(el, columns) {
         ajax: el.data('url'),
         columns: columns
     });
-    deleteAction(oTable);
-}
 
-function calculateTotal(el) {
-    var sum = 0;
-    el.find('tbody tr').each(function () {
-        var subtotal = numeral($(this).find('.subtotal').text()).value();
-        sum += parseInt(subtotal);
+    el.on('click', 'a.delete-action', function (e) {
+        var el = $(this);
+        if (confirm("Are you sure delete this data?")) {
+            $.ajax({
+                type: "POST",
+                url: el.data('url'),
+                data: {_token: Laravel.csrfToken},
+            }).done(function () {
+                oTable.ajax.reload();
+            });
+        }
     });
-    $('#total').text(numeral(sum).format('0,0'));
-}
-
-function clearPurchaseOrder() {
-    $('#total').text(0);
-    $('#disc').val(0);
-    $('#cash').val(0);
 }
 
 $(document).ready(function () {
+
     $.addTemplateFormatter("currency",
-        function(value, template) {
+        function (value, template) {
             return numeral(value).format('0,0');
         });
 
@@ -88,7 +73,6 @@ $(document).ready(function () {
         }
     });
 
-    var sProduct = $('.select-product');
     sProduct.selectpicker({liveSearch: true})
     .ajaxSelectPicker({
         ajax: {
@@ -100,7 +84,6 @@ $(document).ready(function () {
         },
     });
 
-    var sCustomer = $('.select-customer');
     sCustomer.selectpicker({liveSearch: true})
     .ajaxSelectPicker({
         ajax: {
@@ -112,7 +95,17 @@ $(document).ready(function () {
         },
     });
 
-    var sAccountCode = $('.select-account-code');
+    sSupplier.selectpicker({liveSearch: true})
+    .ajaxSelectPicker({
+        ajax: {
+            type: 'GET',
+            url: '/suppliers/ajaxs/load',
+        },
+        locale: {
+            emptyTitle: '-'
+        },
+    });
+
     sAccountCode.selectpicker({liveSearch: true})
     .ajaxSelectPicker({
         ajax: {
@@ -124,121 +117,11 @@ $(document).ready(function () {
         },
     });
 
-    $('#check-1').click(function(e){
+    $('#check-1').click(function (e) {
         var isDisbaled = $('#paid-until-at').prop('disabled');
-        $('#paid-until-at').prop('disabled',!isDisbaled);
+        $('#paid-until-at').prop('disabled', !isDisbaled);
     });
 
-    var tPurchaseDetails = $('#table-purchase-details');
-
-    $('#save-btn').click(function (e) {
-        var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
-        var qty = $('#qty');
-        if (!custTypeId) {
-            alert('customer belum dipilih');
-            return false;
-        }
-        if (!sProduct.val()) {
-            alert('product belum dipilih');
-            return false;
-        }
-        if (!qty.val()) {
-            alert('Qty masih kosong');
-            return false;
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: $(this).data('url'),
-            data: {
-                product_id: sProduct.val(),
-                qty: qty.val(),
-                customer_type_id: custTypeId,
-                _token: Laravel.csrfToken,
-                no:$('#no-po').val()
-            },
-            success: function (data) {
-                tPurchaseDetails.find('tbody').loadTemplate("#row-purchase", data);
-                sProduct.selectpicker('refresh');
-                qty.val('');
-                calculateTotal(tPurchaseDetails);
-            }
-        }).fail(function() {
-            alert('Add Purchase Product Error. Try Again Later');
-        })
-    });
-
-    $('#count-btn').click(function (e) {
-       var total = parseInt(numeral($('#total').text()).value());
-       var disc = parseInt($('#disc').val());
-       $('#total').text(numeral(total-disc).format('0,0'));
-    });
-
-    $('#calculate-btn').click(function (e){
-        calculateTotal(tPurchaseDetails);
-    });
-
-    $('#pay-btn').click(function (e) {
-        var total = parseInt(numeral($('#total').text()).value());
-        var cash = parseInt($('#cash').val());
-        $('#charge').text(numeral(cash-total).format('0,0'));
-    });
-
-    $('table').on('keypress','.qty-input', function (e) {
-        if(e.which == 13) {
-            var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
-            var self = $(this);
-            $.ajax({
-                type: 'POST',
-                url: self.data('url'),
-                data: {
-                    product_id: self.data('id'),
-                    qty: self.val(),
-                    customer_type_id: custTypeId,
-                    _token: Laravel.csrfToken,
-                    is_edit : 1,
-                    no:$('#no-po').val()
-                },
-                success: function (data) {
-                    tPurchaseDetails.find('tbody').loadTemplate("#row-purchase", data);
-                    calculateTotal(tPurchaseDetails);
-                }
-            }).fail(function() {
-                alert('Update Purchase Product Error. Try Again Later');
-            })
-        }
-    });
-
-    $('table').on('click', 'a.act-delete', function (e) {
-        var product_id = $(this).data('id');
-        $.ajax({
-            type: 'POST',
-            url: $(this).data('url'),
-            data: {no:$('#no-po').val(),product_id: product_id,_token:Laravel.csrfToken},
-            success: function (data) {
-                tPurchaseDetails.find('tbody').loadTemplate("#row-purchase", data);
-                calculateTotal(tPurchaseDetails);
-            }
-        }).fail(function() {
-            alert('delete row failed');
-        })
-    });
-
-    $('#save-pruchase-btn').click(function (e) {
-        $.ajax({
-            type: 'POST',
-            url: $(this).data('url'),
-            data: $('#form-po').serialize(),
-            headers: {
-                'X-CSRF-Token': Laravel.csrfToken
-            },
-            success: function (data) {
-                alert('Save PO success');
-            }
-        }).fail(function() {
-            alert('Save PO Error. Try Again Later');
-        })
-    });
     // menus
     var menus = [
         {data: 'name'},
@@ -389,6 +272,30 @@ $(document).ready(function () {
     ];
     buildDatatables($('#table-po'), po);
 
+    var orders = [
+        {data: 'no'},
+        {data: 'supplier', searchable: false, orderable: false},
+        {data: 'invoice_no'},
+        {data: 'payment_method', searchable: false, orderable: false},
+        {data: 'cash', searchable: false, orderable: false},
+        {data: 'paid_until_at', searchable: false, orderable: false},
+        {data: 'total', searchable: false, orderable: false},
+        {data: 'arrive_at', searchable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+    buildDatatables($('#table-orders'), orders);
+
+    var productions = [
+        {data: 'purchase_order_code', orderable: false},
+        {data: 'state'},
+        {data: 'no'},
+        {data: 'note', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+    buildDatatables($('#table-productions'), productions);
+
     var cashflows = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
@@ -399,5 +306,15 @@ $(document).ready(function () {
         {data: 'action', searchable: false, orderable: false},
     ];
     buildDatatables($('#table-cash-flows'), cashflows);
+
+    var correctionStocks = [
+        {data: 'product_code',searchable: false, orderable: false},
+        {data: 'product_name',searchable: false, orderable: false},
+        {data: 'correction', searchable: false, orderable: false},
+        {data: 'purchase_price', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false}
+    ];
+    buildDatatables($('#table-correction-stocks'), correctionStocks);
 
 });

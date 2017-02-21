@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.42)
 # Database: trading
-# Generation Time: 2017-01-30 07:43:04 +0000
+# Generation Time: 2017-02-19 12:02:37 +0000
 # ************************************************************
 
 
@@ -79,12 +79,22 @@ CREATE TABLE `cash_flows` (
   `account_code_id` int(10) DEFAULT NULL,
   `value` int(10) DEFAULT '0',
   `note` text,
-  `reference_key` varchar(20) DEFAULT NULL,
+  `referenceable_id` int(10) DEFAULT NULL,
+  `referenceable_type` varchar(200) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `cash_flows` WRITE;
+/*!40000 ALTER TABLE `cash_flows` DISABLE KEYS */;
+
+INSERT INTO `cash_flows` (`id`, `account_code_id`, `value`, `note`, `referenceable_id`, `referenceable_type`, `created_at`, `updated_at`)
+VALUES
+	(1,2000,1500,'test',NULL,NULL,'2017-02-08 07:30:45','2017-02-08 07:33:48');
+
+/*!40000 ALTER TABLE `cash_flows` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table categories
@@ -148,12 +158,21 @@ CREATE TABLE `correction_stocks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(10) DEFAULT NULL,
   `correction` int(10) DEFAULT NULL,
-  `selling_price` int(10) DEFAULT NULL,
+  `purchase_price` int(10) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `correction_stocks` WRITE;
+/*!40000 ALTER TABLE `correction_stocks` DISABLE KEYS */;
+
+INSERT INTO `correction_stocks` (`id`, `product_id`, `correction`, `purchase_price`, `created_at`, `updated_at`)
+VALUES
+	(2,1,1,40000,'2017-02-17 07:00:55','2017-02-17 07:00:55');
+
+/*!40000 ALTER TABLE `correction_stocks` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table customer_types
@@ -197,6 +216,15 @@ CREATE TABLE `customers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+
+INSERT INTO `customers` (`id`, `name`, `phone`, `address`, `customer_type_id`, `created_at`, `updated_at`, `deleted_at`)
+VALUES
+	(1,'umum',NULL,'',1,'2017-02-03 06:10:47','2017-02-03 06:10:47',NULL);
+
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table employee_types
@@ -292,9 +320,9 @@ VALUES
 	(13,'Account Code','account_codes',NULL,12,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(14,'Cash Flow','cash_flows',NULL,12,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(15,'Transaction','transaction','font-icon font-icon-revers',0,'blue with-sub',NULL,3,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
-	(16,'Sales','sales',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
+	(16,'Purchase Order','purchase_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(17,'Order','orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
-	(18,'Return Sales','return_sales',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
+	(18,'Return PO','return_purchase_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(19,'Return Order','return_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(20,'Customer','customers',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(21,'Customer Type','customer_types',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
@@ -302,7 +330,9 @@ VALUES
 	(23,'Payment Method','payment_methods',NULL,12,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(24,'Product','products',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(25,'Configuration','configuration','font-icon font-icon-cogwheel',0,'purple with-sub',NULL,5,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
-	(26,'Discount','discounts',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46');
+	(26,'Discount','discounts',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
+	(27,'Correction Stock','correction_stocks',NULL,15,NULL,NULL,NULL,'2017-01-31 06:53:42','2017-01-31 06:53:46'),
+	(28,'Production','productions',NULL,15,NULL,NULL,NULL,'2017-02-05 18:46:02','2017-02-05 18:46:02');
 
 /*!40000 ALTER TABLE `menus` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -336,6 +366,32 @@ VALUES
 UNLOCK TABLES;
 
 
+# Dump of table nota
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `nota`;
+
+CREATE TABLE `nota` (
+  `no` varchar(20) NOT NULL DEFAULT '',
+  `ip` varchar(20) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT '1',
+  PRIMARY KEY (`no`),
+  KEY `ip` (`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `nota` WRITE;
+/*!40000 ALTER TABLE `nota` DISABLE KEYS */;
+
+INSERT INTO `nota` (`no`, `ip`, `type`)
+VALUES
+	('00002/OR/MV/II/2017','::1',2),
+	('00002/PO/MV/II/2017','192.168.1.1',NULL),
+	('00009/PO/MV/II/2017','::1',1);
+
+/*!40000 ALTER TABLE `nota` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table orders
 # ------------------------------------------------------------
 
@@ -344,7 +400,9 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `supplier_id` int(10) DEFAULT NULL,
-  `payment_method_id` int(10) DEFAULT NULL,
+  `no` varchar(20) DEFAULT NULL,
+  `invoice_no` varchar(20) DEFAULT NULL,
+  `payment_method_id` int(10) DEFAULT '1',
   `cashier_id` int(10) DEFAULT NULL,
   `cash` int(11) DEFAULT '0',
   `paid_until_at` timestamp NULL DEFAULT NULL,
@@ -354,6 +412,15 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+
+INSERT INTO `orders` (`id`, `supplier_id`, `no`, `invoice_no`, `payment_method_id`, `cashier_id`, `cash`, `paid_until_at`, `arrive_at`, `created_at`, `updated_at`)
+VALUES
+	(1,1,'00001/OR/MV/II/2017',NULL,1,999,40000,NULL,NULL,'2017-02-11 00:00:00','2017-02-11 07:29:30');
+
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table password_resets
@@ -384,6 +451,16 @@ CREATE TABLE `payment_methods` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `payment_methods` WRITE;
+/*!40000 ALTER TABLE `payment_methods` DISABLE KEYS */;
+
+INSERT INTO `payment_methods` (`id`, `name`, `created_at`, `updated_at`)
+VALUES
+	(1,'cash','2017-02-03 06:41:32',NULL),
+	(2,'credit','2017-02-03 06:41:41',NULL);
+
+/*!40000 ALTER TABLE `payment_methods` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table permission_role
@@ -489,6 +566,14 @@ VALUES
 	(86,1),
 	(87,1),
 	(88,1),
+	(89,1),
+	(90,1),
+	(91,1),
+	(92,1),
+	(93,1),
+	(94,1),
+	(95,1),
+	(96,1),
 	(31,3),
 	(32,3),
 	(34,3),
@@ -586,18 +671,18 @@ VALUES
 	(46,'edit.cash_flows','Edit Cash flows','Can Edit Cash flows','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(47,'delete.cash_flows','Delete Cash flows','Can Delete Cash flows','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(48,'view.cash_flows','View Cash flows','View Cash flows','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(49,'create.sales','Create Sales','Can Create Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(50,'edit.sales','Edit Sales','Can Edit Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(51,'delete.sales','Delete Sales','Can Delete Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(52,'view.sales','View Sales','View Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(49,'create.purchase_orders','Create Purchase Orders','Can Create Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(50,'edit.purchase_orders','Edit Purchase Orders','Can Edit Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(51,'delete.purchase_orders','Delete Purchase Orders','Can Delete Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(52,'view.purchase_orders','View Purchase Orders','View Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(53,'create.orders','Create Orders','Can Create Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(54,'edit.orders','Edit Orders','Can Edit Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(55,'delete.orders','Delete Orders','Can Delete Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(56,'view.orders','View Orders','View Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(57,'create.return_sales','Create Return Sales','Can Create Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(58,'edit.return_sales','Edit Return Sales','Can Edit Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(59,'delete.return_sales','Delete Return Sales','Can Delete Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(60,'view.return_sales','View Return Sales','View Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(57,'create.return_purchase_orders','Create Return Sales','Can Create Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(58,'edit.return_purchase_orders','Edit Return Sales','Can Edit Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(59,'delete.return_purchase_orders','Delete Return Sales','Can Delete Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(60,'view.return_purchase_orders','View Return Sales','View Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(61,'create.return_orders','Create Return Orders','Can Create Return Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(62,'edit.return_orders','Edit Return Orders','Can Edit Return Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(63,'delete.return_orders','Delete Return Orders','Can Delete Return Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
@@ -625,7 +710,15 @@ VALUES
 	(85,'create.discounts','Create Discounts','Can Create Discounts','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(86,'edit.discounts','Edit Discounts','Can Edit Discounts','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(87,'delete.discounts','Delete Discounts','Can Delete Discounts','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(88,'view.discounts','View Discounts','Can View Discounts','2017-01-27 06:14:55','2017-01-27 06:15:02');
+	(88,'view.discounts','View Discounts','Can View Discounts','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(89,'create.productions','Create Productions','Can Create Productions','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(90,'edit.productions','Edit Productions','Can Edit Productions','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(91,'delete.productions','Delete Productions','Can Delete Productions','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(92,'view.productions','View Productions','Can View Productions','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(93,'create.correction_stocks','Create Correction Stocks','Can Create Correction Stocks','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(94,'edit.correction_stocks','Edit Correction Stocks','Can Edit Correction Stocks','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(95,'delete.correction_stocks','Delete Correction Stocks','Can Delete Correction Stocks','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(96,'view.correction_stocks','View Correction Stocks','Can View Correction Stocks','2017-01-27 06:14:55','2017-01-27 06:15:02');
 
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -651,8 +744,8 @@ LOCK TABLES `product_discounts` WRITE;
 
 INSERT INTO `product_discounts` (`id`, `product_id`, `amount`, `expired_at`, `created_at`, `updated_at`)
 VALUES
-	(1,1,10,'2017-01-29 20:58:38','2017-01-29 20:58:38','2017-01-29 20:58:38'),
-	(2,2,10,'2017-01-29 20:58:38','2017-01-29 20:58:38','2017-01-29 20:58:38');
+	(1,3,10,'2017-01-29 20:58:38','2017-01-29 20:58:38','2017-01-29 20:58:38'),
+	(3,2,200,'2017-01-29 20:58:38','2017-01-30 20:57:25','2017-01-30 20:57:25');
 
 /*!40000 ALTER TABLE `product_discounts` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -674,6 +767,15 @@ CREATE TABLE `product_prices` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `product_prices` WRITE;
+/*!40000 ALTER TABLE `product_prices` DISABLE KEYS */;
+
+INSERT INTO `product_prices` (`id`, `product_id`, `customer_type_id`, `selling_price`, `purchase_price`, `created_at`, `updated_at`)
+VALUES
+	(1,1,1,1000,100,'2017-02-11 07:30:17','2017-02-11 07:30:17');
+
+/*!40000 ALTER TABLE `product_prices` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table product_stocks
@@ -723,6 +825,35 @@ VALUES
 UNLOCK TABLES;
 
 
+# Dump of table productions
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productions`;
+
+CREATE TABLE `productions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `no` varchar(20) DEFAULT NULL,
+  `purchase_order_id` int(10) DEFAULT NULL,
+  `cashier_id` int(10) DEFAULT NULL,
+  `note` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `productions` WRITE;
+/*!40000 ALTER TABLE `productions` DISABLE KEYS */;
+
+INSERT INTO `productions` (`id`, `no`, `purchase_order_id`, `cashier_id`, `note`, `created_at`, `updated_at`, `deleted_at`)
+VALUES
+	(2,'00124/PR/MV/II/2017',18,NULL,NULL,'2017-02-19 10:05:09','2017-02-19 10:05:09',NULL),
+	(3,'00124/PR/MV/II/2017',19,NULL,NULL,'2017-02-19 10:13:52','2017-02-19 10:13:52',NULL);
+
+/*!40000 ALTER TABLE `productions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table products
 # ------------------------------------------------------------
 
@@ -759,6 +890,76 @@ VALUES
 UNLOCK TABLES;
 
 
+# Dump of table purchase_order_states
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `purchase_order_states`;
+
+CREATE TABLE `purchase_order_states` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` int(10) DEFAULT NULL,
+  `state_id` int(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `purchase_order_states` WRITE;
+/*!40000 ALTER TABLE `purchase_order_states` DISABLE KEYS */;
+
+INSERT INTO `purchase_order_states` (`id`, `purchase_order_id`, `state_id`, `created_at`, `updated_at`)
+VALUES
+	(1,2,1,'2017-02-05 18:20:43',NULL),
+	(2,14,1,'2017-02-05 18:20:43',NULL),
+	(3,15,1,'2017-02-05 18:20:43',NULL),
+	(4,16,1,'2017-02-08 06:55:39','2017-02-08 06:55:39'),
+	(5,17,1,'2017-02-09 19:30:55','2017-02-09 19:30:55'),
+	(6,18,1,'2017-02-19 10:01:23','2017-02-19 10:01:23'),
+	(7,19,1,'2017-02-19 10:13:52','2017-02-19 10:13:52');
+
+/*!40000 ALTER TABLE `purchase_order_states` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table purchase_orders
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `purchase_orders`;
+
+CREATE TABLE `purchase_orders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `no` varchar(20) DEFAULT NULL,
+  `customer_id` int(10) DEFAULT NULL,
+  `cashier_id` int(10) DEFAULT NULL,
+  `payment_method_id` int(10) DEFAULT '1',
+  `cash` int(11) DEFAULT '0',
+  `change` int(11) DEFAULT '0',
+  `disc` int(11) DEFAULT '0',
+  `paid_until_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `no` (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `purchase_orders` WRITE;
+/*!40000 ALTER TABLE `purchase_orders` DISABLE KEYS */;
+
+INSERT INTO `purchase_orders` (`id`, `no`, `customer_id`, `cashier_id`, `payment_method_id`, `cash`, `change`, `disc`, `paid_until_at`, `created_at`, `updated_at`, `deleted_at`)
+VALUES
+	(2,'00001/PO/MV/II/2017',1,NULL,1,0,0,0,NULL,'2017-02-02 22:20:00',NULL,NULL),
+	(14,'00003/PO/MV/II/2017',1,999,2,5000,0,NULL,'2017-02-28 00:00:00','2017-02-05 00:00:00','2017-02-05 11:01:48',NULL),
+	(15,'00004/PO/MV/II/2017',1,999,2,2000,0,NULL,NULL,'2017-02-05 00:00:00','2017-02-08 06:53:30',NULL),
+	(16,'00005/PO/MV/II/2017',1,999,2,NULL,0,NULL,'2017-02-08 00:00:00','2017-02-08 00:00:00','2017-02-08 06:55:39',NULL),
+	(17,'00006/PO/MV/II/2017',1,999,2,NULL,0,NULL,'2017-02-18 00:00:00','2017-02-09 00:00:00','2017-02-09 19:30:55',NULL),
+	(18,'00007/PO/MV/II/2017',1,999,1,1000,0,NULL,NULL,'2017-02-19 00:00:00','2017-02-19 10:01:23',NULL),
+	(19,'00008/PO/MV/II/2017',1,999,2,NULL,0,NULL,'2017-02-25 00:00:00','2017-02-19 00:00:00','2017-02-19 10:13:52',NULL);
+
+/*!40000 ALTER TABLE `purchase_orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table return_orders
 # ------------------------------------------------------------
 
@@ -766,6 +967,7 @@ DROP TABLE IF EXISTS `return_orders`;
 
 CREATE TABLE `return_orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `no` varchar(20) DEFAULT NULL,
   `order_id` int(10) DEFAULT NULL,
   `cashier_id` int(10) DEFAULT NULL,
   `note` text,
@@ -777,14 +979,15 @@ CREATE TABLE `return_orders` (
 
 
 
-# Dump of table return_sales
+# Dump of table return_purchase_orders
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `return_sales`;
+DROP TABLE IF EXISTS `return_purchase_orders`;
 
-CREATE TABLE `return_sales` (
+CREATE TABLE `return_purchase_orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `sale_id` int(10) DEFAULT NULL,
+  `no` varchar(20) DEFAULT NULL,
+  `purchase_order_id` int(10) DEFAULT NULL,
   `cashier_id` int(10) DEFAULT NULL,
   `note` text,
   `arrive_at` timestamp NULL DEFAULT NULL,
@@ -870,27 +1073,6 @@ VALUES
 
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-# Dump of table sales
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `sales`;
-
-CREATE TABLE `sales` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `customer_id` int(10) DEFAULT NULL,
-  `cashier_id` int(10) DEFAULT NULL,
-  `payment_method_id` int(10) DEFAULT NULL,
-  `cash` int(11) DEFAULT '0',
-  `change` int(11) DEFAULT '0',
-  `disc` int(11) DEFAULT '0',
-  `paid_until_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 
 
 # Dump of table sessions
@@ -980,6 +1162,17 @@ CREATE TABLE `states` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `states` WRITE;
+/*!40000 ALTER TABLE `states` DISABLE KEYS */;
+
+INSERT INTO `states` (`id`, `name`, `type`, `created_at`, `updated_at`)
+VALUES
+	(1,'PENDING','info','2017-02-03 06:14:41','2017-02-03 06:14:41'),
+	(2,'PROCESS','warning','2017-02-03 06:14:41','2017-02-03 06:14:41'),
+	(3,'COMPLETED','success','2017-02-03 06:14:41','2017-02-03 06:14:41');
+
+/*!40000 ALTER TABLE `states` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table suppliers
@@ -1020,13 +1213,33 @@ CREATE TABLE `transactions` (
   `transactionable_id` int(10) DEFAULT NULL,
   `purchase_price` int(11) DEFAULT '0',
   `selling_price` int(11) DEFAULT '0',
-  `qty` int(11) DEFAULT '1',
+  `qty` tinyint(4) DEFAULT '1',
+  `return_qty` tinyint(4) DEFAULT '0',
+  `return_complete` tinyint(4) DEFAULT '0',
+  `disc` int(11) DEFAULT '0',
   `product_id` int(10) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `transactions` WRITE;
+/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+
+INSERT INTO `transactions` (`id`, `transactionable_type`, `transactionable_id`, `purchase_price`, `selling_price`, `qty`, `return_qty`, `return_complete`, `disc`, `product_id`, `created_at`, `updated_at`)
+VALUES
+	(12,'App\\Models\\PurchaseOrder',15,500,1000,1,0,0,0,1,'2017-02-08 06:35:23','2017-02-08 06:35:23'),
+	(16,'App\\Models\\PurchaseOrder',16,10,10,1,0,0,200,2,'2017-02-08 06:55:39','2017-02-08 06:55:39'),
+	(17,'App\\Models\\PurchaseOrder',16,500,1000,1,0,0,0,1,'2017-02-08 06:55:39','2017-02-08 06:55:39'),
+	(18,'App\\Models\\PurchaseOrder',17,500,1000,-1,0,0,0,1,'2017-02-09 19:30:55','2017-02-09 19:30:55'),
+	(19,'App\\Models\\PurchaseOrder',17,100,100,-2,0,0,10,3,'2017-02-09 19:30:55','2017-02-09 19:30:55'),
+	(21,'App\\Models\\Order',1,20000,0,2,0,0,0,1,'2017-02-11 07:29:30','2017-02-11 07:29:30'),
+	(24,'App\\Models\\PurchaseOrder',18,100,1000,-1,0,0,0,1,'2017-02-19 10:05:09','2017-02-19 10:05:09'),
+	(25,'App\\Models\\PurchaseOrder',19,10,10,-2,0,0,200,2,'2017-02-19 10:13:52','2017-02-19 10:13:52'),
+	(30,'App\\Models\\Production',2,0,0,-3,0,0,0,1,'2017-02-19 18:56:01','2017-02-19 18:58:09');
+
+/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table units
@@ -1079,7 +1292,7 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `remember_token`, `created_at`, `updated_at`)
 VALUES
 	(1,'ardani','ardani@ardani.com','$2y$10$A/xllDd64acSVaYXC7ZhxeB7.r/9XWFhGmrVnrEsopFdLgZIKPVV6','L5bEXVKbgh9oJDUmVcXGRziURPDFHyHMZsPYGgxQJQmPHUsDBKw09W3SjOPo','2017-01-28 17:35:16','2017-01-28 17:43:46'),
-	(999,'EZxqHBuni9','admin@admin.com','$2y$10$1Ckb0nLckDvxzjuyj3ntUuveuQi6HdYGVzLWgJuqij3Ak430Uy/pO','9qx27v6Pw9A0pF4jQkFtt6xEuMa4UIwsMKx94LEl4Kyzh0cx8EK0M1ya47EW',NULL,'2017-01-22 12:50:46');
+	(999,'EZxqHBuni9','admin@admin.com','$2y$10$1Ckb0nLckDvxzjuyj3ntUuveuQi6HdYGVzLWgJuqij3Ak430Uy/pO','bi6Sf7CKP3Ffjitdd65HL02aB3wzOf0iorUSF2mmuHnRE3IfCMWDX0NvD6kH',NULL,'2017-01-22 12:50:46');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -56,4 +56,21 @@ class SuppliersController extends Controller
         $deleted = $this->service->delete($id);
         return ['status' => $deleted];
     }
+
+    public function load(){
+        $q = request()->input('q');
+        if ($q) {
+            $where =  function($query) use ($q){
+                $query->where('name','like','%'.$q.'%');
+            };
+            $customer = $this->service->filter($where,20);
+            return $customer->map(function($val,$key) {
+                return [
+                    'value' => $val->id,
+                    'text' => $val->name
+                ];
+            })->toArray();
+        }
+        return [];
+    }
 }

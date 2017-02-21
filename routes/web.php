@@ -11,15 +11,12 @@
 |
 */
 
-use App\Models\ProductDiscount;
-use App\Models\PurchaseOrder;
-use App\Models\User;
 
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('login', 'LoginController@showLoginForm')->name('login');
     Route::post('login', 'LoginController@login');
     Route::get('logout', 'LoginController@logout')->name('logout');
-    Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
+    Route::get('register', 'RegisterController@showRegistrationForm')->middleware(['view.register'])->name('register');
     Route::post('register', 'RegisterController@register');
     Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
@@ -63,6 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
 // custom
 Route::group(['middleware' => 'auth'], function () {
     Route::get('customers/ajaxs/load','CustomersController@load');
+    Route::get('suppliers/ajaxs/load','SuppliersController@load');
     Route::get('products/units/{id}','ProductsController@loadUnit');
     Route::get('products/ajaxs/load','ProductsController@load');
     Route::get('account_codes/ajaxs/load','AccountCodesController@load');
@@ -93,6 +91,49 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('purchase_orders/actions/view/{no}', [
         'middleware' => ['permission:create.purchase_orders'],
         'uses'       => 'PurchaseOrdersController@viewPODetail'
+    ]);
+
+    // orders
+    // temp create
+    Route::post('orders/actions/addTemp', [
+        'middleware' => ['permission:create.orders'],
+        'uses'       => 'OrdersController@addTempPODetail'
+    ]);
+    Route::post('orders/actions/deleteTemp', [
+        'middleware' => ['permission:create.orders'],
+        'uses'       => 'OrdersController@deleteTempPODetail'
+    ]);
+    Route::get('orders/actions/viewTemp/{no}', [
+        'middleware' => ['permission:create.orders'],
+        'uses'       => 'OrdersController@viewTempPODetail'
+    ]);
+
+    // edit Orders
+    Route::post('orders/actions/add', [
+        'middleware' => ['permission:create.orders'],
+        'uses'       => 'OrdersController@addPODetail'
+    ]);
+    Route::post('orders/actions/delete', [
+        'middleware' => ['permission:create.orders'],
+        'uses'       => 'OrdersController@deletePODetail'
+    ]);
+    Route::get('orders/actions/view/{no}', [
+        'middleware' => ['permission:create.orders'],
+        'uses'       => 'OrdersController@viewPODetail'
+    ]);
+
+    // production
+    Route::post('productions/actions/add', [
+        'middleware' => ['permission:create.productions'],
+        'uses'       => 'ProductionsController@addPRDetail'
+    ]);
+    Route::post('productions/actions/delete', [
+        'middleware' => ['permission:create.productions'],
+        'uses'       => 'ProductionsController@deletePRDetail'
+    ]);
+    Route::get('productions/actions/view/{no}', [
+        'middleware' => ['permission:create.productions'],
+        'uses'       => 'ProductionsController@viewPRDetail'
     ]);
 
     Route::get('products/prices/{product_id}', [
@@ -155,19 +196,5 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('debug', function () {
-    $PO = PurchaseOrder::where('no','00003/PO/MV/II/2017')->first();
-    $transactions = $PO->transactions->map(function($val,$key){
-        return  [
-            'product_id'     => $val->product->id,
-            'code'           => $val->product->code,
-            'name'           => $val->product->name,
-            'qty'            => $val->qty,
-            'disc'           => $val->disc ? number_format($val->disc) : '0',
-            'selling_price'  => number_format($val->selling_price),
-            'purchase_price' => number_format($val->purchase_price),
-            'subtotal'       => number_format($val->qty * $val->selling_price)
-        ];
-    });
 
-    return $transactions->keyBy('product_id')->toArray();
 });

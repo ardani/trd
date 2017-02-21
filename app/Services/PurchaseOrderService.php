@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Models\Production;
 use App\Models\PurchaseOrder;
 use Carbon\Carbon;
 use Entrust;
@@ -17,9 +18,11 @@ class PurchaseOrderService extends Service {
 
     protected $model;
     protected $name = 'purchase_orders';
+    private $production;
 
-    public function __construct(PurchaseOrder $model) {
+    public function __construct(PurchaseOrder $model, Production $production) {
         $this->model = $model;
+        $this->production = $production;
     }
 
     public function datatables($param = array()) {
@@ -65,6 +68,7 @@ class PurchaseOrderService extends Service {
         }
         $model->disc = request('disc',0);
         $model->save();
+
         $model->purchase_order_state()->firstOrCreate(['state_id' => 1]);
         $sessions = session($data['no']);
         $model->transactions()->delete();
@@ -74,7 +78,7 @@ class PurchaseOrderService extends Service {
                 'purchase_price' => $session['purchase_price'],
                 'disc' => $session['disc'],
                 'product_id' => $session['product_id'],
-                'qty' => $session['qty']
+                'qty' => $session['qty'] * -1
             ]);
         }
         return clear_nota($data['no']);

@@ -19,6 +19,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <button class="btn btn-primary" type="submit">Update</button>
+                            <a class="pull-right btn btn-default" href="{{url($path)}}">Back</a>
                         </div>
                     </div>
                 </form>

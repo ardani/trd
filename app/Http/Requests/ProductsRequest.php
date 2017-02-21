@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductsRequest extends FormRequest
 {
@@ -23,9 +24,9 @@ class ProductsRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->get('id');
+        $id = $this->route('id');
         return [
-            'code' => 'unique:products,code,'.$id
+            'code' => Rule::unique('products','code')->ignore($id)
         ];
     }
 }

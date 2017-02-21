@@ -23,9 +23,6 @@ class DiscountsRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->get('id');
-        return [
-            'code' => 'unique:product_discounts,product_id,'.$id
-        ];
+
     }
 }

@@ -51,7 +51,7 @@ class PurchaseOrdersController extends Controller
         $model = $this->service->find($id);
         $data = $this->service->meta();
         $total = $model->transactions->sum(function ($val){
-            return $val->qty * ($val->selling_price - $val->disc);
+            return abs($val->qty) * ($val->selling_price - $val->disc);
         });
         $data['id'] = $id;
         $data['model'] = $model;
@@ -85,7 +85,7 @@ class PurchaseOrdersController extends Controller
         if ($selling_price_customer = $product->product_price()
             ->where('customer_type_id',$request->customer_type_id)->first()) {
             $selling_price = $selling_price_customer->selling_price;
-            $purchase_price = $selling_price_customer->purchase_price_default;
+            $purchase_price = $selling_price_customer->purchase_price;
         }
 
         if (array_key_exists($request->product_id,$sessions)) {
@@ -118,7 +118,6 @@ class PurchaseOrdersController extends Controller
     }
 
     // edit PO
-
     public function viewPODetail($no) {
         $PO = $this->service->where(function($query) use ($no){
             $query->where('no',$no);
@@ -126,15 +125,16 @@ class PurchaseOrdersController extends Controller
 
         $transactions = $PO->transactions->map(function($val,$key){
             $disc = $val->disc ? $val->disc : 0;
+            $qty = abs($val->qty);
             return  [
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
                 'name'           => $val->product->name,
-                'qty'            => $val->qty,
+                'qty'            => $qty,
                 'disc'           => $disc,
                 'selling_price'  => $val->selling_price,
                 'purchase_price' => $val->purchase_price,
-                'subtotal'       => $val->qty * ($val->selling_price - $disc)
+                'subtotal'       => $qty * ($val->selling_price - $disc)
             ];
         });
 
@@ -151,7 +151,7 @@ class PurchaseOrdersController extends Controller
         if ($selling_price_customer = $product->product_price()
             ->where('customer_type_id',$request->customer_type_id)->first()) {
             $selling_price = $selling_price_customer->selling_price;
-            $purchase_price = $selling_price_customer->purchase_price_default;
+            $purchase_price = $selling_price_customer->purchase_price;
         }
 
         if (array_key_exists($request->product_id,$transactions)) {
@@ -179,8 +179,9 @@ class PurchaseOrdersController extends Controller
         $PO = $this->service->where(function($query) use ($no){
             $query->where('no',$no);
         });
-
-        $PO->transactions()->updateOrCreate(['product_id' => $product->id],$transactions[$product->id]);
+        $param = $transactions[$product->id];
+        $param['qty'] = $param['qty'] * -1;
+        $PO->transactions()->updateOrCreate(['product_id' => $product->id],$param);
 
         return array_values($transactions);
     }

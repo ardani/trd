@@ -32,7 +32,7 @@ class PurchaseOrder extends Model {
     public function getTotalAttribute() {
         $purchase = PurchaseOrder::find($this->attributes['id']);
         return $purchase->transactions->sum(function ($detail){
-            return ($detail['selling_price']-$detail['disc']) * $detail['qty'];
+            return ($detail['selling_price']-$detail['disc']) * abs($detail['qty']);
         });
     }
 }

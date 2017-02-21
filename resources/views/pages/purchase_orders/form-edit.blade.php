@@ -15,9 +15,9 @@
     <label class="form-control-label">Credit</label>
     <div class="input-group">
         <div class="input-group-addon">
-            <input type="checkbox" {{$model->payment_method_id ? 'checked' : ''}}  name="payment_method_id" value="2" id="check-1">
+            <input type="checkbox" {{$model->payment_method_id == 2 ? 'checked' : ''}}  name="payment_method_id" value="2" id="check-1">
         </div>
-        <input disabled type="text" id="paid-until-at" name="paid_until_at" value="{{$model->paid_until_at ? $model->paid_until_at->format('d/m/Y') : date('d/m/Y') }}" class="form-control daterange" placeholder="credit date">
+        <input {{$model->payment_method_id == 2 ? '' : 'disabled'}}  type="text" id="paid-until-at" name="paid_until_at" value="{{$model->paid_until_at ? $model->paid_until_at->format('d/m/Y') : date('d/m/Y') }}" class="form-control daterange" placeholder="credit date">
     </div>
 </fieldset>
 <fieldset class="form-group col-md-2 pull-md-right">
@@ -68,10 +68,10 @@
                     <input data-id="{{$transaction->product_id}}"
                            data-selling_price="{{$transaction->selling_price}}"
                            type="number" data-url="{{url('purchase_orders/actions/add')}}"
-                           value="{{$transaction->qty}}" class="form-control col-md-1 qty-input"/>
+                           value="{{abs($transaction->qty)}}" class="form-control col-md-1 qty-input"/>
                 </td>
                 <td class="text-right">{{$transaction->disc}}</td>
-                <td class="text-right subtotal" data-content="subtotal">{{number_format($transaction->qty*($transaction->selling_price - $transaction->disc))}}</td>
+                <td class="text-right subtotal" data-content="subtotal">{{number_format(abs($transaction->qty)*($transaction->selling_price - $transaction->disc))}}</td>
                 <td>
                     <a class="act-delete" data-url="{{url('purchase_orders/actions/delete')}}"
                        data-id="{{$transaction->product_id}}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>

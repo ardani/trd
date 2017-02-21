@@ -8,7 +8,7 @@ class Product extends Model {
     use SoftDeletes;
     protected $fillable = [
         'code','name', 'start_stock','min_stock','description','selling_price_default','supplier_id',
-        'purchase_price_default','category_id','unit_id'
+        'purchase_price_default','category_id','unit_id','can_sale'
     ];
 
     protected $appends = ['stock'];
@@ -38,7 +38,9 @@ class Product extends Model {
     }
 
     public function getStockAttribute() {
-        $stock = ProductStock::where('product_id',$this->attributes['id'])->sum('value');
-        return $this->attributes['stock'] = $this->attributes['start_stock'] + $stock;
+        $trans = Transaction::where('product_id',$this->attributes['id'])
+            ->select(\DB::raw('sum(qty + return_qty + return_complete) as stock'))
+            ->first();
+        return $this->attributes['stock'] = $this->attributes['start_stock'] + $trans->stock;
     }
 }

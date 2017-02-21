@@ -13,8 +13,6 @@ const { mix } = require('laravel-mix');
 mix.combine([
     'resources/assets/css/lib/datatables-net/datatables.min.css',
     'resources/assets/css/separate/vendor/datatables-net.min.css',
-    'resources/assets/css/lib/bootstrap-sweetalert/sweetalert.css',
-    'resources/assets/css/separate/vendor/sweet-alert-animations.min.css',
     'resources/assets/css/separate/vendor/lobipanel.css',
     'resources/assets/css/lib/jqueryui/jquery-ui.min.css',
     'resources/assets/css/separate/pages/widgets.min.css',
@@ -36,7 +34,6 @@ mix.combine([
     'resources/assets/js/lib/datatables-net/datatables.min.js',
     'resources/assets/js/lib/moment/moment-with-locales.min.js',
     'resources/assets/js/lib/daterangepicker/daterangepicker.js',
-    'resources/assets/js/lib/bootstrap-sweetalert/sweetalert.min.js',
     'resources/assets/js/lib/bootstrap-select/bootstrap-select.min.js',
     'resources/assets/js/lib/bootstrap-select/ajax-bootstrap-select.min.js',
     'resources/assets/js/lib/jquery.loadTemplate.min.js',
@@ -45,4 +42,7 @@ mix.combine([
     'resources/assets/js/app.js',
     'resources/assets/js/custom.js'
 ], 'public/js/main.js')
-.js('resources/assets/js/index.js','public/js/index.js');
+.js('resources/assets/js/index.js','public/js/index.js')
+.copy('resources/assets/js/purchaseOrders.js','public/js/purchaseOrders.js')
+.copy('resources/assets/js/orders.js','public/js/orders.js')
+.copy('resources/assets/js/productions.js','public/js/productions.js');

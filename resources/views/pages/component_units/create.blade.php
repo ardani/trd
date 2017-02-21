@@ -15,7 +15,7 @@
                 <form id="formValid" method="post" action="{{ url('units/components/'.$unit->id.'/create') }}">
                     @include('pages.component_units.form',['model' => ''])
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <a href="{{ url('units/components/'.$unit->id) }}" class="btn btn-default">Back</a>
+                    <a href="{{ url('units/components/'.$unit->id) }}" class="btn btn-default pull-right">Back</a>
                 </form>
             </div>
         </div>

@@ -3,9 +3,8 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 class Order extends Model {
-    protected $dates = [
-        'paid_until_at','arrive_at'
-    ];
+    protected $dates = ['paid_until_at','arrive_at'];
+    protected $appends = ['total'];
 
     protected $fillable = [
         'supplier_id','payment_method_id','cashier_id','cash','paid_until_at','arrive_at'
@@ -21,6 +20,17 @@ class Order extends Model {
 
     public function employee() {
         return $this->belongsTo(Employee::class,'cashier_id');
+    }
+
+    public function transactions() {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
+
+    public function getTotalAttribute() {
+        $orders = Order::find($this->attributes['id']);
+        return $orders->transactions->sum(function ($detail){
+            return ($detail['selling_price']-$detail['disc']) * $detail['qty'];
+        });
     }
 
 }

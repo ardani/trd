@@ -2,7 +2,6 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Production extends Model {
     protected $fillable = [
@@ -15,5 +14,9 @@ class Production extends Model {
 
     public function cashier() {
         return $this->belongsTo(Employee::class,'cashier_id');
+    }
+
+    public function transactions() {
+        return $this->morphMany(Transaction::class, 'transactionable');
     }
 }
