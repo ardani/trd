@@ -46,4 +46,5 @@ mix.combine([
 .copy('resources/assets/js/sale-orders.js','public/js/sale-orders.js')
 .copy('resources/assets/js/orders.js','public/js/orders.js')
 .copy('resources/assets/js/productions.js','public/js/productions.js')
+.copy('resources/assets/js/return-orders.js','public/js/return-orders.js')
 .copy('resources/assets/js/return-sales.js','public/js/return-sales.js');

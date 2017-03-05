@@ -165,7 +165,6 @@ class OrdersController extends Controller
         });
 
         $PO->transactions()->updateOrCreate(['product_id' => $product->id],$transactions[ $product->id ]);
-
         return array_values($transactions);
     }
 
@@ -177,5 +176,39 @@ class OrdersController extends Controller
 
         $PO->transactions()->where('product_id',$request->product_id)->delete();
         return array_values($this->viewPODetail($no));
+    }
+
+    public function load() {
+        if ($q = request()->input('q')) {
+            $where =  function($query) use ($q){
+                $query->whereRaw('(no like "%'.$q.'%")');
+            };
+            $sale = $this->service->filter($where,20);
+            return $sale->map(function($val,$key) {
+                return [
+                    'value' => $val->id,
+                    'text' => $val->no.' - '.$val->supplier->name,
+                    'data' => [
+                        'supplier' => $val->supplier->name,
+                    ]
+                ];
+            })->toArray();
+        }
+        return [];
+    }
+
+    public function detail() {
+        if ($q = request()->input('id')) {
+            $sale = $this->service->find($q);
+            return $sale->transactions->map(function($val){
+                return [
+                    'code' => $val->product->code,
+                    'name' => $val->product->name,
+                    'product_id' => $val->product_id,
+                    'qty' => abs($val->qty)
+                ];
+            })->toArray();
+        }
+        return [];
     }
 }

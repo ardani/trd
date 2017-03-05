@@ -2859,6 +2859,7 @@ $(document).ready(function(){
 });
 var sProduct = $('.select-product');
 var sPO = $('.select-no-po');
+var sOrder = $('.select-no-order');
 var sProductRaw = $('.select-product-raw');
 var sCustomer = $('.select-customer');
 var sSupplier = $('.select-supplier');
@@ -2956,11 +2957,30 @@ $(document).ready(function () {
         },
     });
 
+    sOrder.selectpicker({liveSearch: true})
+    .ajaxSelectPicker({
+        ajax: {
+            type: 'GET',
+            url: '/orders/ajaxs/load'
+        },
+        locale: {
+            emptyTitle: '-'
+        },
+    });
+
     sPO.on('changed.bs.select', function (e) {
         var customer = $(this).find(":selected").data('customer');
         $('#customer').val(customer);
         $.get($(this).data('url')+'?id='+$(this).val(), function( data ) {
             $('#table-sale-details').find('tbody').loadTemplate("#row-sale", data);
+        });
+    });
+
+    sOrder.on('changed.bs.select', function (e) {
+        var supplier = $(this).find(':selected').data('supplier');
+        $('#supplier').val(supplier);
+        $.get($(this).data('url')+'?id='+$(this).val(), function( data ) {
+            $('#table-order-details').find('tbody').loadTemplate("#row-orPreder", data);
         });
     });
 

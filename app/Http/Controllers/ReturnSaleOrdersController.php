@@ -17,7 +17,7 @@ class ReturnSaleOrdersController extends Controller
     private $service;
     private $product;
 
-    public function __construct(ReturnSaleOrderService $service,ProductService $product) {
+    public function __construct(ReturnSaleOrderService $service, ProductService $product) {
         $this->service  = $service;
         $this->product = $product;
     }
@@ -36,8 +36,7 @@ class ReturnSaleOrdersController extends Controller
 
     public function create() {
         $data                      = $this->service->meta();
-        $auto_number               = auto_number_sales();
-        $data['auto_number_sales'] = $auto_number;
+        $auto_number               = auto_number_return_sales();
         $data['transactions']      = session($auto_number);
 
         return view('pages.' . $this->page . '.create', $data);
@@ -139,7 +138,15 @@ class ReturnSaleOrdersController extends Controller
         return array_values($this->viewDetail($no));
     }
 
-    public function complete() {
-
+    public function complete(Request $request) {
+        $no = $request->no;
+        $data = $this->service->where(function ($query) use ($no) {
+            $query->where('no', $no);
+        });
+        $data->is_complete = 1;
+        $data->arrive_at = date('Y-m-d H:i:s');
+        $data->save();
+        $data->transactions()->update(['return_complete', 1]);
+        return array_values($this->viewDetail($no));
     }
 }

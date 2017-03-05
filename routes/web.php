@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('account_codes/ajaxs/load','AccountCodesController@load');
     Route::get('sale_orders/ajaxs/load','SaleOrdersController@load');
     Route::get('sale_orders/ajaxs/detail','SaleOrdersController@detail');
+    Route::get('orders/ajaxs/load','OrdersController@load');
+    Route::get('orders/ajaxs/detail','OrdersController@detail');
     // temp create
     Route::post('sale_orders/actions/addTemp', [
             'middleware' => ['permission:create.sale_orders'],
@@ -140,6 +142,27 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('orders/actions/view/{no}', [
         'middleware' => ['permission:create.orders'],
         'uses'       => 'OrdersController@viewPODetail'
+    ]);
+
+    Route::post('return_orders/actions/addTemp', [
+        'middleware' => ['permission:create.return_orders'],
+        'uses'       => 'ReturnOrdersController@addTempDetail'
+    ]);
+    Route::post('return_orders/actions/deleteTemp', [
+        'middleware' => ['permission:create.return_orders'],
+        'uses'       => 'ReturnOrdersController@deleteTempDetail'
+    ]);
+    Route::post('return_orders/actions/add', [
+        'middleware' => ['permission:create.return_orders'],
+        'uses'       => 'ReturnOrdersController@addDetail'
+    ]);
+    Route::post('return_orders/actions/delete', [
+        'middleware' => ['permission:create.return_orders'],
+        'uses'       => 'ReturnOrdersController@deleteDetail'
+    ]);
+    Route::post('return_orders/actions/complete/:id', [
+        'middleware' => ['permission:update.return_orders'],
+        'uses'       => 'ReturnOrdersController@complete'
     ]);
     // production
     Route::post('productions/actions/add', [
