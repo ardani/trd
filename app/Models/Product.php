@@ -39,7 +39,8 @@ class Product extends Model {
 
     public function getStockAttribute() {
         $trans = Transaction::where('product_id',$this->attributes['id'])
-            ->select(\DB::raw('sum(qty + return_qty + return_complete) as stock'))
+            ->select(\DB::raw('sum(qty) as stock'))
+            ->where('return_complete',0)
             ->first();
         return $this->attributes['stock'] = $this->attributes['start_stock'] + $trans->stock;
     }

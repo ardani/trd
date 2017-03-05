@@ -9,18 +9,18 @@
 namespace App\Services;
 
 use App\Models\Production;
-use App\Models\PurchaseOrder;
+use App\Models\SaleOrder;
 use Carbon\Carbon;
 use Entrust;
 use Datatables;
 
-class PurchaseOrderService extends Service {
+class SaleOrderService extends Service {
 
     protected $model;
-    protected $name = 'purchase_orders';
+    protected $name = 'sale_orders';
     private $production;
 
-    public function __construct(PurchaseOrder $model, Production $production) {
+    public function __construct(SaleOrder $model, Production $production) {
         $this->model = $model;
         $this->production = $production;
     }
@@ -32,10 +32,10 @@ class PurchaseOrderService extends Service {
                 return $model->customer->name;
             })
             ->addColumn('payment_info',function ($model) {
-                return view('pages.purchase_orders.info',compact('model'));
+                return view('pages.sale_orders.info',compact('model'));
             })
             ->addColumn('state',function ($model) {
-                return $model->purchase_order_state->state->name;
+                return $model->sale_order_state->state->name;
             })
             ->editColumn('cash',function ($model) {
                 return number_format($model->cash);
@@ -69,7 +69,7 @@ class PurchaseOrderService extends Service {
         $model->disc = request('disc',0);
         $model->save();
 
-        $model->purchase_order_state()->firstOrCreate(['state_id' => 1]);
+        $model->sale_order_state()->firstOrCreate(['state_id' => 1]);
         $sessions = session($data['no']);
         $model->transactions()->delete();
         foreach ($sessions as $session) {

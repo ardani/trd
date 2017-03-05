@@ -5,19 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\State;
 use App\Services\ProductionService;
 use App\Services\ProductService;
-use App\Services\PurchaseOrderService;
 use Illuminate\Http\Request;
 
 class ProductionsController extends Controller
 {
     private $page = 'productions';
     private $service;
-    private $po;
     private $product;
 
-    public function __construct(ProductionService $service, PurchaseOrderService $po, ProductService $product) {
+    public function __construct(ProductionService $service, ProductService $product) {
         $this->service = $service;
-        $this->po = $po;
         $this->product = $product;
     }
 
@@ -94,24 +91,37 @@ class ProductionsController extends Controller
             ];
         }
 
-        $PR = $this->service->where(function($query) use ($no){
+        $pr = $this->service->where(function($query) use ($no){
             $query->where('no',$no);
         });
+
         $param = $transactions[$product->id];
         $param['qty'] = $param['qty'] * -1;
 
-        $PR->transactions()->updateOrCreate(['product_id' => $product->id],$param);
-
+        $pr->transactions()->updateOrCreate(['product_id' => $product->id],$param);
         return array_values($transactions);
     }
 
     public function deletePRDetail(Request $request) {
         $no = $request->no;
-        $PO = $this->service->where(function($query) use ($no) {
+        $pr = $this->service->where(function($query) use ($no) {
             $query->where('no',$no);
         });
 
-        $PO->transactions()->where('product_id',$request->product_id)->delete();
+        $pr->transactions()->where('product_id',$request->product_id)->delete();
         return array_values($this->viewPRDetail($no));
+    }
+
+    public function finished($id) {
+        if ($production =  $this->service->find($id)) {
+            $production->sale_order->sale_order_state()
+                ->firstOrCreate(['state_id' => 3]);
+            return redirect()->back()->with('message','Update Status Success');
+        }
+        return redirect()->back()->withErrors('Update Status Failed');
+    }
+
+    public function spk($id) {
+
     }
 }

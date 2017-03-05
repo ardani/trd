@@ -95,8 +95,24 @@ class ProductsController extends Controller
         $q = request()->input('q');
         if ($q) {
             $where =  function($query) use ($q){
-                $query->where('name','like','%'.$q.'%')
-                    ->orWhere('code','like','%'.$q.'%');
+                $query->whereRaw('can_sale=1 AND (name like "%'.$q.'%" OR code like "%'.$q.'%")');
+            };
+            $product = $this->service->filter($where,20);
+            return $product->map(function($val,$key) {
+                return [
+                    'value' => $val->id,
+                    'text' => $val->code.' - '.$val->name
+                ];
+            })->toArray();
+        }
+        return [];
+    }
+
+    public function loadRaw() {
+        $q = request()->input('q');
+        if ($q) {
+            $where =  function($query) use ($q){
+                $query->whereRaw('can_sale=0 AND (name like "%'.$q.'%" OR code like "%'.$q.'%")');
             };
             $product = $this->service->filter($where,20);
             return $product->map(function($val,$key) {

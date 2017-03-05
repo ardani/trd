@@ -2858,6 +2858,8 @@ $(document).ready(function(){
 	});
 });
 var sProduct = $('.select-product');
+var sPO = $('.select-no-po');
+var sProductRaw = $('.select-product-raw');
 var sCustomer = $('.select-customer');
 var sSupplier = $('.select-supplier');
 var sAccountCode = $('.select-account-code');
@@ -2943,6 +2945,36 @@ $(document).ready(function () {
         },
     });
 
+    sPO.selectpicker({liveSearch: true})
+    .ajaxSelectPicker({
+        ajax: {
+            type: 'GET',
+            url: '/sale_orders/ajaxs/load'
+        },
+        locale: {
+            emptyTitle: '-'
+        },
+    });
+
+    sPO.on('changed.bs.select', function (e) {
+        var customer = $(this).find(":selected").data('customer');
+        $('#customer').val(customer);
+        $.get($(this).data('url')+'?id='+$(this).val(), function( data ) {
+            $('#table-sale-details').find('tbody').loadTemplate("#row-sale", data);
+        });
+    });
+
+    sProductRaw.selectpicker({liveSearch: true})
+    .ajaxSelectPicker({
+        ajax: {
+            type: 'GET',
+            url: '/products/ajaxs/load_raw',
+        },
+        locale: {
+            emptyTitle: '-'
+        },
+    });
+
     sCustomer.selectpicker({liveSearch: true})
     .ajaxSelectPicker({
         ajax: {
@@ -2981,6 +3013,11 @@ $(document).ready(function () {
         $('#paid-until-at').prop('disabled', !isDisbaled);
     });
 
+    $(document).on('click','#set-finish',function (e) {
+        if (!confirm('Are you sure change status finish for this production?')) {
+            e.preventDefault()
+        }
+    })
     // menus
     var menus = [
         {data: 'name'},
@@ -3146,8 +3183,8 @@ $(document).ready(function () {
     buildDatatables($('#table-orders'), orders);
 
     var productions = [
-        {data: 'purchase_order_code', orderable: false},
-        {data: 'state'},
+        {data: 'sale_order_code', orderable: false},
+        {data: 'state',orderable: false,searchable: false},
         {data: 'no'},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
@@ -3175,5 +3212,24 @@ $(document).ready(function () {
         {data: 'action', searchable: false, orderable: false}
     ];
     buildDatatables($('#table-correction-stocks'), correctionStocks);
+
+    var returnSaleOrders = [
+        {data: 'no',searchable: false, orderable: false},
+        {data: 'sale_order_no',searchable: false, orderable: false},
+        {data: 'note', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false}
+    ];
+    buildDatatables($('#table-return-sale-order'), returnSaleOrders);
+
+    var returnOrders = [
+        {data: 'no',searchable: false, orderable: false},
+        {data: 'order_no',searchable: false, orderable: false},
+        {data: 'note', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false}
+    ];
+
+    buildDatatables($('#table-return-order'), returnOrders);
 
 });

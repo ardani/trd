@@ -37,7 +37,7 @@ function auto_number_sales($reserve = 0) {
     $len   = 5;
     $month = date('n');
     $year  = date('Y');
-    $last  = DB::table('purchase_orders')
+    $last  = DB::table('sale_orders')
         ->whereMonth('created_at', $month)
         ->whereYear('created_at', $year)
         ->orderBy('no', 'DESC')
@@ -123,6 +123,110 @@ function auto_number_orders($reserve = 0) {
 
         if (!$exist) {
             DB::table('nota')->insert(['no' => $new, 'ip' => getIP(), 'type' => 2]);
+        }
+    }
+
+    return $new;
+}
+
+function auto_number_return_orders($reserve = 0) {
+    $nota = DB::table('nota')->where('ip', getIP())
+        ->where('type', 4)
+        ->first();
+
+    if ($nota) {
+        return $nota->no;
+    }
+    $len   = 5;
+    $month = date('n');
+    $year  = date('Y');
+    $last  = DB::table('return_orders')
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->orderBy('no', 'DESC')
+        ->first(['no']);
+
+    if ($last) {
+        $lasts = explode('/', $last->no);
+        $num   = (int) $lasts[0];
+        $num   = $reserve ? $reserve : $num + 1;
+    }
+    else {
+        $num = $reserve ? $reserve : 1;
+    }
+
+    $num_format = str_repeat('0', $len - strlen($num)) . $num;
+    $new        = sprintf('%s/RO/MV/%s/%s', $num_format, romawi($month), $year);
+    $exist      = DB::table('nota')->where('no', $new)
+        ->where('ip', '!=', getIP())
+        ->where('type', 4)
+        ->count();
+
+    if ($exist) {
+        $num++;
+
+        return auto_number_return_orders($num);
+    }
+    else {
+        $exist = DB::table('nota')->where('no', $new)
+            ->where('ip', getIP())
+            ->where('type', 4)
+            ->count();
+
+        if (!$exist) {
+            DB::table('nota')->insert(['no' => $new, 'ip' => getIP(), 'type' => 4]);
+        }
+    }
+
+    return $new;
+}
+
+function auto_number_return_sales($reserve = 0) {
+    $nota = DB::table('nota')->where('ip', getIP())
+        ->where('type', 3)
+        ->first();
+
+    if ($nota) {
+        return $nota->no;
+    }
+    $len   = 5;
+    $month = date('n');
+    $year  = date('Y');
+    $last  = DB::table('return_sale_orders')
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->orderBy('no', 'DESC')
+        ->first(['no']);
+
+    if ($last) {
+        $lasts = explode('/', $last->no);
+        $num   = (int) $lasts[0];
+        $num   = $reserve ? $reserve : $num + 1;
+    }
+    else {
+        $num = $reserve ? $reserve : 1;
+    }
+
+    $num_format = str_repeat('0', $len - strlen($num)) . $num;
+    $new        = sprintf('%s/RS/MV/%s/%s', $num_format, romawi($month), $year);
+    $exist      = DB::table('nota')->where('no', $new)
+        ->where('ip', '!=', getIP())
+        ->where('type', 3)
+        ->count();
+
+    if ($exist) {
+        $num++;
+
+        return auto_number_return_sales($num);
+    }
+    else {
+        $exist = DB::table('nota')->where('no', $new)
+            ->where('ip', getIP())
+            ->where('type', 3)
+            ->count();
+
+        if (!$exist) {
+            DB::table('nota')->insert(['no' => $new, 'ip' => getIP(), 'type' => 3]);
         }
     }
 

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\PurchaseOrder;
+use App\Models\SaleOrder;
 use App\Observers\PurchaseOrderObserver;
+use App\Observers\SaleOrderObserver;
 use Illuminate\Support\ServiceProvider;
 use View;
 
@@ -21,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('menus',$menus->buildSideMenu());
         });
         // automatically create production after purchase order saved
-        PurchaseOrder::observe(PurchaseOrderObserver::class);
+        SaleOrder::observe(SaleOrderObserver::class);
     }
 
     /**

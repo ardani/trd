@@ -7,13 +7,13 @@
 </fieldset>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">No PO</label>
-    <input type="text" readonly class="form-control" value="{{$model->purchase_order->no}}">
+    <input type="text" readonly class="form-control" value="{{$model->sale_order->no}}">
 </fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Status</label>
     <select name="state_id" class="form-control">
         @foreach($states as $state)
-            @if($model->purchase_order->purchase_order_state->state_id == $state->id)
+            @if($model->sale_order->sale_order_state->state_id == $state->id)
                 <option selected value="{{$state->id}}">{{$state->name}}</option>
             @else
                 <option value="{{$state->id}}">{{$state->name}}</option>
@@ -40,7 +40,7 @@
         </thead>
         <tbody>
         <tr>
-            @foreach($model->purchase_order->transactions as $transaction)
+            @foreach($model->sale_order->transactions as $transaction)
                 <tr>
                     <td>{{$transaction->product->code}}</td>
                     <td>{{$transaction->product->name}}</td>
@@ -54,7 +54,7 @@
 <div class="clearfix"></div>
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
-    <select id="product_id" class="form-control select-product" data-live-search="true"></select>
+    <select id="product_id" class="form-control select-product-raw" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-2">
     <div class="input-group">

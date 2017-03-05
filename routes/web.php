@@ -63,36 +63,57 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('suppliers/ajaxs/load','SuppliersController@load');
     Route::get('products/units/{id}','ProductsController@loadUnit');
     Route::get('products/ajaxs/load','ProductsController@load');
+    Route::get('products/ajaxs/load_raw','ProductsController@loadRaw');
     Route::get('account_codes/ajaxs/load','AccountCodesController@load');
-
+    Route::get('sale_orders/ajaxs/load','SaleOrdersController@load');
+    Route::get('sale_orders/ajaxs/detail','SaleOrdersController@detail');
     // temp create
-    Route::post('purchase_orders/actions/addTemp', [
-            'middleware' => ['permission:create.purchase_orders'],
-            'uses'       => 'PurchaseOrdersController@addTempPODetail'
+    Route::post('sale_orders/actions/addTemp', [
+            'middleware' => ['permission:create.sale_orders'],
+            'uses'       => 'SaleOrdersController@addTempPODetail'
     ]);
-    Route::post('purchase_orders/actions/deleteTemp', [
-        'middleware' => ['permission:create.purchase_orders'],
-        'uses'       => 'PurchaseOrdersController@deleteTempPODetail'
+    Route::post('sale_orders/actions/deleteTemp', [
+        'middleware' => ['permission:create.sale_orders'],
+        'uses'       => 'SaleOrdersController@deleteTempPODetail'
     ]);
-    Route::get('purchase_orders/actions/viewTemp/{no}', [
-        'middleware' => ['permission:create.purchase_orders'],
-        'uses'       => 'PurchaseOrdersController@viewTempPODetail'
+    Route::get('sale_orders/actions/viewTemp/{no}', [
+        'middleware' => ['permission:create.sale_orders'],
+        'uses'       => 'SaleOrdersController@viewTempPODetail'
     ]);
-
-    // edit PO
-    Route::post('purchase_orders/actions/add', [
-    'middleware' => ['permission:create.purchase_orders'],
-            'uses'       => 'PurchaseOrdersController@addPODetail'
+    // edit Sale Order
+    Route::post('sale_orders/actions/add', [
+    'middleware' => ['permission:create.sale_orders'],
+            'uses'       => 'SaleOrdersController@addPODetail'
     ]);
-    Route::post('purchase_orders/actions/delete', [
-        'middleware' => ['permission:create.purchase_orders'],
-        'uses'       => 'PurchaseOrdersController@deletePODetail'
+    Route::post('sale_orders/actions/delete', [
+        'middleware' => ['permission:create.sale_orders'],
+        'uses'       => 'SaleOrdersController@deletePODetail'
     ]);
-    Route::get('purchase_orders/actions/view/{no}', [
-        'middleware' => ['permission:create.purchase_orders'],
-        'uses'       => 'PurchaseOrdersController@viewPODetail'
+    Route::get('sale_orders/actions/view/{no}', [
+        'middleware' => ['permission:create.sale_orders'],
+        'uses'       => 'SaleOrdersController@viewPODetail'
     ]);
-
+    // return sales
+    Route::post('return_sale_orders/actions/addTemp', [
+        'middleware' => ['permission:create.return_sale_orders'],
+        'uses'       => 'ReturnSaleOrdersController@addTempDetail'
+    ]);
+    Route::post('return_sale_orders/actions/deleteTemp', [
+        'middleware' => ['permission:create.return_sale_orders'],
+        'uses'       => 'ReturnSaleOrdersController@deleteTempDetail'
+    ]);
+    Route::post('return_sale_orders/actions/add', [
+        'middleware' => ['permission:create.return_sale_orders'],
+        'uses'       => 'ReturnSaleOrdersController@addDetail'
+    ]);
+    Route::post('return_sale_orders/actions/delete', [
+        'middleware' => ['permission:create.return_sale_orders'],
+        'uses'       => 'ReturnSaleOrdersController@deleteDetail'
+    ]);
+    Route::post('return_sale_orders/actions/complete/:id', [
+        'middleware' => ['permission:update.return_sale_orders'],
+        'uses'       => 'ReturnSaleOrdersController@complete'
+    ]);
     // orders
     // temp create
     Route::post('orders/actions/addTemp', [
@@ -107,7 +128,6 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:create.orders'],
         'uses'       => 'OrdersController@viewTempPODetail'
     ]);
-
     // edit Orders
     Route::post('orders/actions/add', [
         'middleware' => ['permission:create.orders'],
@@ -121,7 +141,6 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:create.orders'],
         'uses'       => 'OrdersController@viewPODetail'
     ]);
-
     // production
     Route::post('productions/actions/add', [
         'middleware' => ['permission:create.productions'],
@@ -131,9 +150,13 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:create.productions'],
         'uses'       => 'ProductionsController@deletePRDetail'
     ]);
-    Route::get('productions/actions/view/{no}', [
+    Route::get('productions/actions/finish/{id}', [
+        'middleware' => ['permission:edit.productions'],
+        'uses'       => 'ProductionsController@finished'
+    ]);
+    Route::get('productions/actions/spk/{id}', [
         'middleware' => ['permission:create.productions'],
-        'uses'       => 'ProductionsController@viewPRDetail'
+        'uses'       => 'ProductionsController@spk'
     ]);
 
     Route::get('products/prices/{product_id}', [
@@ -193,8 +216,4 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:edit.roles'],
         'uses'       => 'RolesController@AttachPermission'
     ]);
-});
-
-Route::get('debug', function () {
-
 });

@@ -58,7 +58,6 @@ $(document).ready(function () {
     $('#pay-btn').click(function (e) {
         var total = parseInt(numeral($('#total').text()).value());
         var cash = parseInt($('#cash').val());
-        //$('#charge').text(numeral(cash - total).format('0,0'));
     });
 
     tOrderDetails.on('keypress', '.qty-input', function (e) {

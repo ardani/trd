@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
-class PurchaseOrder extends Model {
+class SaleOrder extends Model {
     protected $dates = ['paid_until_at'];
     protected $appends = ['total'];
     protected $fillable = [
@@ -25,12 +25,12 @@ class PurchaseOrder extends Model {
         return $this->morphMany(Transaction::class, 'transactionable');
     }
 
-    public function purchase_order_state() {
-        return $this->hasOne(PurchaseOrderState::class)->orderBy('created_at','desc');
+    public function sale_order_state() {
+        return $this->hasOne(SaleOrderState::class)->orderBy('created_at','desc');
     }
 
     public function getTotalAttribute() {
-        $purchase = PurchaseOrder::find($this->attributes['id']);
+        $purchase = SaleOrder::find($this->attributes['id']);
         return $purchase->transactions->sum(function ($detail){
             return ($detail['selling_price']-$detail['disc']) * abs($detail['qty']);
         });

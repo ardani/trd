@@ -11,6 +11,6 @@ class Customer extends Model {
     ];
 
     public function customer_type() {
-        return $this->hasOne(CustomerType::class);
+        return $this->belongsTo(CustomerType::class);
     }
 }

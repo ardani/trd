@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('#save-btn').click(function (e) {
         var qty = $('#qty');
-        if (!sProduct.val()) {
+        if (!sProductRaw.val()) {
             alert('product belum dipilih');
             return false;
         }
@@ -19,7 +19,7 @@ $(document).ready(function () {
             type: 'POST',
             url: $(this).data('url'),
             data: {
-                product_id: sProduct.val(),
+                product_id: sProductRaw.val(),
                 qty: qty.val(),
                 _token: Laravel.csrfToken,
                 no: $('#no-production').val()
@@ -50,7 +50,6 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     tProductionDetails.find('tbody').loadTemplate("#row-production", data);
-                    calculateTotal(tProductionDetails);
                 }
             }).fail(function () {
                 alert('Add Production Product Error. Try Again Later');

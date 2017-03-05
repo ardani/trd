@@ -3,7 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 class ComponentUnit extends Model {
-    protected $primaryKey = 'code';
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $fillable = [
         'code','unit_id','name'

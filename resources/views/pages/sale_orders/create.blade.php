@@ -19,16 +19,16 @@
                 </div>
             </div>
             <div class="box-typical box-typical-padding">
-                <form id="form-po" data-url="{{ url($path.'/create') }}" onsubmit="return false">
+                <form id="form-sales" data-url="{{ url($path.'/create') }}" onsubmit="return false">
                     <div class="row">
                         @include('pages.'.$path.'.form-create',['model' => ''])
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="/purchase_orders/create" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> New</a>
-                            <button type="button" id="save-pruchase-btn" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                            <a href="/sale_orders/create" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> New</a>
+                            <button type="button" id="save-sale-btn" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
                             <a href="javascript:void(0)" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Print</a>
-                            <a href="/purchase_orders" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Cancel</a>
+                            <a href="/sale_orders" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -38,5 +38,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{asset('js/purchaseOrders.js')}}"></script>
+    <script src="{{asset('js/saleOrders.js')}}"></script>
 @endsection

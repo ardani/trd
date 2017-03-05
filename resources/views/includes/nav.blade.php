@@ -9,7 +9,7 @@
             </a>
         </li>
         @foreach($menus as $menu)
-            <li class="{{$menu['parent']->class}} {{$menu['class'] ? 'opened' : ''}}">
+            <li class="{{$menu['parent']->class}} {{in_array(request()->path(),$menu['groups']) ? 'opened' : ''}}">
             <span>
                 <i class="{{$menu['parent']->icon}}"></i>
                 <span class="lbl">{{$menu['parent']->name}}</span>

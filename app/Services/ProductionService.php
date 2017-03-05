@@ -9,7 +9,7 @@
 namespace App\Services;
 
 use App\Models\Production;
-use App\Models\PurchaseOrder;
+use App\Models\SaleOrder;
 use Entrust;
 use Datatables;
 
@@ -17,11 +17,11 @@ class ProductionService extends Service {
 
     protected $model;
     protected $name = 'productions';
-    private $purchase;
+    private $sale;
 
-    public function __construct(Production $model, PurchaseOrder $purchase) {
+    public function __construct(Production $model, SaleOrder $sale) {
         $this->model = $model;
-        $this->purchase = $purchase;
+        $this->sale = $sale;
     }
 
     public function datatables($param = array()) {
@@ -30,10 +30,10 @@ class ProductionService extends Service {
                 return $model->created_at->format('d/m/Y');
             })
             ->addColumn('state',function ($model) {
-                return $model->purchase_order->purchase_order_state->state->name;
+                return $model->sale_order->sale_order_state->state->name;
             })
-            ->addColumn('purchase_order_code',function($model){
-                return $model->purchase_order->no;
+            ->addColumn('sale_order_code',function($model){
+                return $model->sale_order->no;
             })
             ->addColumn('action','actions.'.$this->name)
             ->make(true);
@@ -43,9 +43,8 @@ class ProductionService extends Service {
         $model = $this->model->find($id);
         $model->cashier_id = \Auth::id();
         $model->note = $data['note'];
-        $purchase = $this->purchase->find($model->purchase_order_id);
-        $purchase->purchase_order_state()->firstOrCreate(['state_id' => $data['state_id']]);
-        $model->save();
+        $purchase = $this->sale->find($model->sale_order_id);
+        $purchase->sale_order_state()->firstOrCreate(['state_id' => $data['state_id']]);
         return $model->save();
     }
 }

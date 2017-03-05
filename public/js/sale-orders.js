@@ -2,7 +2,7 @@
  * Created by ardani on 2/10/17.
  */
 $(document).ready(function () {
-    var tPurchaseDetails = $('#table-purchase-details');
+    var tSaleDetails = $('#table-sale-details');
 
     $('#save-btn').click(function (e) {
         var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
@@ -31,10 +31,10 @@ $(document).ready(function () {
                 no: $('#no-po').val()
             },
             success: function (data) {
-                tPurchaseDetails.find('tbody').loadTemplate("#row-purchase", data);
+                tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
                 sProduct.selectpicker('refresh');
                 qty.val('');
-                calculateTotal(tPurchaseDetails);
+                calculateTotal(tSaleDetails);
             }
         }).fail(function () {
             alert('Add Purchase Product Error. Try Again Later');
@@ -48,7 +48,7 @@ $(document).ready(function () {
     });
 
     $('#calculate-btn').click(function (e) {
-        calculateTotal(tPurchaseDetails);
+        calculateTotal(tSaleDetails);
     });
 
     $('#pay-btn').click(function (e) {
@@ -73,8 +73,8 @@ $(document).ready(function () {
                     no: $('#no-po').val()
                 },
                 success: function (data) {
-                    tPurchaseDetails.find('tbody').loadTemplate("#row-purchase", data);
-                    calculateTotal(tPurchaseDetails);
+                    tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
+                    calculateTotal(tSaleDetails);
                 }
             }).fail(function () {
                 alert('Update Purchase Product Error. Try Again Later');
@@ -89,19 +89,19 @@ $(document).ready(function () {
             url: $(this).data('url'),
             data: {no: $('#no-po').val(), product_id: product_id, _token: Laravel.csrfToken},
             success: function (data) {
-                tPurchaseDetails.find('tbody').loadTemplate("#row-purchase", data);
-                calculateTotal(tPurchaseDetails);
+                tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
+                calculateTotal(tSaleDetails);
             }
         }).fail(function () {
             alert('delete row failed');
         })
     });
 
-    $('#save-pruchase-btn').click(function (e) {
+    $('#save-sale-btn').click(function (e) {
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
-            data: $('#form-po').serialize(),
+            data: $('#form-sales').serialize(),
             headers: {
                 'X-CSRF-Token': Laravel.csrfToken
             },
