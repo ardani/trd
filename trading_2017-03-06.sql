@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.42)
 # Database: trading
-# Generation Time: 2017-02-19 12:02:37 +0000
+# Generation Time: 2017-03-06 01:57:02 +0000
 # ************************************************************
 
 
@@ -39,7 +39,63 @@ LOCK TABLES `account_codes` WRITE;
 
 INSERT INTO `account_codes` (`id`, `name`, `parent`, `created_at`, `updated_at`)
 VALUES
-	(2000,'penghasilan',0,'2017-01-28 06:13:51','2017-01-28 06:13:51');
+	(1110,'Kas ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1120,'Kas Kecil',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1130,'Persediaan Bahan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1140,'Piutang Usaha ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1150,'Perlengkapan',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1160,'Kasbon Karyawan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1210,'Mesin ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1220,'Akumulasi Penyusutan Mesin',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1230,'Peralatan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1240,'Akumulasi Penyusutan Peralatan',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1250,'Kendaraan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1260,'Akumulasi Penyusutan Kendaraan',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1270,'Gedung ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(1280,'Akumulasi Penyusutan gedung',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(2110,'Modal Pemilik ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(3110,'Hutang Usaha ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(3120,'Hutang Gaji ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(3130,'Hutang Pajak',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(3140,'Hutang Bunga ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(3150,'Hutang Bank',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(4110,'Pendapatan digital printing ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(4120,'Pendapatan sewa ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(4130,'Pendapatan Produksi outdoor',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(4140,'Pendapatan diskon pembelian',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5110,'Harga Pokok Penjualan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5111,'Pembelian Bahan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5112,'Pembelian Tinta ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5113,'Pembelian ATK ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5114,'Biaya Kirim ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5115,'Biaya Outsourching',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5120,'Beban Penjualan',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5121,'Biaya  Listrik ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5122,'Biaya Telepon ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5123,'Biaya Transportasi dann Parkir  ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5124,'Biaya Internet ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5125,'Biaya Gaji ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5126,'Biaya Lembur',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5127,'Biaya THR ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5128,'Biaya Insentif',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(5129,'Biaya BPJS Kesehatan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51210,'Biaya BPJS Ketenagakerjaan',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51211,'Biaya perawatan Gedung ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51212,'Biaya Perawatan Kendaraan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51213,'Biaya penyusutan peralatan Kantor ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51214,'Biaya Penyusutan Kendaraan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51215,'Biaya Penyusutan Gedung ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51216,'Biaya Penyusutan Barang Inventaris ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51217,'Biaya Promosi ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51218,'Biaya PPN',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51219,'Biaya PPH',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51220,'Biaya Pajak',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51221,'Biaya Sumbangan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51222,'Biaya Non Operasional ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51223,'Biaya Sumbangan ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51224,'Biaya Tak Terduga ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51225,'Biaya Konsumsi Meeting ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40'),
+	(51226,'Biaya RTK ',0,'2017-02-23 20:58:40','2017-02-23 20:58:40');
 
 /*!40000 ALTER TABLE `account_codes` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -86,15 +142,6 @@ CREATE TABLE `cash_flows` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-LOCK TABLES `cash_flows` WRITE;
-/*!40000 ALTER TABLE `cash_flows` DISABLE KEYS */;
-
-INSERT INTO `cash_flows` (`id`, `account_code_id`, `value`, `note`, `referenceable_id`, `referenceable_type`, `created_at`, `updated_at`)
-VALUES
-	(1,2000,1500,'test',NULL,NULL,'2017-02-08 07:30:45','2017-02-08 07:33:48');
-
-/*!40000 ALTER TABLE `cash_flows` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table categories
@@ -116,7 +163,8 @@ LOCK TABLES `categories` WRITE;
 
 INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`)
 VALUES
-	(1,'Bahan Baku','2017-01-29 11:55:01','2017-01-29 11:55:05',NULL);
+	(1,'Bahan Baku','2017-01-29 11:55:01','2017-01-29 11:55:05',NULL),
+	(2,'Bahan Jadi','2017-02-26 14:08:17','2017-02-26 14:08:17',NULL);
 
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -128,22 +176,26 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `component_units`;
 
 CREATE TABLE `component_units` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `code` char(10) NOT NULL DEFAULT '',
-  `unit_id` int(11) DEFAULT NULL,
+  `unit_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(200) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`code`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `component_units` WRITE;
 /*!40000 ALTER TABLE `component_units` DISABLE KEYS */;
 
-INSERT INTO `component_units` (`code`, `unit_id`, `name`, `created_at`, `updated_at`)
+INSERT INTO `component_units` (`id`, `code`, `unit_id`, `name`, `created_at`, `updated_at`)
 VALUES
-	('L',1,'Lebar (cm)','2017-01-28 07:36:48','2017-01-28 07:36:48'),
-	('P',1,'Panjang (cm)','2017-01-28 07:36:48','2017-01-28 07:36:48'),
-	('T',2,'Tinggi (cm)','2017-01-28 07:36:48','2017-01-28 07:40:25');
+	(1,'A',3,'item','2017-02-26 14:10:36','2017-02-26 14:10:36'),
+	(2,'L',1,'Lebar (cm)','2017-01-28 07:36:48','2017-01-28 07:36:48'),
+	(3,'P',1,'Panjang (cm)','2017-01-28 07:36:48','2017-01-28 07:36:48'),
+	(4,'T',2,'Tinggi (cm)','2017-01-28 07:36:48','2017-01-28 07:40:25'),
+	(5,'P',2,'Panjang (cm)','2017-02-26 14:15:02','2017-02-26 14:15:02'),
+	(6,'L',2,'lebar (cm)','2017-02-26 14:15:16','2017-02-26 14:16:05');
 
 /*!40000 ALTER TABLE `component_units` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -320,9 +372,9 @@ VALUES
 	(13,'Account Code','account_codes',NULL,12,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(14,'Cash Flow','cash_flows',NULL,12,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(15,'Transaction','transaction','font-icon font-icon-revers',0,'blue with-sub',NULL,3,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
-	(16,'Purchase Order','purchase_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
-	(17,'Order','orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
-	(18,'Return PO','return_purchase_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
+	(16,'Sale Order','sale_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
+	(17,'Purchase Order','orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
+	(18,'Return Sale Order','return_sale_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(19,'Return Order','return_orders',NULL,15,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(20,'Customer','customers',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
 	(21,'Customer Type','customer_types',NULL,1,NULL,NULL,NULL,'2017-01-21 21:56:46','2017-01-21 21:56:46'),
@@ -384,9 +436,11 @@ LOCK TABLES `nota` WRITE;
 
 INSERT INTO `nota` (`no`, `ip`, `type`)
 VALUES
+	('00001/RO/MV/III/2017','::1',4),
 	('00002/OR/MV/II/2017','::1',2),
 	('00002/PO/MV/II/2017','192.168.1.1',NULL),
-	('00009/PO/MV/II/2017','::1',1);
+	('00002/PO/MV/III/2017','::1',1),
+	('00002/RS/MV/III/2017','::1',3);
 
 /*!40000 ALTER TABLE `nota` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -671,18 +725,18 @@ VALUES
 	(46,'edit.cash_flows','Edit Cash flows','Can Edit Cash flows','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(47,'delete.cash_flows','Delete Cash flows','Can Delete Cash flows','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(48,'view.cash_flows','View Cash flows','View Cash flows','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(49,'create.purchase_orders','Create Purchase Orders','Can Create Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(50,'edit.purchase_orders','Edit Purchase Orders','Can Edit Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(51,'delete.purchase_orders','Delete Purchase Orders','Can Delete Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(52,'view.purchase_orders','View Purchase Orders','View Purchase Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(49,'create.sale_orders','Create Sale Orders','Can Create Sale Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(50,'edit.sale_orders','Edit Sale Orders','Can Edit Sale Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(51,'delete.sale_orders','Delete Sale Orders','Can Delete Sale Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(52,'view.sale_orders','View Sale Orders','View Sale Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(53,'create.orders','Create Orders','Can Create Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(54,'edit.orders','Edit Orders','Can Edit Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(55,'delete.orders','Delete Orders','Can Delete Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(56,'view.orders','View Orders','View Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(57,'create.return_purchase_orders','Create Return Sales','Can Create Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(58,'edit.return_purchase_orders','Edit Return Sales','Can Edit Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(59,'delete.return_purchase_orders','Delete Return Sales','Can Delete Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
-	(60,'view.return_purchase_orders','View Return Sales','View Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(57,'create.return_sale_orders','Create Return Sales','Can Create Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(58,'edit.return_sale_orders','Edit Return Sales','Can Edit Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(59,'delete.return_sale_orders','Delete Return Sales','Can Delete Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
+	(60,'view.return_sale_orders','View Return Sales','View Return Sales','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(61,'create.return_orders','Create Return Orders','Can Create Return Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(62,'edit.return_orders','Edit Return Orders','Can Edit Return Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
 	(63,'delete.return_orders','Delete Return Orders','Can Delete Return Orders','2017-01-27 06:14:55','2017-01-27 06:15:02'),
@@ -811,18 +865,6 @@ CREATE TABLE `product_units` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-LOCK TABLES `product_units` WRITE;
-/*!40000 ALTER TABLE `product_units` DISABLE KEYS */;
-
-INSERT INTO `product_units` (`id`, `product_id`, `component_unit_code`, `value`, `created_at`, `updated_at`)
-VALUES
-	(11,1,'L',10,'2017-01-29 19:08:36','2017-01-29 19:08:36'),
-	(12,1,'P',10,'2017-01-29 19:08:36','2017-01-29 19:08:36'),
-	(13,2,'T',10,'2017-01-29 19:11:38','2017-01-29 19:11:38'),
-	(14,3,'T',12,'2017-01-29 19:21:49','2017-01-29 19:21:49');
-
-/*!40000 ALTER TABLE `product_units` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table productions
@@ -833,7 +875,7 @@ DROP TABLE IF EXISTS `productions`;
 CREATE TABLE `productions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `no` varchar(20) DEFAULT NULL,
-  `purchase_order_id` int(10) DEFAULT NULL,
+  `sale_order_id` int(10) DEFAULT NULL,
   `cashier_id` int(10) DEFAULT NULL,
   `note` text,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -845,10 +887,9 @@ CREATE TABLE `productions` (
 LOCK TABLES `productions` WRITE;
 /*!40000 ALTER TABLE `productions` DISABLE KEYS */;
 
-INSERT INTO `productions` (`id`, `no`, `purchase_order_id`, `cashier_id`, `note`, `created_at`, `updated_at`, `deleted_at`)
+INSERT INTO `productions` (`id`, `no`, `sale_order_id`, `cashier_id`, `note`, `created_at`, `updated_at`, `deleted_at`)
 VALUES
-	(2,'00124/PR/MV/II/2017',18,NULL,NULL,'2017-02-19 10:05:09','2017-02-19 10:05:09',NULL),
-	(3,'00124/PR/MV/II/2017',19,NULL,NULL,'2017-02-19 10:13:52','2017-02-19 10:13:52',NULL);
+	(1,'00001/PR/MV/III/2017',1,999,NULL,'2017-03-01 06:14:51','2017-03-01 07:23:13',NULL);
 
 /*!40000 ALTER TABLE `productions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -871,6 +912,7 @@ CREATE TABLE `products` (
   `category_id` int(10) DEFAULT NULL,
   `supplier_id` int(10) DEFAULT '0',
   `unit_id` int(10) DEFAULT NULL,
+  `can_sale` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -880,83 +922,15 @@ CREATE TABLE `products` (
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
 
-INSERT INTO `products` (`id`, `code`, `name`, `start_stock`, `min_stock`, `description`, `selling_price_default`, `purchase_price_default`, `category_id`, `supplier_id`, `unit_id`, `created_at`, `updated_at`, `deleted_at`)
+INSERT INTO `products` (`id`, `code`, `name`, `start_stock`, `min_stock`, `description`, `selling_price_default`, `purchase_price_default`, `category_id`, `supplier_id`, `unit_id`, `can_sale`, `created_at`, `updated_at`, `deleted_at`)
 VALUES
-	(1,'A','PRODUCT A',1,1,NULL,10000,1000,1,0,1,'2017-01-29 11:56:50','2017-01-29 19:08:36',NULL),
-	(2,'B','PRODUCT B',1,0,NULL,10,10,1,0,2,'2017-01-29 19:11:38','2017-01-29 19:11:38',NULL),
-	(3,'C','PRODUCT C',1,1,NULL,100,100,1,0,2,'2017-01-29 19:21:49','2017-01-29 19:21:49',NULL);
+	(1,'A','PRODUCT A',1,1,NULL,10000,1000,1,0,1,0,'2017-01-29 11:56:50','2017-01-29 19:08:36',NULL),
+	(2,'B','PRODUCT B',1,1,NULL,10,10,1,0,2,1,'2017-01-29 19:11:38','2017-02-21 07:22:37',NULL),
+	(3,'C','PRODUCT C',1,1,NULL,100,100,1,0,2,0,'2017-01-29 19:21:49','2017-01-29 19:21:49',NULL),
+	(4,'D','PRODUCT JADI A',1,1,NULL,12000,1300,2,0,1,1,'2017-02-21 07:23:31','2017-02-21 07:23:31',NULL),
+	(5,'E','PRODUCT JADI B',10,1,NULL,10000,8000,2,0,2,1,'2017-02-21 07:28:00','2017-02-21 07:38:45',NULL);
 
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-# Dump of table purchase_order_states
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `purchase_order_states`;
-
-CREATE TABLE `purchase_order_states` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `purchase_order_id` int(10) DEFAULT NULL,
-  `state_id` int(10) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-LOCK TABLES `purchase_order_states` WRITE;
-/*!40000 ALTER TABLE `purchase_order_states` DISABLE KEYS */;
-
-INSERT INTO `purchase_order_states` (`id`, `purchase_order_id`, `state_id`, `created_at`, `updated_at`)
-VALUES
-	(1,2,1,'2017-02-05 18:20:43',NULL),
-	(2,14,1,'2017-02-05 18:20:43',NULL),
-	(3,15,1,'2017-02-05 18:20:43',NULL),
-	(4,16,1,'2017-02-08 06:55:39','2017-02-08 06:55:39'),
-	(5,17,1,'2017-02-09 19:30:55','2017-02-09 19:30:55'),
-	(6,18,1,'2017-02-19 10:01:23','2017-02-19 10:01:23'),
-	(7,19,1,'2017-02-19 10:13:52','2017-02-19 10:13:52');
-
-/*!40000 ALTER TABLE `purchase_order_states` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-# Dump of table purchase_orders
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `purchase_orders`;
-
-CREATE TABLE `purchase_orders` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `no` varchar(20) DEFAULT NULL,
-  `customer_id` int(10) DEFAULT NULL,
-  `cashier_id` int(10) DEFAULT NULL,
-  `payment_method_id` int(10) DEFAULT '1',
-  `cash` int(11) DEFAULT '0',
-  `change` int(11) DEFAULT '0',
-  `disc` int(11) DEFAULT '0',
-  `paid_until_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `no` (`no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-LOCK TABLES `purchase_orders` WRITE;
-/*!40000 ALTER TABLE `purchase_orders` DISABLE KEYS */;
-
-INSERT INTO `purchase_orders` (`id`, `no`, `customer_id`, `cashier_id`, `payment_method_id`, `cash`, `change`, `disc`, `paid_until_at`, `created_at`, `updated_at`, `deleted_at`)
-VALUES
-	(2,'00001/PO/MV/II/2017',1,NULL,1,0,0,0,NULL,'2017-02-02 22:20:00',NULL,NULL),
-	(14,'00003/PO/MV/II/2017',1,999,2,5000,0,NULL,'2017-02-28 00:00:00','2017-02-05 00:00:00','2017-02-05 11:01:48',NULL),
-	(15,'00004/PO/MV/II/2017',1,999,2,2000,0,NULL,NULL,'2017-02-05 00:00:00','2017-02-08 06:53:30',NULL),
-	(16,'00005/PO/MV/II/2017',1,999,2,NULL,0,NULL,'2017-02-08 00:00:00','2017-02-08 00:00:00','2017-02-08 06:55:39',NULL),
-	(17,'00006/PO/MV/II/2017',1,999,2,NULL,0,NULL,'2017-02-18 00:00:00','2017-02-09 00:00:00','2017-02-09 19:30:55',NULL),
-	(18,'00007/PO/MV/II/2017',1,999,1,1000,0,NULL,NULL,'2017-02-19 00:00:00','2017-02-19 10:01:23',NULL),
-	(19,'00008/PO/MV/II/2017',1,999,2,NULL,0,NULL,'2017-02-25 00:00:00','2017-02-19 00:00:00','2017-02-19 10:13:52',NULL);
-
-/*!40000 ALTER TABLE `purchase_orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -971,6 +945,7 @@ CREATE TABLE `return_orders` (
   `order_id` int(10) DEFAULT NULL,
   `cashier_id` int(10) DEFAULT NULL,
   `note` text,
+  `is_complete` tinyint(4) DEFAULT '0',
   `arrive_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -979,23 +954,33 @@ CREATE TABLE `return_orders` (
 
 
 
-# Dump of table return_purchase_orders
+# Dump of table return_sale_orders
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `return_purchase_orders`;
+DROP TABLE IF EXISTS `return_sale_orders`;
 
-CREATE TABLE `return_purchase_orders` (
+CREATE TABLE `return_sale_orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `no` varchar(20) DEFAULT NULL,
-  `purchase_order_id` int(10) DEFAULT NULL,
+  `sale_order_id` int(10) DEFAULT NULL,
   `cashier_id` int(10) DEFAULT NULL,
   `note` text,
+  `is_complete` tinyint(4) DEFAULT '0',
   `arrive_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+LOCK TABLES `return_sale_orders` WRITE;
+/*!40000 ALTER TABLE `return_sale_orders` DISABLE KEYS */;
+
+INSERT INTO `return_sale_orders` (`id`, `no`, `sale_order_id`, `cashier_id`, `note`, `is_complete`, `arrive_at`, `created_at`, `updated_at`)
+VALUES
+	(1,'00001/RS/MV/III/2017',1,999,'test',0,NULL,'2017-03-05 00:00:00','2017-03-05 14:12:09');
+
+/*!40000 ALTER TABLE `return_sale_orders` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table revisions
@@ -1072,6 +1057,66 @@ VALUES
 	(4,'manager','Manager','Manager Access','2017-01-27 06:59:58','2017-01-27 06:59:58');
 
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table sale_order_states
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sale_order_states`;
+
+CREATE TABLE `sale_order_states` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sale_order_id` int(10) DEFAULT NULL,
+  `state_id` int(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `sale_order_states` WRITE;
+/*!40000 ALTER TABLE `sale_order_states` DISABLE KEYS */;
+
+INSERT INTO `sale_order_states` (`id`, `sale_order_id`, `state_id`, `created_at`, `updated_at`)
+VALUES
+	(1,1,1,'2017-03-01 06:14:51','2017-03-01 06:14:51'),
+	(2,1,3,'2017-03-01 07:19:10','2017-03-01 07:19:10'),
+	(3,1,2,'2017-03-01 07:23:13','2017-03-01 07:23:13');
+
+/*!40000 ALTER TABLE `sale_order_states` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table sale_orders
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sale_orders`;
+
+CREATE TABLE `sale_orders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `no` varchar(20) DEFAULT NULL,
+  `customer_id` int(10) DEFAULT NULL,
+  `cashier_id` int(10) DEFAULT NULL,
+  `payment_method_id` int(10) DEFAULT '1',
+  `cash` int(11) DEFAULT '0',
+  `change` int(11) DEFAULT '0',
+  `disc` int(11) DEFAULT '0',
+  `paid_until_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `no` (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `sale_orders` WRITE;
+/*!40000 ALTER TABLE `sale_orders` DISABLE KEYS */;
+
+INSERT INTO `sale_orders` (`id`, `no`, `customer_id`, `cashier_id`, `payment_method_id`, `cash`, `change`, `disc`, `paid_until_at`, `created_at`, `updated_at`, `deleted_at`)
+VALUES
+	(1,'00001/PO/MV/II/2017',1,999,1,2000,0,NULL,NULL,'2017-03-01 00:00:00','2017-03-01 06:14:51',NULL);
+
+/*!40000 ALTER TABLE `sale_orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -1214,9 +1259,9 @@ CREATE TABLE `transactions` (
   `purchase_price` int(11) DEFAULT '0',
   `selling_price` int(11) DEFAULT '0',
   `qty` tinyint(4) DEFAULT '1',
-  `return_qty` tinyint(4) DEFAULT '0',
   `return_complete` tinyint(4) DEFAULT '0',
   `disc` int(11) DEFAULT '0',
+  `attribute` varchar(250) DEFAULT NULL,
   `product_id` int(10) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -1226,17 +1271,11 @@ CREATE TABLE `transactions` (
 LOCK TABLES `transactions` WRITE;
 /*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
 
-INSERT INTO `transactions` (`id`, `transactionable_type`, `transactionable_id`, `purchase_price`, `selling_price`, `qty`, `return_qty`, `return_complete`, `disc`, `product_id`, `created_at`, `updated_at`)
+INSERT INTO `transactions` (`id`, `transactionable_type`, `transactionable_id`, `purchase_price`, `selling_price`, `qty`, `return_complete`, `disc`, `attribute`, `product_id`, `created_at`, `updated_at`)
 VALUES
-	(12,'App\\Models\\PurchaseOrder',15,500,1000,1,0,0,0,1,'2017-02-08 06:35:23','2017-02-08 06:35:23'),
-	(16,'App\\Models\\PurchaseOrder',16,10,10,1,0,0,200,2,'2017-02-08 06:55:39','2017-02-08 06:55:39'),
-	(17,'App\\Models\\PurchaseOrder',16,500,1000,1,0,0,0,1,'2017-02-08 06:55:39','2017-02-08 06:55:39'),
-	(18,'App\\Models\\PurchaseOrder',17,500,1000,-1,0,0,0,1,'2017-02-09 19:30:55','2017-02-09 19:30:55'),
-	(19,'App\\Models\\PurchaseOrder',17,100,100,-2,0,0,10,3,'2017-02-09 19:30:55','2017-02-09 19:30:55'),
-	(21,'App\\Models\\Order',1,20000,0,2,0,0,0,1,'2017-02-11 07:29:30','2017-02-11 07:29:30'),
-	(24,'App\\Models\\PurchaseOrder',18,100,1000,-1,0,0,0,1,'2017-02-19 10:05:09','2017-02-19 10:05:09'),
-	(25,'App\\Models\\PurchaseOrder',19,10,10,-2,0,0,200,2,'2017-02-19 10:13:52','2017-02-19 10:13:52'),
-	(30,'App\\Models\\Production',2,0,0,-3,0,0,0,1,'2017-02-19 18:56:01','2017-02-19 18:58:09');
+	(1,'App\\Models\\SaleOrder',1,100,1000,-2,0,0,NULL,1,'2017-03-01 06:14:51','2017-03-01 06:14:51'),
+	(2,'App\\Models\\Production',1,100,100,-1,0,0,NULL,3,'2017-03-02 07:15:48','2017-03-02 07:15:48'),
+	(4,'App\\Models\\ReturnSaleOrder',1,0,0,2,0,0,NULL,1,'2017-03-05 16:27:09','2017-03-05 16:27:26');
 
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1262,7 +1301,8 @@ LOCK TABLES `units` WRITE;
 INSERT INTO `units` (`id`, `name`, `unit`, `created_at`, `updated_at`)
 VALUES
 	(1,'lembar',NULL,'2017-01-28 06:14:47','2017-01-28 06:14:47'),
-	(2,'volume',NULL,NULL,NULL);
+	(2,'volume',NULL,NULL,NULL),
+	(3,'item',NULL,'2017-02-26 14:10:07','2017-02-26 14:10:07');
 
 /*!40000 ALTER TABLE `units` ENABLE KEYS */;
 UNLOCK TABLES;
