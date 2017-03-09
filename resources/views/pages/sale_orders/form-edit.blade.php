@@ -29,9 +29,11 @@
 <div class="clearfix"></div>
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
+    <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-2">
+    <label class="form-control-label">Qty <span class="text-danger">*</span></label>
     <div class="input-group">
         <input type="number" id="qty" placeholder="Qty" class="form-control" value="">
         <div class="input-group-btn">
@@ -39,9 +41,9 @@
         </div>
     </div>
 </fieldset>
-<fieldset class="form-group col-md-1 pull-md-right">
+{{--<fieldset class="form-group col-md-1 pull-md-right">
     <button id="calculate-btn" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span></button>
-</fieldset>
+</fieldset>--}}
 
 <div class="clearfix"></div>
 <div class="col-md-12">

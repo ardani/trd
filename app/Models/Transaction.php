@@ -6,7 +6,9 @@ class Transaction extends Model {
     protected $fillable = [
         'transactionable_type','transactionable_id',
         'purchase_price','selling_price','qty',
-        'product_id','disc','return_qty','return_complete'
+        'product_id','disc','return_qty',
+        'attribute',
+        'return_complete'
     ];
 
     public function transactionable() {

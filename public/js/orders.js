@@ -7,6 +7,9 @@ $(document).ready(function () {
     $('#save-btn').click(function (e) {
         var suppId = sSupplier.val();
         var qty = $('#qty');
+        var length = $('#length');
+        var height = $('#height');
+        var width = $('#width');
         if (!suppId) {
             alert('supplier belum dipilih');
             return false;
@@ -31,6 +34,9 @@ $(document).ready(function () {
             data: {
                 product_id: sProduct.val(),
                 qty: qty.val(),
+                L: length.val(),
+                H: height.val(),
+                W: width.val(),
                 purchase_price: purchase_price.val(),
                 _token: Laravel.csrfToken,
                 no: $('#no-order').val()

@@ -54,9 +54,17 @@
 <div class="clearfix"></div>
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
+    <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product-raw" data-live-search="true"></select>
 </fieldset>
+<fieldset class="form-group col-md-3">
+    <label class="form-control-label">Unit (LxWxH) cm <span class="text-danger">*</span></label>
+    <input type="number" id="length" style="width: 30%;float: left;" placeholder="L" class="form-control" value="1">
+    <input type="number" id="width" style="width: 30%;float: left;margin:0 5px;" placeholder="W" class="form-control" value="1">
+    <input type="number" id="height" style="width: 30%;" placeholder="H" class="form-control" value="1">
+</fieldset>
 <fieldset class="form-group col-md-2">
+    <label class="form-control-label">Qty <span class="text-danger">*</span></label>
     <div class="input-group">
         <input type="number" id="qty" placeholder="Qty" class="form-control" value="">
         <div class="input-group-btn">
@@ -72,6 +80,7 @@
     <tr>
         <th width="10%">Code</th>
         <th>Product Name</th>
+        <th width="10%">Unit</th>
         <th width="10%">Qty</th>
         <th width="5%">Action</th>
     </tr>
@@ -86,6 +95,7 @@
         <tr>
             <td>{{$transaction->product->code}}</td>
             <td>{{$transaction->product->name}}</td>
+            <td>{{$transaction->attribute}}</td>
             <td>
                 <input data-id="{{$transaction->product_id}}"
                        type="number" data-url="{{url('productions/actions/add')}}"
@@ -111,6 +121,7 @@
     <tr>
         <td data-content="code"></td>
         <td data-content="name"></td>
+        <td data-content="attribute"></td>
         <td><input type="number" data-url="{{url('productions/actions/add')}}" data-template-bind='[
             {"attribute": "data-id", "value": "product_id"}
         ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>

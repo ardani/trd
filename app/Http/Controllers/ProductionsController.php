@@ -62,6 +62,7 @@ class ProductionsController extends Controller
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
                 'name'           => $val->product->name,
+                'attribute'      => $val->attribute,
                 'qty'            => $qty
             ];
         });
@@ -87,6 +88,7 @@ class ProductionsController extends Controller
                 'purchase_price'  => $product->purchase_price_default,
                 'code'           => $product->code,
                 'name'           => $product->name,
+                'attribute'      => $request->input('L',1)*$request->input('H',1)*$request->input('W',1),
                 'qty'            => $request->qty
             ];
         }

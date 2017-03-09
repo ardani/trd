@@ -63,7 +63,8 @@ class OrderService extends Service {
             $model->transactions()->create([
                 'purchase_price' => $session['purchase_price'],
                 'product_id' => $session['product_id'],
-                'qty' => $session['qty']
+                'qty' => $session['qty'],
+                'attribute' => $session['attribute']
             ]);
         }
         return clear_nota($data['no']);

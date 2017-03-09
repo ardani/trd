@@ -100,6 +100,7 @@ class OrdersController extends Controller
                 'product_id'     => $request->product_id,
                 'code'           => $product->code,
                 'name'           => $product->name,
+                'attribute'      => $request->input('L',1)*$request->input('H',1)*$request->input('W',1),
                 'qty'            => $request->qty,
                 'purchase_price' => $purchase_price,
                 'subtotal'       => $request->qty * $purchase_price
@@ -128,6 +129,7 @@ class OrdersController extends Controller
                 'name'           => $val->product->name,
                 'qty'            => $qty,
                 'purchase_price' => $val->purchase_price,
+                'attribute'      => $val->attribute,
                 'subtotal'       => $qty * ($val->purchase_price)
             ];
         });
@@ -154,6 +156,7 @@ class OrdersController extends Controller
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name,
+                'attribute'      => $request->input('L',1)*$request->input('H',1)*$request->input('W',1),
                 'qty'            => $request->qty,
                 'purchase_price' => $purchase_price,
                 'subtotal'       => $request->qty * ($purchase_price)

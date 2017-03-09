@@ -32,12 +32,21 @@
 <div class="clearfix"></div>
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
+    <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-2">
+    <label class="form-control-label">Purchase Price <span class="text-danger">*</span></label>
     <input type="number" id="purchase_price" placeholder="Purchase Price" class="form-control" value="">
 </fieldset>
+<fieldset class="form-group col-md-3">
+    <label class="form-control-label">Unit (LxWxH) <span class="text-danger">*</span></label>
+    <input type="number" id="length" style="width: 30%;float: left;" placeholder="L" class="form-control" value="1">
+    <input type="number" id="width" style="width: 30%;float: left;margin:0 5px;" placeholder="W" class="form-control" value="1">
+    <input type="number" id="height" style="width: 30%;" placeholder="H" class="form-control" value="1">
+</fieldset>
 <fieldset class="form-group col-md-2">
+    <label class="form-control-label">Qty <span class="text-danger">*</span></label>
     <div class="input-group">
         <input type="number" id="qty" placeholder="Qty" class="form-control" value="">
         <div class="input-group-btn">
@@ -45,9 +54,9 @@
         </div>
     </div>
 </fieldset>
-<fieldset class="form-group col-md-1 pull-md-right">
+{{--<fieldset class="form-group col-md-1 pull-md-right">
     <button id="calculate-btn" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span></button>
-</fieldset>
+</fieldset>--}}
 
 <div class="clearfix"></div>
 <div class="col-md-12">
@@ -57,6 +66,7 @@
         <th width="10%">Code</th>
         <th>Product Name</th>
         <th width="15%">Price</th>
+        <th width="10%">Unit</th>
         <th width="10%">Qty</th>
         <th width="15%">Sub Total</th>
         <th width="5%">Action</th>
@@ -69,9 +79,11 @@
                 <td>{{$transaction->product->code}}</td>
                 <td>{{$transaction->product->name}}</td>
                 <td class="text-right">{{number_format($transaction->purchase_price)}}</td>
+                <td>{{$transaction['attribute']}}</td>
                 <td>
                     <input data-id="{{$transaction->product_id}}"
                            data-purchase_price="{{$transaction->purchase_price}}"
+                           data-attribute="{{$transaction->attribute}}"
                            type="number" data-url="{{url('orders/actions/add')}}"
                            value="{{$transaction->qty}}" class="form-control col-md-1 qty-input"/>
                 </td>
@@ -102,8 +114,10 @@
         <td data-content="code"></td>
         <td data-content="name"></td>
         <td class="text-right" data-content="purchase_price" data-format="currency"></td>
+        <td data-content="attribute"></td>
         <td><input type="number" data-url="{{url('orders/actions/add')}}" data-template-bind='[
             {"attribute": "data-id", "value": "product_id"},
+            {"attribute": "data-attribute", "value": "attribute"},
             {"attribute": "data-purchase_price", "value": "purchase_price"}
         ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
         <td class="text-right subtotal" data-format="currency" data-content="subtotal"></td>

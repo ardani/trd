@@ -41,7 +41,6 @@ function buildDatatables(el, columns) {
 }
 
 $(document).ready(function () {
-
     $.addTemplateFormatter("currency",
         function (value, template) {
             return numeral(value).format('0,0');
