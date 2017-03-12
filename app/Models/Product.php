@@ -39,9 +39,16 @@ class Product extends Model {
 
     public function getStockAttribute() {
         $trans = Transaction::where('product_id',$this->attributes['id'])
-            ->select(\DB::raw('sum(qty) as stock'))
+            ->select(\DB::raw('sum(qty*attribute) as stock'))
             ->where('return_complete',0)
             ->first();
-        return $this->attributes['stock'] = $this->attributes['start_stock'] + $trans->stock;
+        $units = ProductUnit::where('product_id',$this->attributes['id'])->get(['value']);
+        $stock_unit = 1;
+        if ($units) {
+            $stock_unit = $units->reduce(function ($carry, $item) {
+                return $carry * $item->value;
+            },1);
+        }
+        return $this->attributes['stock'] = ($this->attributes['start_stock'] * $stock_unit) + $trans->stock;
     }
 }
