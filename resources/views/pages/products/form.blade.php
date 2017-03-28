@@ -6,7 +6,7 @@
                value="{{ $model ? $model['code'] : old('code') }}"
                data-validation="[NOTEMPTY]"
                placeholder="code">
-            {{ csrf_field() }}
+        {{ csrf_field() }}
     </fieldset>
 </div>
 <div class="col-md-6">
@@ -70,7 +70,7 @@
     <fieldset class="form-group">
         <label class="form-control-label">Supplier</label>
         <select name="supplier_id" class="form-control bootstrap-select">
-            <option value="0"> - </option>
+            <option value="0"> -</option>
             @foreach($suppliers as $supplier)
                 @if($supplier->id == safe_array($model,'supplier_id'))
                     <option selected value="{{$supplier->id}}">{{$supplier->name}}</option>
@@ -84,7 +84,7 @@
 <div class="col-md-6">
     <fieldset class="form-group">
         <label class="form-control-label"><input type="checkbox" name="can_sale" value="1"
-                {{ $model ? $model['can_sale'] == 1 ? 'checked' : '' : 'checked'}}> Can Sale</label>
+                    {{ $model ? $model['can_sale'] == 1 ? 'checked' : '' : 'checked'}}> Can Sale</label>
     </fieldset>
 </div>
 <section class="tabs-section">
@@ -101,34 +101,29 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="tabs-4-tab-1">
             <div class="row">
-            <div class="col-md-6">
-                <fieldset class="form-group">
-                    <label class="form-control-label">Units</label>
-                    <select id="unit" data-url="{{url('products/units/')}}" name="unit_id" class="form-control bootstrap-select" data-validation="[NOTEMPTY]">
-                        <option value="0">-</option>
-                        @foreach($units as $unit)
-                            @if($unit->id == safe_array($model,'unit_id'))
-                                <option selected value="{{$unit->id}}">{{$unit->name}}</option>
-                            @else
-                                <option value="{{$unit->id}}">{{$unit->name}}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                </fieldset>
-            </div>
-            <div class="col-md-6">
-                    <div id="componentUnit">
-                        @foreach($components as $component)
-                            <div class="col-md-4">
+                @foreach($units as $unit)
+                    <div class="col-md-4">
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <div class="radio radioui">
+                                    <input type="radio" value="{{$unit->id}}"
+                                           name="unit_id" {{array_key_exists($unit->id,$product_units) ? 'checked' : ''}}>
+                                    <label for="">{{$unit->name}}</label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            @foreach($unit->component_unit as $component)
                                 <fieldset class="form-group">
-                                    <label class="form-control-label">{{$component->component_unit->name}}</label>
-                                    <input type="text" class="form-control" name="component[{{$component->component_unit_code}}]" value="{{$component->value}}" />
+                                    <label class="form-control-label">{{$component->name}}</label>
+                                    <input type="text" class="form-control"
+                                           name="component[{{$unit->id}}][{{$component->code}}]"
+                                           value="{{ @$product_units[$unit->id][$component->code] }}"/>
                                 </fieldset>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
-                </fieldset>
-            </div>
+                @endforeach
             </div>
         </div><!--.tab-pane-->
     </div><!--.tab-content-->

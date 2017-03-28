@@ -27,7 +27,6 @@ class SuppliersController extends Controller
 
     public function create() {
         $data = $this->service->meta();
-        $data['types'] = $this->types->all();
         return view('pages.'.$this->page.'.create',$data);
     }
 
@@ -42,7 +41,6 @@ class SuppliersController extends Controller
         $data = $this->service->meta();
         $data['id'] = $id;
         $data['model'] = $model;
-        $data['types'] = $this->types->all();
         return view('pages.'.$this->page.'.edit', $data);
     }
 

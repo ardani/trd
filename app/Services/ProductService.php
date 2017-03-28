@@ -38,14 +38,19 @@ class ProductService extends Service {
 
     public function store($data) {
         $product = $this->model->create($data);
-        $product_units = collect($data['component'])->map(function($val,$key){
-            return [
-                'component_unit_code' => $key,
-                'value' => $val
-            ];
-        })->toArray();
-        foreach ($product_units as $product_unit) {
-            $product->product_unit()->create($product_unit);
+        if (isset($data['unit_id'])) {
+            $unit_id = $data['unit_id'];
+            $product_units = collect($data['component'][$unit_id])
+                ->map(function ($val, $key) use ($unit_id){
+                return [
+                    'component_unit_code' => $key,
+                    'value' => $val,
+                    'unit_id' => $unit_id
+                ];
+            })->toArray();
+            foreach ($product_units as $product_unit) {
+                $product->product_unit()->create($product_unit);
+            }
         }
         return true;
     }
@@ -54,16 +59,20 @@ class ProductService extends Service {
         $product = $this->model->find($id);
         $product->fill($data)->save();
         $product->product_unit()->delete();
-        $product_units = collect($data['component'])->map(function($val,$key){
-            return [
-              'component_unit_code' => $key,
-              'value' => $val
-            ];
-        })->toArray();
-        foreach ($product_units as $product_unit) {
-            $product->product_unit()->create($product_unit);
+        if (isset($data['unit_id'])) {
+            $unit_id = $data['unit_id'];
+            $product_units = collect($data['component'][$unit_id])
+                ->map(function ($val, $key) use ($unit_id){
+                    return [
+                        'component_unit_code' => $key,
+                        'value' => $val,
+                        'unit_id' => $unit_id
+                    ];
+                })->toArray();
+            foreach ($product_units as $product_unit) {
+                $product->product_unit()->create($product_unit);
+            }
         }
-
         return true;
     }
 }

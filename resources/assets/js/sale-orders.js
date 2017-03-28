@@ -3,6 +3,7 @@
  */
 $(document).ready(function () {
     var tSaleDetails = $('#table-sale-details');
+    var unitsWrapper = $('#units');
 
     $('#save-btn').click(function (e) {
         var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
@@ -20,12 +21,17 @@ $(document).ready(function () {
             return false;
         }
 
+        var vP = $('#p').length ? $('#p').val() : 1;
+        var vL = $('#l').length ? $('#l').val() : 1;
+        var vT = $('#t').length ? $('#t').val() : 1;
+
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
             data: {
                 product_id: sProduct.val(),
                 qty: qty.val(),
+                units: vP * vL * vT,
                 customer_type_id: custTypeId,
                 _token: Laravel.csrfToken,
                 no: $('#no-po').val()
@@ -35,6 +41,7 @@ $(document).ready(function () {
                 sProduct.selectpicker('refresh');
                 qty.val('');
                 calculateTotal(tSaleDetails);
+                chargeCalculation()
             }
         }).fail(function () {
             alert('Add Purchase Product Error. Try Again Later');
@@ -49,12 +56,17 @@ $(document).ready(function () {
 
     $('#calculate-btn').click(function (e) {
         calculateTotal(tSaleDetails);
+        chargeCalculation();
     });
 
-    $('#pay-btn').click(function (e) {
+    function chargeCalculation() {
         var total = parseInt(numeral($('#total').text()).value());
         var cash = parseInt($('#cash').val());
         $('#charge').text(numeral(cash - total).format('0,0'));
+    }
+
+    $('#pay-btn').click(function (e) {
+        chargeCalculation();
     });
 
     $('table').on('keypress', '.qty-input', function (e) {
@@ -75,6 +87,7 @@ $(document).ready(function () {
                 success: function (data) {
                     tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
                     calculateTotal(tSaleDetails);
+                    chargeCalculation();
                 }
             }).fail(function () {
                 alert('Update Purchase Product Error. Try Again Later');
@@ -91,6 +104,7 @@ $(document).ready(function () {
             success: function (data) {
                 tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
                 calculateTotal(tSaleDetails);
+                chargeCalculation();
             }
         }).fail(function () {
             alert('delete row failed');
@@ -100,7 +114,7 @@ $(document).ready(function () {
     $('#save-sale-btn').click(function (e) {
         $.ajax({
             type: 'POST',
-            url: $(this).data('url'),
+            url: $('#form-sales').data('url'),
             data: $('#form-sales').serialize(),
             headers: {
                 'X-CSRF-Token': Laravel.csrfToken
@@ -113,4 +127,19 @@ $(document).ready(function () {
         })
     });
 
+    sProduct.on('changed.bs.select', function (e) {
+        var units = $(this).find(':selected').data();
+        var html = '';
+        if (Object.keys(units).length == 1) {
+            unitsWrapper.html(html);
+            return;
+        }
+
+        Object.keys(units).forEach(function (key) {
+            html += '<div class="col-md-4"> ' +
+                '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
+                '<input type="number" id="'+key+'" class="form-control " value="1" required></div>';
+        })
+        unitsWrapper.html(html);
+    });
 });

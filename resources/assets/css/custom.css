@@ -1,6 +1,6 @@
 ul.dropdown-menu.dropdown-menu-right li {
     margin: 0 5px !important;
-    
+
 }
 
 div.dataTables_wrapper div.dataTables_processing {
@@ -27,9 +27,24 @@ div.dataTables_wrapper div.dataTables_processing {
     border-top-color: #d8e2e7;
     margin: 0 0 10px 0;
 }
-.form-control:focus,.bootstrap-select:focus {
+
+.form-control:focus, .bootstrap-select:focus {
     border-color: crimson;
 }
+
 .bootstrap-table .table a, .fixed-table-body .table a, .table a {
     border-bottom: none;
+}
+
+.form-unit {
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #55595c;
+    background-color: #fff;
+    background-image: none;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
 }

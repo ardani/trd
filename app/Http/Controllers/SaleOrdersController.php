@@ -72,10 +72,8 @@ class SaleOrdersController extends Controller {
 
     public function delete($id) {
         $deleted = $this->service->delete($id);
-
         return ['status' => $deleted];
     }
-
     // create PO
     public function viewTempPODetail($no) {
         return session($no);
@@ -86,6 +84,7 @@ class SaleOrdersController extends Controller {
         $product        = $this->product->find($request->product_id);
         $selling_price  = $product->selling_price_default;
         $purchase_price = $product->purchase_price_default;
+        $disc           = $product->product_discount ? $product->product_discount->amount : 0;
 
         if ($selling_price_customer = $product->product_price()
             ->where('customer_type_id', $request->customer_type_id)->first()
@@ -97,11 +96,11 @@ class SaleOrdersController extends Controller {
         if (array_key_exists($request->product_id, $sessions)) {
             if (request()->has('is_edit')) {
                 $sessions[ $request->product_id ]['qty']      = $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $request->qty * $selling_price;
+                $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc);
             }
             else {
                 $sessions[ $request->product_id ]['qty'] += $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $sessions[ $request->product_id ]['qty'] * $selling_price;
+                $sessions[ $request->product_id ]['subtotal'] = $sessions[ $request->product_id ]['qty'] * ($selling_price - $disc);
             }
         }
         else {
@@ -109,11 +108,12 @@ class SaleOrdersController extends Controller {
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name,
+                'attribute'      => $request->units,
                 'qty'            => $request->qty,
-                'disc'           => $product->product_discount ? $product->product_discount->amount : '0',
+                'disc'           => $disc,
                 'selling_price'  => $selling_price,
                 'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * $selling_price
+                'subtotal'       => $request->qty * ($selling_price - $disc)
             ];
         }
         session([$request->no => $sessions]);
@@ -134,13 +134,14 @@ class SaleOrdersController extends Controller {
         });
 
         $transactions = $PO->transactions->map(function ($val, $key) {
-            $disc = $val->disc ? $val->disc : 0;
+            $disc = $val->disc ?: 0;
             $qty  = abs($val->qty);
 
             return [
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
                 'name'           => $val->product->name,
+                'attribute'      => $val->attribute,
                 'qty'            => $qty,
                 'disc'           => $disc,
                 'selling_price'  => $val->selling_price,
@@ -158,6 +159,7 @@ class SaleOrdersController extends Controller {
         $product        = $this->product->find($request->product_id);
         $selling_price  = $product->selling_price_default;
         $purchase_price = $product->purchase_price_default;
+        $disc           = $product->product_discount ? $product->product_discount->amount : 0;
 
         if ($selling_price_customer = $product->product_price()
             ->where('customer_type_id', $request->customer_type_id)->first()
@@ -169,19 +171,19 @@ class SaleOrdersController extends Controller {
         if (array_key_exists($request->product_id, $transactions)) {
             if (request()->has('is_edit')) {
                 $transactions[ $request->product_id ]['qty']      = $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] = $request->qty * $selling_price;
+                $transactions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price-$disc);
             }
             else {
                 $transactions[ $request->product_id ]['qty'] += $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] = $transactions[ $request->product_id ]['qty'] * $selling_price;
+                $transactions[ $request->product_id ]['subtotal'] = $transactions[ $request->product_id ]['qty'] * ($selling_price - $disc);
             }
         }
         else {
-            $disc                         = $product->product_discount ? $product->product_discount->amount : '0';
             $transactions[ $product->id ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name,
+                'attribute'      => $request->units,
                 'qty'            => $request->qty,
                 'disc'           => $disc,
                 'selling_price'  => $selling_price,

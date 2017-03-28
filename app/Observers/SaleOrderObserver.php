@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Observers;
+
 use App\Models\Production;
 use App\Models\SaleOrder;
 
@@ -13,7 +15,7 @@ use App\Models\SaleOrder;
 
 class SaleOrderObserver {
     public function saved(SaleOrder $sale_order) {
-        if (!$exist = Production::where('sale_order_id',$sale_order->id)->first()){
+        if (!$exist = Production::where('sale_order_id',$sale_order->id)->first()) {
              Production::create([
                 'sale_order_id' => $sale_order->id,
                 'no' => auto_number_productions()

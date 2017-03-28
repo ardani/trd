@@ -3,7 +3,7 @@
     <label class="form-control-label">No PO <span class="text-danger">*</span></label>
     <input id="no-po" type="text" name="no" class="form-control" readonly
            value="{{ $auto_number_sales }}">
-        {{ csrf_field() }}
+    {{ csrf_field() }}
 </fieldset>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Customer <span class="text-danger">*</span></label>
@@ -17,7 +17,8 @@
         <div class="input-group-addon">
             <input type="checkbox" name="payment_method_id" value="2" id="check-1">
         </div>
-        <input disabled type="text" id="paid-until-at" name="paid_until_at" class="form-control daterange" placeholder="credit date">
+        <input disabled type="text" id="paid-until-at" name="paid_until_at" class="form-control daterange"
+               placeholder="credit date">
     </div>
 </fieldset>
 <fieldset class="form-group col-md-2 pull-md-right">
@@ -27,63 +28,66 @@
 </fieldset>
 <div class="clearfix"></div>
 <hr class="hr-form"/>
+
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
+<fieldset class="form-group col-md-4" id="units">
+</fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Qty <span class="text-danger">*</span></label>
     <div class="input-group">
-        <input type="number" id="qty" placeholder="Qty" class="form-control" value="">
+        <input type="number" id="qty" placeholder="Qty" class="form-control" value="1">
         <div class="input-group-btn">
-            <button type="button" id="save-btn" data-url="{{url('sale_orders/actions/addTemp')}}" class="btn btn-info"><span class="glyphicon glyphicon-floppy-saved"></span></button>
+            <button type="button" id="save-btn" data-url="{{url('sale_orders/actions/addTemp')}}"
+                    class="btn btn-info"><span class="glyphicon glyphicon-floppy-saved"></span></button>
         </div>
     </div>
 </fieldset>
-{{--<fieldset class="form-group col-md-1 pull-md-right">
-    <button id="calculate-btn" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span></button>
-</fieldset>--}}
-
 <div class="clearfix"></div>
 <div class="col-md-12">
-<table id="table-sale-details" class="display table table-bordered" cellspacing="0" width="100%">
-    <thead>
-    <tr>
-        <th width="10%">Code</th>
-        <th>Product Name</th>
-        <th width="15%">Price</th>
-        <th width="10%">Qty</th>
-        <th width="10%">Disc</th>
-        <th width="15%">Sub Total</th>
-        <th width="5%">Action</th>
-    </tr>
-    </thead>
-    <tbody>
+    <table id="table-sale-details" class="display table table-bordered" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th width="10%">Code</th>
+            <th>Product Name</th>
+            <th width="15%">Price</th>
+            <th width="10%">Disc</th>
+            <th width="10%">Units</th>
+            <th width="10%">Qty</th>
+            <th width="15%">Sub Total</th>
+            <th width="5%">Action</th>
+        </tr>
+        </thead>
+        <tbody>
         @if($transactions)
             @foreach($transactions as $transaction)
                 <tr>
                     <td>{{$transaction['code']}}</td>
                     <td>{{$transaction['name']}}</td>
                     <td>{{number_format($transaction['selling_price'])}}</td>
+                    <td>{{number_format($transaction['disc'])}}</td>
+                    <td>{{number_format($transaction['attribute'])}}</td>
                     <td><input data-id="{{$transaction['product_id']}}"
                                data-selling_price="{{$transaction['selling_price']}}"
                                type="number" data-url="{{url('sale_orders/actions/addTemp')}}"
                                value="{{$transaction['qty']}}" class="form-control col-md-1 qty-input"/></td>
-                    <td>{{number_format($transaction['disc'])}}</td>
                     <td>{{number_format($transaction['subtotal'])}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('sale_orders/actions/deleteTemp')}}"
-                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
+                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)"><span
+                                    class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>
             @endforeach
         @else
-        <tr class="empty-row">
-            <td colspan="7" class="text-center">empty data</td>
-        </tr>
+            <tr class="empty-row">
+                <td colspan="7" class="text-center">empty data</td>
+            </tr>
         @endif
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </div>
 <div class="col-md-3 pull-md-right" style="margin-top: 10px">
     <div class="form-group">
@@ -110,14 +114,17 @@
         <td data-content="code"></td>
         <td data-content="name"></td>
         <td class="text-right" data-content="selling_price" data-format="currency"></td>
+        <td class="text-right" data-content="disc" data-format="currency"></td>
+        <td class="text-right" data-content="attribute" data-format="currency"></td>
         <td><input type="number" data-url="{{url('sale_orders/actions/addTemp')}}" data-template-bind='[
             {"attribute": "data-id", "value": "product_id"},
             {"attribute": "data-selling_price", "value": "selling_price"}
         ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
-        <td class="text-right" data-content="disc" data-format="currency"></td>
         <td class="text-right subtotal" data-content="subtotal" data-format="currency"></td>
         <td>
-            <a class="act-delete" data-url="{{url('sale_orders/actions/deleteTemp')}}" data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="act-delete" data-url="{{url('sale_orders/actions/deleteTemp')}}"
+               data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span
+                        class="glyphicon glyphicon-remove"></span></a>
         </td>
     </tr>
-</script> 
+</script>

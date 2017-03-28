@@ -10,11 +10,18 @@
     </select>
 </fieldset>
 <fieldset class="form-group">
-    <label class="form-control-label">Correction Stock <span class="text-danger">*</span></label>
-    <input type="text" name="correction" class="form-control"
-           value="{{ $model ? $model['correction'] : old('correction') }}"
+    <label class="form-control-label">Units <span class="text-danger">*</span></label>
+    <input type="text" name="attribute" class="form-control"
+           value="{{ $model ? $model['attribute'] : old('attribute') }}"
            data-validation="[NOTEMPTY]"
-           placeholder="correction">
+           placeholder="units">
+</fieldset>
+<fieldset class="form-group">
+    <label class="form-control-label">Qty <span class="text-danger">*</span></label>
+    <input type="text" name="correction" class="form-control"
+           value="{{ $model ? $model['qty'] : old('qty') }}"
+           data-validation="[NOTEMPTY]"
+           placeholder="qty">
 </fieldset>
 <fieldset class="form-group">
     <label class="form-control-label">Purchase Price <span class="text-danger">*</span></label>

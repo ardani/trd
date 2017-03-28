@@ -9,6 +9,7 @@ use App\Services\ProductService;
 use App\Services\SupplierService;
 use App\Services\UnitService;
 use Illuminate\Http\Request;
+
 class ProductsController extends Controller
 {
     private $page = 'products';
@@ -24,7 +25,8 @@ class ProductsController extends Controller
         SupplierService $supplier,
         UnitService $unit,
         ComponentUnitService $componentUnit
-        ) {
+    )
+    {
         $this->service = $service;
         $this->category = $category;
         $this->supplier = $supplier;
@@ -32,34 +34,39 @@ class ProductsController extends Controller
         $this->componentUnit = $componentUnit;
     }
 
-    public function index() {
+    public function index()
+    {
         if (request()->ajax()) {
             return $this->service->datatables();
         }
 
-        return view('pages.'.$this->page.'.index',$this->service->meta());
+        return view('pages.' . $this->page . '.index', $this->service->meta());
     }
 
-    public function show($id) {
-        return view('pages.'.$this->page.'.show',$this->service->find($id));
+    public function show($id)
+    {
+        return view('pages.' . $this->page . '.show', $this->service->find($id));
     }
 
-    public function create() {
+    public function create()
+    {
         $data = $this->service->meta();
         $data['suppliers'] = $this->supplier->all();
         $data['categories'] = $this->category->all();
         $data['units'] = $this->unit->all();
-        $data['components'] = [];
-        return view('pages.'.$this->page.'.create',$data);
+        $data['product_units'] = [];
+        return view('pages.' . $this->page . '.create', $data);
     }
 
-    public function store(ProductsRequest $request) {
+    public function store(ProductsRequest $request)
+    {
         $data = $request->all();
         $this->service->store($data);
-        return redirect()->back()->with('message','Save Success');
+        return redirect()->back()->with('message', 'Save Success');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $model = $this->service->find($id);
         $data = $this->service->meta();
         $data['id'] = $id;
@@ -67,22 +74,34 @@ class ProductsController extends Controller
         $data['suppliers'] = $this->supplier->all();
         $data['categories'] = $this->category->all();
         $data['units'] = $this->unit->all();
-        $data['components'] = $model->product_unit;
-        return view('pages.'.$this->page.'.edit', $data);
+        $data['product_units'] = $this->mappingUnit($model->product_unit);
+        return view('pages.' . $this->page . '.edit', $data);
     }
 
-    public function update(ProductsRequest $request, $id) {
+    private function mappingUnit($product_units)
+    {
+        $newUnits = [];
+        foreach ($product_units as $unit) {
+            $newUnits[$unit->unit_id][$unit->component_unit_code] = $unit->value;
+        }
+        return $newUnits;
+    }
+
+    public function update(ProductsRequest $request, $id)
+    {
         $data = $request->all();
-        $this->service->update($data,$id);
-        return redirect()->back()->with('message','Update Success');
+        $this->service->update($data, $id);
+        return redirect()->back()->with('message', 'Update Success');
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $deleted = $this->service->delete($id);
         return ['status' => $deleted];
     }
 
-    public function loadUnit($id) {
+    public function loadUnit($id)
+    {
         try {
             $unit = $this->unit->find($id);
             return view('pages.products.component_unit', ['components' => $unit->component_unit]);
@@ -91,34 +110,41 @@ class ProductsController extends Controller
         }
     }
 
-    public function load() {
+    public function load()
+    {
         $q = request()->input('q');
         if ($q) {
-            $where =  function($query) use ($q){
-                $query->whereRaw('can_sale=1 AND (name like "%'.$q.'%" OR code like "%'.$q.'%")');
+            $where = function ($query) use ($q) {
+                $query->whereRaw('can_sale=1 AND (name like "%' . $q . '%" OR code like "%' . $q . '%")');
             };
-            $product = $this->service->filter($where,20);
-            return $product->map(function($val,$key) {
-                return [
+            $product = $this->service->filter($where, 20);
+            return $product->map(function ($val) {
+                $units = [];
+                foreach ($val->product_unit as $unit) {
+                    $units['data'][$unit->component_unit_code] = $unit->value;
+                }
+                return array_merge([
                     'value' => $val->id,
-                    'text' => $val->code.' - '.$val->name
-                ];
+                    'text' => $val->code . ' - ' . $val->name
+                ], $units);
+
             })->toArray();
         }
         return [];
     }
 
-    public function loadRaw() {
+    public function loadRaw()
+    {
         $q = request()->input('q');
         if ($q) {
-            $where =  function($query) use ($q){
-                $query->whereRaw('can_sale=0 AND (name like "%'.$q.'%" OR code like "%'.$q.'%")');
+            $where = function ($query) use ($q) {
+                $query->whereRaw('can_sale=0 AND (name like "%' . $q . '%" OR code like "%' . $q . '%")');
             };
-            $product = $this->service->filter($where,20);
-            return $product->map(function($val,$key) {
+            $product = $this->service->filter($where, 20);
+            return $product->map(function ($val, $key) {
                 return [
                     'value' => $val->id,
-                    'text' => $val->code.' - '.$val->name
+                    'text' => $val->code . ' - ' . $val->name
                 ];
             })->toArray();
         }

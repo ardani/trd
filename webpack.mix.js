@@ -1,4 +1,4 @@
-const { mix } = require('laravel-mix');
+const {mix} = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -22,29 +22,32 @@ mix.combine([
     'resources/assets/css/separate/vendor/bootstrap-daterangepicker.min.css',
     'resources/assets/css/main.css',
     'resources/assets/css/custom.css'
-],'public/css/default.css')
-.combine(['resources/assets/css/separate/pages/login.min.css'],'public/css/login.min.css')
-.combine(['resources/assets/css/separate/pages/error.min.css'],'public/css/error.min.css')
-.combine([
-    'resources/assets/js/lib/jquery/jquery.min.js',
-    'resources/assets/js/lib/tether/tether.min.js',
-    'resources/assets/js/lib/bootstrap/bootstrap.min.js',
-    'resources/assets/js/lib/match-height/jquery.matchHeight.min.js',
-    'resources/assets/js/lib/html5-form-validation/jquery.validation.min.js',
-    'resources/assets/js/lib/datatables-net/datatables.min.js',
-    'resources/assets/js/lib/moment/moment-with-locales.min.js',
-    'resources/assets/js/lib/daterangepicker/daterangepicker.js',
-    'resources/assets/js/lib/bootstrap-select/bootstrap-select.min.js',
-    'resources/assets/js/lib/bootstrap-select/ajax-bootstrap-select.min.js',
-    'resources/assets/js/lib/jquery.loadTemplate.min.js',
-    'resources/assets/js/lib/numeral.min.js',
-    'resources/assets/js/plugins.js',
-    'resources/assets/js/app.js',
-    'resources/assets/js/custom.js'
-], 'public/js/main.js')
-.js('resources/assets/js/index.js','public/js/index.js')
-.copy('resources/assets/js/sale-orders.js','public/js/sale-orders.js')
-.copy('resources/assets/js/orders.js','public/js/orders.js')
-.copy('resources/assets/js/productions.js','public/js/productions.js')
-.copy('resources/assets/js/return-orders.js','public/js/return-orders.js')
-.copy('resources/assets/js/return-sales.js','public/js/return-sales.js');
+], 'public/css/default.css')
+    .combine(['resources/assets/css/separate/pages/login.min.css'], 'public/css/login.min.css')
+    .combine(['resources/assets/css/separate/pages/error.min.css'], 'public/css/error.min.css')
+    .combine([
+        'resources/assets/js/lib/jquery/jquery.min.js',
+        'resources/assets/js/lib/tether/tether.min.js',
+        'resources/assets/js/lib/bootstrap/bootstrap.min.js',
+        'resources/assets/js/lib/match-height/jquery.matchHeight.min.js',
+        'resources/assets/js/lib/html5-form-validation/jquery.validation.min.js',
+        'resources/assets/js/lib/datatables-net/datatables.min.js',
+        'resources/assets/js/lib/moment/moment-with-locales.min.js',
+        'resources/assets/js/lib/daterangepicker/daterangepicker.js',
+        'resources/assets/js/lib/bootstrap-select/bootstrap-select.min.js',
+        'resources/assets/js/lib/bootstrap-select/ajax-bootstrap-select.min.js',
+        'resources/assets/js/lib/jquery.loadTemplate.min.js',
+        'resources/assets/js/lib/numeral.min.js',
+        'resources/assets/js/plugins.js',
+        'resources/assets/js/app.js',
+        'resources/assets/js/custom.js'
+    ], 'public/js/main.js')
+    .js('resources/assets/js/index.js', 'public/js/index.js')
+    .copy('resources/assets/js/sale-orders.js', 'public/js/sale-orders.js')
+    .copy('resources/assets/js/correction-stocks.js', 'public/js/correction-stocks.js')
+    .copy('resources/assets/js/payment-order.js', 'public/js/payment-order.js')
+    .copy('resources/assets/js/payment-sale.js', 'public/js/payment-sale.js')
+    .copy('resources/assets/js/orders.js', 'public/js/orders.js')
+    .copy('resources/assets/js/productions.js', 'public/js/productions.js')
+    .copy('resources/assets/js/return-orders.js', 'public/js/return-orders.js')
+    .copy('resources/assets/js/return-sales.js', 'public/js/return-sales.js');

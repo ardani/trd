@@ -26,7 +26,8 @@
                         <tr>
                             <th>Code</th>
                             <th>Name</th>
-                            <th>Correction</th>
+                            <th>Qty</th>
+                            <th>Units</th>
                             <th>Purchase Price</th>
                             <th>Created</th>
                             <th>Action</th>

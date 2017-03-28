@@ -2860,6 +2860,7 @@ $(document).ready(function(){
 var sProduct = $('.select-product');
 var sPO = $('.select-no-po');
 var sOrder = $('.select-no-order');
+var sSale = $('.select-no-sale');
 var sProductRaw = $('.select-product-raw');
 var sCustomer = $('.select-customer');
 var sSupplier = $('.select-supplier');
@@ -2872,6 +2873,7 @@ function calculateTotal(el) {
         sum += parseInt(subtotal);
     });
     $('#total').text(numeral(sum).format('0,0'));
+    $('#charge').text(numeral(sum).format('0,0'));
 }
 
 function buildDatatables(el, columns) {
@@ -2926,6 +2928,11 @@ $(document).ready(function () {
         checkbox.prop('checked', !checkbox.prop('checked'));
     });
 
+    $('.radioui').click(function (e) {
+        var radio = $(this).find('input[type=radio]');
+        radio.prop('checked', !radio.prop('checked'));
+    });
+
     $('.daterange').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -2967,6 +2974,17 @@ $(document).ready(function () {
         },
     });
 
+    sSale.selectpicker({liveSearch: true})
+        .ajaxSelectPicker({
+            ajax: {
+                type: 'GET',
+                url: '/sales/ajaxs/load'
+            },
+            locale: {
+                emptyTitle: '-'
+            },
+        });
+
     sPO.on('changed.bs.select', function (e) {
         var customer = $(this).find(":selected").data('customer');
         $('#customer').val(customer);
@@ -2979,7 +2997,7 @@ $(document).ready(function () {
         var supplier = $(this).find(':selected').data('supplier');
         $('#supplier').val(supplier);
         $.get($(this).data('url')+'?id='+$(this).val(), function( data ) {
-            $('#table-order-details').find('tbody').loadTemplate("#row-orPreder", data);
+            $('#table-order-details').find('tbody').loadTemplate("#row-order", data);
         });
     });
 
@@ -3225,7 +3243,8 @@ $(document).ready(function () {
     var correctionStocks = [
         {data: 'product_code',searchable: false, orderable: false},
         {data: 'product_name',searchable: false, orderable: false},
-        {data: 'correction', searchable: false, orderable: false},
+        {data: 'qty', searchable: false, orderable: false},
+        {data: 'attribute', searchable: false, orderable: false},
         {data: 'purchase_price', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false}
@@ -3242,7 +3261,7 @@ $(document).ready(function () {
     buildDatatables($('#table-return-sale-order'), returnSaleOrders);
 
     var returnOrders = [
-        {data: 'no',searchable: false, orderable: false},
+        {data: 'product_code',searchable: false, orderable: false},
         {data: 'order_no',searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
@@ -3250,5 +3269,51 @@ $(document).ready(function () {
     ];
 
     buildDatatables($('#table-return-order'), returnOrders);
+
+    var takeProduct = [
+        {data: 'product_code',searchable: false, orderable: false},
+        {data: 'product_name',searchable: false, orderable: false},
+        {data: 'qty', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false}
+    ];
+
+    buildDatatables($('#table-take-product'), takeProduct);
+
+    var paymentOrder = [
+        {data: 'id'},
+        {data: 'order_no', searchable: false, orderable: false},
+        {data: 'total', searchable: false, orderable: false},
+        {data: 'payment', searchable: false, orderable: false},
+        {data: 'status', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+
+    buildDatatables($('#table-payment-order'), paymentOrder);
+
+    var paymentSale = [
+        {data: 'id'},
+        {data: 'sale_no', searchable: false, orderable: false},
+        {data: 'total', searchable: false, orderable: false},
+        {data: 'payment', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+
+    buildDatatables($('#table-payment-sale'), paymentSale);
+
+    var paymentDetail = [
+        {data: 'account_code_id'},
+        {data: 'account_name', searchable: false, orderable: false},
+        {data: 'debit', searchable: false, orderable: false},
+        {data: 'credit', searchable: false, orderable: false},
+        {data: 'note', searchable: false, orderable: false},
+        {data: 'giro', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+
+    buildDatatables($('#table-payment-detail'), paymentDetail);
 
 });

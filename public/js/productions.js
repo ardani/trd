@@ -6,6 +6,9 @@ $(document).ready(function () {
 
     $('#save-btn').click(function (e) {
         var qty = $('#qty');
+        var length = $('#length');
+        var height = $('#height');
+        var width = $('#width');
         if (!sProductRaw.val()) {
             alert('product belum dipilih');
             return false;
@@ -21,6 +24,9 @@ $(document).ready(function () {
             data: {
                 product_id: sProductRaw.val(),
                 qty: qty.val(),
+                L: length.val(),
+                H: height.val(),
+                W: width.val(),
                 _token: Laravel.csrfToken,
                 no: $('#no-production').val()
             },

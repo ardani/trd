@@ -1,4 +1,6 @@
 <?php
+use App\Models\Setting;
+
 /**
  * Created by PhpStorm.
  * User: ardani
@@ -297,4 +299,9 @@ function getIP() {
 
 function clear_nota($no) {
     return \DB::table('nota')->where('ip', getIP())->where('no', $no)->delete();
+}
+
+function setting($key) {
+    $setting = Setting::where('key',$key)->first(['value']);
+    return $setting->value;
 }

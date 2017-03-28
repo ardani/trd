@@ -37,5 +37,5 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{asset('js/saleOrders.js')}}"></script>
+    <script src="{{asset('js/sale-orders.js')}}"></script>
 @endsection

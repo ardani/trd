@@ -32,6 +32,8 @@
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
+<fieldset class="form-group col-md-4" id="units">
+</fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Qty <span class="text-danger">*</span></label>
     <div class="input-group">
@@ -41,9 +43,6 @@
         </div>
     </div>
 </fieldset>
-{{--<fieldset class="form-group col-md-1 pull-md-right">
-    <button id="calculate-btn" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span></button>
-</fieldset>--}}
 
 <div class="clearfix"></div>
 <div class="col-md-12">
@@ -53,8 +52,9 @@
         <th width="10%">Code</th>
         <th>Product Name</th>
         <th width="15%">Price</th>
-        <th width="10%">Qty</th>
         <th width="10%">Disc</th>
+        <th width="10%">Units</th>
+        <th width="10%">Qty</th>
         <th width="15%">Sub Total</th>
         <th width="5%">Action</th>
     </tr>
@@ -66,13 +66,14 @@
                 <td>{{$transaction->product->code}}</td>
                 <td>{{$transaction->product->name}}</td>
                 <td class="text-right">{{number_format($transaction->selling_price)}}</td>
+                <td class="text-right">{{$transaction->disc}}</td>
+                <td class="text-right">{{number_format($transaction->attribute)}}</td>
                 <td>
                     <input data-id="{{$transaction->product_id}}"
                            data-selling_price="{{$transaction->selling_price}}"
                            type="number" data-url="{{url('sale_orders/actions/add')}}"
                            value="{{abs($transaction->qty)}}" class="form-control col-md-1 qty-input"/>
                 </td>
-                <td class="text-right">{{$transaction->disc}}</td>
                 <td class="text-right subtotal" data-content="subtotal">{{number_format(abs($transaction->qty)*($transaction->selling_price - $transaction->disc))}}</td>
                 <td>
                     <a class="act-delete" data-url="{{url('sale_orders/actions/delete')}}"
@@ -109,11 +110,12 @@
         <td data-content="code"></td>
         <td data-content="name"></td>
         <td class="text-right" data-content="selling_price" data-format="currency"></td>
+        <td class="text-right" data-format="currency" data-content="disc"></td>
+        <td class="text-right" data-content="attribute" data-format="currency"></td>
         <td><input type="number" data-url="{{url('sale_orders/actions/add')}}" data-template-bind='[
             {"attribute": "data-id", "value": "product_id"},
             {"attribute": "data-selling_price", "value": "selling_price"}
         ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
-        <td class="text-right" data-format="currency" data-content="disc"></td>
         <td class="text-right subtotal" data-format="currency" data-content="subtotal"></td>
         <td>
             <a class="act-delete" data-url="{{url('sale_orders/actions/delete')}}" data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>

@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Models\CashFlow;
 use App\Models\Production;
 use App\Models\SaleOrder;
 use Carbon\Carbon;
@@ -19,10 +20,12 @@ class SaleOrderService extends Service {
     protected $model;
     protected $name = 'sale_orders';
     private $production;
+    private $cash_flow;
 
-    public function __construct(SaleOrder $model, Production $production) {
+    public function __construct(SaleOrder $model, Production $production, CashFlow $cash_flow) {
         $this->model = $model;
         $this->production = $production;
+        $this->cash_flow = $cash_flow;
     }
 
     public function datatables($param = array()) {
@@ -62,13 +65,15 @@ class SaleOrderService extends Service {
         $model->created_at = $created_at;
         $model->cash = $data['cash'];
         $model->cashier_id = auth()->id();
+
         if (request()->has('payment_method_id')) {
             $model->payment_method_id = 2;
             $model->paid_until_at = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
         }
         $model->disc = request('disc',0);
         $model->save();
-
+        $total = $model->total > $data['cash'] ? $data['cash'] : $model->total;
+        $this->saveCashFlows($model, $total);
         $model->sale_order_state()->firstOrCreate(['state_id' => 1]);
         $sessions = session($data['no']);
         $model->transactions()->delete();
@@ -76,11 +81,26 @@ class SaleOrderService extends Service {
             $model->transactions()->create([
                 'selling_price' => $session['selling_price'],
                 'purchase_price' => $session['purchase_price'],
+                'attribute' => $session['attribute'],
                 'disc' => $session['disc'],
                 'product_id' => $session['product_id'],
                 'qty' => $session['qty'] * -1
             ]);
         }
         return clear_nota($data['no']);
+    }
+
+    public function update($data, $id) {
+        $model = $this->model->find($id);
+        $model->fill($data);
+        return $model->save();
+    }
+
+    private function saveCashFlows($model, $cash) {
+        $cash_flow = $model->cash_flow()->create([
+            'value' => $cash,
+            'account_code_id' => setting('acccount.penjualan')
+        ]);
+        return $cash_flow->id;
     }
 }
