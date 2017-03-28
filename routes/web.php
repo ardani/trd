@@ -277,11 +277,26 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('payment_sale/detail/{id}/create', [
         'middleware' => ['permission:create.payment_sale'],
-        'uses'       => 'PaymentOrderController@create'
+        'uses'       => 'PaymentSaleController@create'
     ]);
 
-    Route::get('payment_sale/detail/{id}/edit', [
+    Route::post('payment_sale/detail/{id}/create', [
+        'middleware' => ['permission:create.payment_sale'],
+        'uses'       => 'PaymentSaleController@store'
+    ]);
+
+    Route::get('payment_sale/detail/{payment_id}/edit/{id}', [
         'middleware' => ['permission:edit.payment_sale'],
         'uses'       => 'PaymentSaleController@edit'
+    ]);
+
+    Route::post('payment_sale/detail/{payment_id}/edit/{id}', [
+        'middleware' => ['permission:edit.payment_sale'],
+        'uses'       => 'PaymentSaleController@update'
+    ]);
+
+    Route::post('payment_sale/detail/{payment_id}/delete/{id}', [
+        'middleware' => ['permission:delete.payment_sale'],
+        'uses'       => 'PaymentSaleController@delete'
     ]);
 });

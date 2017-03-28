@@ -21,16 +21,15 @@
             @endpermission
             <section class="card">
                 <div class="card-block">
-                    <table id="table-cash-flows" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
+                    <table id="table-payment-sale" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Account Name</th>
-                            <th>Value</th>
-                            <th>Ref Id</th>
-                            <th>Giro</th>
+                            <th>Sale No</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
                             <th>Created At</th>
-                            <th>Note</th>
                             <th>Action</th>
                         </tr>
                         </thead>

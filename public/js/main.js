@@ -3297,6 +3297,7 @@ $(document).ready(function () {
         {data: 'sale_no', searchable: false, orderable: false},
         {data: 'total', searchable: false, orderable: false},
         {data: 'payment', searchable: false, orderable: false},
+        {data: 'status', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false},
     ];

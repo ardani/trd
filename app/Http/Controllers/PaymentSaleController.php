@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CashFlowService;
+use App\Services\PaymentOrderService;
 use App\Services\PaymentSaleService;
 use Illuminate\Http\Request;
 class PaymentSaleController extends Controller
 {
     private $page = 'payment_sale';
     private $service;
+    private $service_detail;
 
-    public function __construct(PaymentSaleService $service) {
+    public function __construct(PaymentSaleService $service, CashFlowService $detail) {
         $this->service = $service;
+        $this->service_detail = $detail;
     }
 
     public function index() {
@@ -25,50 +29,48 @@ class PaymentSaleController extends Controller
         return view('pages.'.$this->page.'.show',$this->service->find($id));
     }
 
-    public function create() {
+    public function create($payment_id) {
         $data = $this->service->meta();
+        $data['payment_id'] = $payment_id;
         return view('pages.'.$this->page.'.create',$data);
     }
 
     public function store(Request $request) {
         $data = $request->all();
-        $this->service->store($data);
+        $this->service_detail->store($data);
         return redirect()->back()->with('message','Save Success');
     }
 
-    public function edit($id) {
-        $model = $this->service->find($id);
+    public function edit($payment_id, $id) {
+        $model = $this->service_detail->find($id);
         $data = $this->service->meta();
         $data['id'] = $id;
+        $data['payment_id'] = $payment_id;
         $data['model'] = $model;
         return view('pages.'.$this->page.'.edit', $data);
     }
 
-    public function update(Request $request, $id) {
-        $data = $request->all();
-        $this->service->update($data,$id);
+    public function update($payment_id, $id) {
+        $data = request()->all();
+        $this->service_detail->update($data,$id);
         return redirect()->back()->with('message','Update Success');
     }
 
-    public function delete($id) {
-        $deleted = $this->service->delete($id);
+    public function delete($payment_id, $id) {
+        $deleted = $this->service_detail->delete($id);
         return ['status' => $deleted];
     }
 
-    public function load(){
-        $q = request()->input('q');
-        if ($q) {
-            $where =  function($query) use ($q){
-                $query->where('name','like','%'.$q.'%');
-            };
-            $customer = $this->service->filter($where,20);
-            return $customer->map(function($val,$key) {
-                return [
-                    'value' => $val->id,
-                    'text' => $val->name
-                ];
-            })->toArray();
+    public function detail($payment_id) {
+        if (request()->ajax()) {
+            return $this->service->datatablesDetail($payment_id);
         }
-        return [];
+        $metas = [
+            'name' => 'Payment Detail',
+            'description' => '',
+            'payment_id' => $payment_id,
+            'path' => url('payment_sale/detail/'.$payment_id)
+        ];
+        return view('pages.'.$this->page.'.index_detail',$metas);
     }
 }
