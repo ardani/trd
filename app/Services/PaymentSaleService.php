@@ -30,10 +30,10 @@ class PaymentSaleService extends Service {
                 return $model->sale->no;
             })
             ->addColumn('total',function($model){
-                return $model->sale->total;
+                return number_format($model->sale->total);
             })
             ->addColumn('payment',function($model){
-                return $model->detail->sum('value');
+                return number_format($model->detail->sum('value'));
             })
             ->addColumn('status',function($model){
                 return $model->detail->sum('value') >= $model->sale->total ? '<label class="label label-success">paid</label>'

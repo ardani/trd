@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\Models\CashFlow;
+use App\Models\Payment;
 use App\Models\Production;
 use App\Models\SaleOrder;
 use Carbon\Carbon;
@@ -20,12 +21,12 @@ class SaleOrderService extends Service {
     protected $model;
     protected $name = 'sale_orders';
     private $production;
-    private $cash_flow;
+    private $payment;
 
-    public function __construct(SaleOrder $model, Production $production, CashFlow $cash_flow) {
+    public function __construct(SaleOrder $model, Production $production, Payment $payment) {
         $this->model = $model;
         $this->production = $production;
-        $this->cash_flow = $cash_flow;
+        $this->payment = $payment;
     }
 
     public function datatables($param = array()) {
@@ -73,7 +74,7 @@ class SaleOrderService extends Service {
         $model->disc = request('disc',0);
         $model->save();
         $total = $model->total > $data['cash'] ? $data['cash'] : $model->total;
-        $this->saveCashFlows($model, $total);
+        $this->savePayment($model, $total);
         $model->sale_order_state()->firstOrCreate(['state_id' => 1]);
         $sessions = session($data['no']);
         $model->transactions()->delete();
@@ -96,11 +97,16 @@ class SaleOrderService extends Service {
         return $model->save();
     }
 
-    private function saveCashFlows($model, $cash) {
-        $cash_flow = $model->cash_flow()->create([
-            'value' => $cash,
-            'account_code_id' => setting('acccount.penjualan')
+    private function savePayment($model, $cash) {
+        $payment = $this->payment->firstOrCreate([
+            'cashier_id' => auth()->user()->id,
+            'type' => 'sale',
+            'ref_id' => $model->id
         ]);
-        return $cash_flow->id;
+        $payment->detail()->updateOrCreate([
+            'value' => $cash,
+            'account_code_id' => setting('account.sale'),
+            'is_direct' => 1
+        ],['value' => $cash]);
     }
 }

@@ -3,6 +3,7 @@
  */
 $(document).ready(function () {
     var tProductionDetails = $('#table-productions-details');
+    var unitsWrapper = $('#units');
 
     $('#save-btn').click(function (e) {
         var qty = $('#qty');
@@ -93,4 +94,25 @@ $(document).ready(function () {
             alert('Save Production Error. Try Again Later');
         })
     });
+
+    sProduct.on('changed.bs.select', function (e) {
+        var units = $(this).find(':selected').data();
+        var html = '';
+        if (Object.keys(units).length == 1) {
+            unitsWrapper.html(html);
+            return;
+        }
+
+        Object.keys(units).forEach(function (key) {
+            html += '<div class="col-md-4"> ' +
+                '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
+                '<input type="number" id="'+key+'" class="form-control " value="1" required></div>';
+        })
+        unitsWrapper.html(html);
+    });
+
+    $('.setActive').click(function () {
+        $('#listItemOrder').find('tbody tr').removeClass('active');
+        $(this).parents('tr').addClass('active');
+    })
 });

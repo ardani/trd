@@ -20,11 +20,8 @@
 <fieldset class="form-group col-md-3">
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
-<fieldset class="form-group col-md-3">
-    <label class="form-control-label">Unit (LxWxH) cm <span class="text-danger">*</span></label>
-    <input type="number" id="length" style="width: 30%;float: left;" placeholder="L" class="form-control" value="1">
-    <input type="number" id="width" style="width: 30%;float: left;margin:0 5px;" placeholder="W" class="form-control" value="1">
-    <input type="number" id="height" style="width: 30%;" placeholder="H" class="form-control" value="1">
+<fieldset class="form-group col-md-3" id="units">
+
 </fieldset>
 <fieldset class="form-group col-md-2">
     <div class="input-group">
@@ -34,10 +31,6 @@
         </div>
     </div>
 </fieldset>
-{{--<fieldset class="form-group col-md-1 pull-md-right">
-    <button id="calculate-btn" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span></button>
-</fieldset>--}}
-
 <div class="clearfix"></div>
 <div class="col-md-12">
 <table id="table-productions-details" class="display table table-bordered" cellspacing="0" width="100%">

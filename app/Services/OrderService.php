@@ -52,11 +52,15 @@ class OrderService extends Service {
         $model->created_at = $created_at;
         $model->cash = $data['cash'];
         $model->cashier_id = auth()->id();
+
         if (request()->has('payment_method_id')) {
             $model->payment_method_id = 2;
             $model->paid_until_at = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
         }
         $model->save();
+        $total = $model->total > $data['cash'] ? $data['cash'] : $model->total;
+        $this->savePayment($model, $total);
+
         $sessions = session($data['no']);
         $model->transactions()->delete();
         foreach ($sessions as $session) {
@@ -68,5 +72,19 @@ class OrderService extends Service {
             ]);
         }
         return clear_nota($data['no']);
+    }
+
+    private function savePayment($model, $cash) {
+        $payment = $this->payment->firstOrCreate([
+            'cashier_id' => auth()->user()->id,
+            'type' => 'order',
+            'ref_id' => $model->id
+        ]);
+
+        $payment->detail()->updateOrCreate([
+            'value' => $cash * -1,
+            'account_code_id' => setting('account.order'),
+            'is_direct' => 1
+        ],['value' => $cash * -1]);
     }
 }

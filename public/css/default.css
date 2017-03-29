@@ -366,3 +366,7 @@ div.dataTables_wrapper div.dataTables_processing {
     border: 1px solid rgba(0, 0, 0, .15);
     border-radius: .25rem;
 }
+
+.active {
+    background-color: #d9edf7;
+}

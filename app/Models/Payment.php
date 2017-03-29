@@ -9,11 +9,11 @@ class Payment extends Model {
     ];
 
     public function order() {
-        return $this->belongsTo(Order::class,'ref_id','id');
+        return $this->belongsTo(Order::class,'ref_id');
     }
 
     public function sale() {
-        return $this->belongsTo(SaleOrder::class,'ref_id','id');
+        return $this->belongsTo(SaleOrder::class,'ref_id');
     }
 
     public function detail() {
