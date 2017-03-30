@@ -51,12 +51,20 @@ class ProductionsController extends Controller
     }
 
     // edit PO
-    public function viewPRDetail($no) {
+    public function PRDetail(Request $request)
+    {
+        $no = $request->no;
+        $production_product_id = $request->production_product_id;
+        $transactions = $this->viewPRDetail($no, $production_product_id);
+        return array_values($transactions);
+    }
+
+    private function viewPRDetail($no, $production_product_id = null) {
         $PR = $this->service->where(function($query) use ($no){
             $query->where('no',$no);
         });
-
-        $transactions = $PR->transactions->map(function($val,$key){
+        $transactions = $PR->transactions->where('production_product_id',$production_product_id)
+            ->map(function($val,$key){
             $qty = abs($val->qty);
             return  [
                 'product_id'     => $val->product->id,
@@ -72,10 +80,10 @@ class ProductionsController extends Controller
 
     public function addPRDetail(Request $request) {
         $no = $request->no;
-        $transactions = $this->viewPRDetail($no);
+        $transactions = $this->viewPRDetail($no, $request->production_product_id);
         $product = $this->product->find($request->product_id);
 
-        if (array_key_exists($request->product_id,$transactions)) {
+        if (array_key_exists($request->product_id, $transactions)) {
             if (request()->has('is_edit')) {
                 $transactions[$request->product_id]['qty'] = $request->qty;
             } else {
@@ -85,11 +93,12 @@ class ProductionsController extends Controller
             $transactions[ $product->id ] = [
                 'product_id'     => $product->id,
                 'selling_price'  => $product->selling_price_default,
-                'purchase_price'  => $product->purchase_price_default,
+                'purchase_price' => $product->purchase_price_default,
                 'code'           => $product->code,
                 'name'           => $product->name,
-                'attribute'      => $request->input('L',1)*$request->input('H',1)*$request->input('W',1),
-                'qty'            => $request->qty
+                'attribute'      => $request->units,
+                'qty'            => $request->qty,
+                'production_product_id' => $request->production_product_id
             ];
         }
 
@@ -100,7 +109,7 @@ class ProductionsController extends Controller
         $param = $transactions[$product->id];
         $param['qty'] = $param['qty'] * -1;
 
-        $pr->transactions()->updateOrCreate(['product_id' => $product->id],$param);
+        $pr->transactions()->updateOrCreate(['product_id' => $product->id], $param);
         return array_values($transactions);
     }
 
@@ -111,7 +120,7 @@ class ProductionsController extends Controller
         });
 
         $pr->transactions()->where('product_id',$request->product_id)->delete();
-        return array_values($this->viewPRDetail($no));
+        return array_values($this->viewPRDetail($no, $request->production_product_id));
     }
 
     public function finished($id) {

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Production extends Model {
     protected $fillable = [
-        'no','sale_order_id','cashier_id','note'
+        'no','sale_order_id','cashier_id'
     ];
 
     public function sale_order() {

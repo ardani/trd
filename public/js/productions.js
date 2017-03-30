@@ -10,7 +10,7 @@ $(document).ready(function () {
         var length = $('#length');
         var height = $('#height');
         var width = $('#width');
-        if (!sProductRaw.val()) {
+        if (!sProduct.val()) {
             alert('product belum dipilih');
             return false;
         }
@@ -19,15 +19,18 @@ $(document).ready(function () {
             return false;
         }
 
+        var vP = $('#p').length ? $('#p').val() : 1;
+        var vL = $('#l').length ? $('#l').val() : 1;
+        var vT = $('#t').length ? $('#t').val() : 1;
+
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
             data: {
-                product_id: sProductRaw.val(),
+                product_id: sProduct.val(),
+                production_product_id: $('[name=product_selected]').val(),
                 qty: qty.val(),
-                L: length.val(),
-                H: height.val(),
-                W: width.val(),
+                units: vP * vL * vT,
                 _token: Laravel.csrfToken,
                 no: $('#no-production').val()
             },
@@ -50,6 +53,7 @@ $(document).ready(function () {
                 url: self.data('url'),
                 data: {
                     product_id: self.data('id'),
+                    production_product_id: $('[name=product_selected]').val(),
                     qty: self.val(),
                     _token: Laravel.csrfToken,
                     is_edit: 1,
@@ -69,7 +73,7 @@ $(document).ready(function () {
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
-            data: {no: $('#no-production').val(), product_id: product_id, _token: Laravel.csrfToken},
+            data: {no: $('#no-production').val(), product_id: product_id, _token: Laravel.csrfToken, production_product_id: $('[name=product_selected]').val()},
             success: function (data) {
                 tProductionDetails.find('tbody').loadTemplate("#row-production", data);
                 calculateTotal(tProductionDetails);
@@ -114,5 +118,21 @@ $(document).ready(function () {
     $('.setActive').click(function () {
         $('#listItemOrder').find('tbody tr').removeClass('active');
         $(this).parents('tr').addClass('active');
+        $('#product-selected').text($(this).data('name'));
+        $('[name=product_selected]').val($(this).data('id'));
+        $('.form-wrapper').show();
+        $.ajax({
+            type: 'GET',
+            url: $(this).data('url'),
+            data: {
+                production_product_id: $(this).data('id'),
+                no: $('#no-production').val()
+            },
+            success: function (data) {
+                tProductionDetails.find('tbody').loadTemplate("#row-production", data);
+            }
+        }).fail(function () {
+            alert('Get Production Product Error. Try Again Later');
+        })
     })
 });

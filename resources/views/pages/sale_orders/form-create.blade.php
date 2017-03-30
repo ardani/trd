@@ -89,7 +89,12 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-3 pull-md-right" style="margin-top: 10px">
+<div class="col-md-9" style="margin-top: 10px">
+    <div class="form-group">
+        <textarea name="note" class="form-control" cols="30" rows="4" placeholder="note"></textarea>
+    </div>
+</div>
+<div class="col-md-3" style="margin-top: 10px">
     <div class="form-group">
         <div class="input-group">
             <div class="input-group-addon">Rp</div>

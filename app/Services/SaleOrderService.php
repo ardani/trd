@@ -64,6 +64,7 @@ class SaleOrderService extends Service {
         $model->customer_id = $data['customer_id'];
         $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
         $model->created_at = $created_at;
+        $model->note = $data['note'];
         $model->cash = $data['cash'];
         $model->cashier_id = auth()->id();
 

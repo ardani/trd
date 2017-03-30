@@ -181,6 +181,10 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:create.productions'],
         'uses'       => 'ProductionsController@spk'
     ]);
+    Route::get('productions/actions/detail', [
+        'middleware' => ['permission:create.productions'],
+        'uses'       => 'ProductionsController@PRDetail'
+    ]);
 
     Route::get('products/prices/{product_id}', [
         'middleware' => ['permission:view.products'],

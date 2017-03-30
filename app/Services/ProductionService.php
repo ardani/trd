@@ -42,7 +42,6 @@ class ProductionService extends Service {
     public function update($data, $id) {
         $model = $this->model->find($id);
         $model->cashier_id = \Auth::id();
-        $model->note = $data['note'];
         $purchase = $this->sale->find($model->sale_order_id);
         $purchase->sale_order_state()->firstOrCreate(['state_id' => $data['state_id']]);
         return $model->save();

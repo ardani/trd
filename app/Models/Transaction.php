@@ -8,7 +8,8 @@ class Transaction extends Model {
         'purchase_price','selling_price','qty',
         'product_id','disc','return_qty',
         'attribute',
-        'return_complete'
+        'return_complete',
+        'production_product_id'
     ];
 
     public function transactionable() {
