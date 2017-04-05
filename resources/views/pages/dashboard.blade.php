@@ -6,10 +6,11 @@
                 <div class="col-xl-12 dahsboard-column">
                     <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
-                            <h3 class="panel-title">Recent orders</h3>
+                            <h3 class="panel-title">Sale Due Date</h3>
                         </header>
                         <div class="box-typical-body panel-body">
                             <table class="tbl-typical">
+                                <thead>
                                 <tr>
                                     <th>
                                         <div>Status</div>
@@ -21,91 +22,43 @@
                                         <div>Orders#</div>
                                     </th>
                                     <th align="center">
-                                        <div>Date</div>
+                                        <div>Due Date</div>
                                     </th>
                                 </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div><!--.box-typical-body-->
+                    </section><!--.box-typical-dashboard-->
+                </div><!--.col-->
+                <div class="col-xl-12 dahsboard-column">
+                    <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
+                        <header class="box-typical-header panel-heading">
+                            <h3 class="panel-title">Orders Due Date</h3>
+                        </header>
+                        <div class="box-typical-body panel-body">
+                            <table class="tbl-typical">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        <span class="label label-primary">Paid</span>
-                                        <span class="label label-success">Active</span>
-                                    </td>
-                                    <td>John Doe</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span
-                                            class="semibold">Today</span> 8:30
-                                    </td>
+                                    <th>
+                                        <div>Status</div>
+                                    </th>
+                                    <th>
+                                        <div>Clients</div>
+                                    </th>
+                                    <th align="center">
+                                        <div>Sale#</div>
+                                    </th>
+                                    <th align="center">
+                                        <div>Due Date</div>
+                                    </th>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-primary">Paid</span>
-                                        <span class="label label-success">Active</span>
-                                    </td>
-                                    <td>Thomas Bayer</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span
-                                            class="semibold">Today</span> 16:30
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-primary">Paid</span>
-                                        <span class="label label-default">Inactive</span>
-                                    </td>
-                                    <td>Nicolas Karabat</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span
-                                            class="semibold">Yesterday</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-default">Unpaid</span>
-                                        <span class="label label-default">Inactive</span>
-                                    </td>
-                                    <td>Alexandre Pome</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center">23th May</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-primary">Paid</span>
-                                        <span class="label label-success">Active</span>
-                                    </td>
-                                    <td>John Doe</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span
-                                            class="semibold">Today</span> 8:30
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-primary">Paid</span>
-                                        <span class="label label-success">Active</span>
-                                    </td>
-                                    <td>Thomas Bayer</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span
-                                            class="semibold">Today</span> 16:30
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-primary">Paid</span>
-                                        <span class="label label-default">Inactive</span>
-                                    </td>
-                                    <td>Nicolas Karabat</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center"><span
-                                            class="semibold">Yesterday</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="label label-default">Unpaid</span>
-                                        <span class="label label-default">Inactive</span>
-                                    </td>
-                                    <td>Alexandre Pome</td>
-                                    <td align="center">3435362</td>
-                                    <td class="color-blue-grey" nowrap align="center">23th May</td>
-                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
                             </table>
                         </div><!--.box-typical-body-->
                     </section><!--.box-typical-dashboard-->

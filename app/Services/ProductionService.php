@@ -29,6 +29,9 @@ class ProductionService extends Service {
             ->editColumn('created_at',function($model){
                 return $model->created_at->format('d/m/Y');
             })
+            ->addColumn('note', function ($model){
+                return $model->sale_order->note;
+            })
             ->addColumn('state',function ($model) {
                 return $model->sale_order->sale_order_state->state->name;
             })

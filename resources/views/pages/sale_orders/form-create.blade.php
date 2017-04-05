@@ -68,7 +68,7 @@
                     <td>{{$transaction['name']}}</td>
                     <td>{{number_format($transaction['selling_price'])}}</td>
                     <td>{{number_format($transaction['disc'])}}</td>
-                    <td>{{number_format($transaction['attribute'])}}</td>
+                    <td>{{ $transaction['units'] }}</td>
                     <td><input data-id="{{$transaction['product_id']}}"
                                data-selling_price="{{$transaction['selling_price']}}"
                                type="number" data-url="{{url('sale_orders/actions/addTemp')}}"
@@ -120,7 +120,7 @@
         <td data-content="name"></td>
         <td class="text-right" data-content="selling_price" data-format="currency"></td>
         <td class="text-right" data-content="disc" data-format="currency"></td>
-        <td class="text-right" data-content="attribute" data-format="currency"></td>
+        <td data-content="units"></td>
         <td><input type="number" data-url="{{url('sale_orders/actions/addTemp')}}" data-template-bind='[
             {"attribute": "data-id", "value": "product_id"},
             {"attribute": "data-selling_price", "value": "selling_price"}

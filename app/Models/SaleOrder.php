@@ -2,7 +2,10 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class SaleOrder extends Model {
+    use SoftDeletes;
     protected $dates = ['paid_until_at'];
     protected $appends = ['total'];
     protected $fillable = [
@@ -34,5 +37,10 @@ class SaleOrder extends Model {
         return $purchase->transactions->sum(function ($detail){
             return ($detail['selling_price']-$detail['disc']) * abs($detail['qty']);
         });
+    }
+
+    public function payment() {
+        return $this->hasOne(Payment::class,'ref_id')
+            ->where('type','sale');
     }
 }

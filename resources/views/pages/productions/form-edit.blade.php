@@ -105,7 +105,7 @@
                     <tr>
                         <td>{{$transaction->product->code}}</td>
                         <td>{{$transaction->product->name}}</td>
-                        <td>{{$transaction->attribute}}</td>
+                        <td>{{$transaction->units}}</td>
                         <td>
                             <input data-id="{{$transaction->product_id}}"
                                    type="number" data-url="{{url('productions/actions/add')}}"
@@ -135,10 +135,14 @@
     <tr>
         <td data-content="code"></td>
         <td data-content="name"></td>
-        <td data-content="attribute"></td>
-        <td><input type="number" data-url="{{url('productions/actions/add')}}" data-template-bind='[
-            {"attribute": "data-id", "value": "product_id"}
-        ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
+        <td data-content="units"></td>
+        <td>
+            <input type="number" data-url="{{url('productions/actions/add')}}"
+                   data-template-bind='[
+                      {"attribute": "data-id", "value": "product_id"}
+                    ]'
+                   data-value="qty" class="form-control col-md-1 qty-input"/>
+        </td>
         <td>
             <a class="act-delete" data-url="{{url('productions/actions/delete')}}"
                data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span

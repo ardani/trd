@@ -9,6 +9,8 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Product;
 use Carbon\Carbon;
 use Entrust;
 use Datatables;
@@ -17,9 +19,13 @@ class OrderService extends Service {
 
     protected $model;
     protected $name = 'orders';
+    private $payment;
+    private $product;
 
-    public function __construct(Order $model) {
+    public function __construct(Order $model, Payment $payment, Product $product) {
         $this->model = $model;
+        $this->payment = $payment;
+        $this->product = $product;
     }
 
     public function datatables($param = array()) {
@@ -66,11 +72,15 @@ class OrderService extends Service {
         foreach ($sessions as $session) {
             $model->transactions()->create([
                 'purchase_price' => $session['purchase_price'],
+                'selling_price' => $session['selling_price'],
+                'units' => $session['units'],
                 'product_id' => $session['product_id'],
                 'qty' => $session['qty'],
                 'attribute' => $session['attribute']
             ]);
+            $this->updateSellingPrice($session['product_id'], $session['selling_price'], $session['purchase_price']);
         }
+
         return clear_nota($data['no']);
     }
 
@@ -86,5 +96,22 @@ class OrderService extends Service {
             'account_code_id' => setting('account.order'),
             'is_direct' => 1
         ],['value' => $cash * -1]);
+    }
+
+    public function delete($id)
+    {
+        $note = request()->input('note','');
+        $this->model->find($id)->update(['note' => $note]);
+        return parent::delete($id);
+    }
+
+    private function updateSellingPrice($product_id, $selling_price, $purchase_price) {
+        // using average
+        $product = $this->product->find($product_id);
+        $avg_selling_price = ($product->selling_price_default + $selling_price) / 2;
+        $avg_purchase_price = ($product->purchase_price_default + $purchase_price) / 2;
+        $product->selling_price_default = round($avg_selling_price);
+        $product->purchase_price_default = round($avg_purchase_price);
+        $product->save();
     }
 }

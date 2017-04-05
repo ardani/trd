@@ -84,6 +84,7 @@ class SaleOrderService extends Service {
                 'selling_price' => $session['selling_price'],
                 'purchase_price' => $session['purchase_price'],
                 'attribute' => $session['attribute'],
+                'units' => $session['units'],
                 'disc' => $session['disc'],
                 'product_id' => $session['product_id'],
                 'qty' => $session['qty'] * -1

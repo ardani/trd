@@ -8,6 +8,7 @@ class Transaction extends Model {
         'purchase_price','selling_price','qty',
         'product_id','disc','return_qty',
         'attribute',
+        'units',
         'return_complete',
         'production_product_id'
     ];

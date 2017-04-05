@@ -93,7 +93,8 @@ class SaleOrdersController extends Controller {
             $purchase_price = $selling_price_customer->purchase_price;
         }
 
-        if (array_key_exists($request->product_id, $sessions)) {
+        if (array_key_exists($request->product_id,$sessions) &&
+            $sessions[$request->product_id]['attribute'] == $request->attribute) {
             if (request()->has('is_edit')) {
                 $sessions[ $request->product_id ]['qty']      = $request->qty;
                 $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc);
@@ -108,7 +109,8 @@ class SaleOrdersController extends Controller {
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name,
-                'attribute'      => $request->units,
+                'attribute'      => $request->attribute,
+                'units'          => $request->units,
                 'qty'            => $request->qty,
                 'disc'           => $disc,
                 'selling_price'  => $selling_price,
@@ -116,8 +118,8 @@ class SaleOrdersController extends Controller {
                 'subtotal'       => $request->qty * ($selling_price - $disc)
             ];
         }
-        session([$request->no => $sessions]);
 
+        session([$request->no => $sessions]);
         return array_values($sessions);
     }
 
@@ -142,6 +144,7 @@ class SaleOrdersController extends Controller {
                 'code'           => $val->product->code,
                 'name'           => $val->product->name,
                 'attribute'      => $val->attribute,
+                'units'          => $val->units,
                 'qty'            => $qty,
                 'disc'           => $disc,
                 'selling_price'  => $val->selling_price,
@@ -183,7 +186,8 @@ class SaleOrdersController extends Controller {
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name,
-                'attribute'      => $request->units,
+                'attribute'      => $request->attribute,
+                'units'          => $request->units,
                 'qty'            => $request->qty,
                 'disc'           => $disc,
                 'selling_price'  => $selling_price,

@@ -19,9 +19,25 @@ $(document).ready(function () {
             return false;
         }
 
-        var vP = $('#p').length ? $('#p').val() : 1;
-        var vL = $('#l').length ? $('#l').val() : 1;
-        var vT = $('#t').length ? $('#t').val() : 1;
+        var units = [];
+        var vP = 1;
+        var vL = 1;
+        var vT = 1;
+
+        if ($('#p').length) {
+            vP = $('#p').val();
+            units.push(vP + $('#p').data('unit'));
+        }
+
+        if ($('#l').length) {
+            vL = $('#l').val();
+            units.push(vL + $('#l').data('unit'));
+        }
+
+        if ($('#t').length) {
+            vT = $('#t').val();
+            units.push(vT + $('#t').data('unit'));
+        }
 
         $.ajax({
             type: 'POST',
@@ -30,7 +46,8 @@ $(document).ready(function () {
                 product_id: sProduct.val(),
                 production_product_id: $('[name=product_selected]').val(),
                 qty: qty.val(),
-                units: vP * vL * vT,
+                attribute: vP * vL * vT,
+                units: units.join('x'),
                 _token: Laravel.csrfToken,
                 no: $('#no-production').val()
             },
@@ -110,7 +127,7 @@ $(document).ready(function () {
         Object.keys(units).forEach(function (key) {
             html += '<div class="col-md-4"> ' +
                 '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
-                '<input type="number" id="'+key+'" class="form-control " value="1" required></div>';
+                '<input type="number" data-unit="'+units[key]+'" id="'+key+'" class="form-control " value="1" required></div>';
         })
         unitsWrapper.html(html);
     });

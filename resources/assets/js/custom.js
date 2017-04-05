@@ -40,6 +40,25 @@ function buildDatatables(el, columns) {
             });
         }
     });
+
+    el.on('click', 'a.delete-action-note', function (e) {
+        var el = $(this);
+        if (confirm("Are you sure delete this data?")) {
+            var reason = prompt('please fill reason for delete', '');
+            if (reason == null) {
+                alert('reason cant empty');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: el.data('url'),
+                data: {_token: Laravel.csrfToken, note: reason},
+            }).done(function () {
+                oTable.ajax.reload();
+            });
+        }
+    });
 }
 
 $(document).ready(function () {

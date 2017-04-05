@@ -86,8 +86,10 @@ class OrdersController extends Controller
         $sessions = session()->has($request->no) ? session($request->no) : [];
         $product = $this->product->find($request->product_id);
         $purchase_price = $request->purchase_price;
+        $selling_price = $request->selling_price;
 
-        if (array_key_exists($request->product_id,$sessions)) {
+        if (array_key_exists($request->product_id,$sessions) &&
+            $sessions[$request->product_id]['attribute'] == $request->attribute) {
             if (request()->has('is_edit')) {
                 $sessions[$request->product_id]['qty'] = $request->qty;
                 $sessions[$request->product_id]['subtotal'] = $request->qty * $purchase_price;
@@ -100,9 +102,11 @@ class OrdersController extends Controller
                 'product_id'     => $request->product_id,
                 'code'           => $product->code,
                 'name'           => $product->name,
-                'attribute'      => $request->input('L',1)*$request->input('H',1)*$request->input('W',1),
+                'attribute'      => $request->attribute,
+                'units'          => $request->units,
                 'qty'            => $request->qty,
                 'purchase_price' => $purchase_price,
+                'selling_price'  => $selling_price,
                 'subtotal'       => $request->qty * $purchase_price
             ];
         }
@@ -129,7 +133,9 @@ class OrdersController extends Controller
                 'name'           => $val->product->name,
                 'qty'            => $qty,
                 'purchase_price' => $val->purchase_price,
+                'selling_price'  => $val->selling_price,
                 'attribute'      => $val->attribute,
+                'units'          => $val->units,
                 'subtotal'       => $qty * ($val->purchase_price)
             ];
         });
@@ -142,6 +148,7 @@ class OrdersController extends Controller
         $transactions = $this->viewPODetail($no);
         $product = $this->product->find($request->product_id);
         $purchase_price = $product->purchase_price;
+        $selling_price = $product->selling_price;
 
         if (array_key_exists($request->product_id,$transactions)) {
             if (request()->has('is_edit')) {
@@ -156,9 +163,11 @@ class OrdersController extends Controller
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name,
-                'attribute'      => $request->input('L',1)*$request->input('H',1)*$request->input('W',1),
+                'attribute'      => $request->attribute,
+                'units'          => $request->units,
                 'qty'            => $request->qty,
                 'purchase_price' => $purchase_price,
+                'selling_price'  => $selling_price,
                 'subtotal'       => $request->qty * ($purchase_price)
             ];
         }
