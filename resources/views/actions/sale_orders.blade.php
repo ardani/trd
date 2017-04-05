@@ -4,7 +4,7 @@
             class="glyphicon glyphicon-pencil"></span></a>
     @endpermission
     @permission(('delete.sale_orders'))
-    <a title="delete" data-url="{{url('sale_orders/delete/'.$id)}}" class="btn btn-sm btn-danger delete-action"><span
+    <a title="delete" data-url="{{url('sale_orders/delete/'.$id)}}" class="btn btn-sm btn-danger delete-action-note"><span
             class="glyphicon glyphicon-trash"></span></a>
     @endpermission
         <a href="#" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

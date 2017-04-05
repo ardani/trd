@@ -93,6 +93,13 @@ class SaleOrderService extends Service {
         return clear_nota($data['no']);
     }
 
+    public function delete($id)
+    {
+        $note = request()->input('note','');
+        $this->model->find($id)->update(['note' => $note]);
+        return parent::delete($id);
+    }
+
     public function update($data, $id) {
         $model = $this->model->find($id);
         $model->fill($data);
