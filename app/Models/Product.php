@@ -2,13 +2,12 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model {
-    use SoftDeletes;
+    protected $dates = ['stock_at'];
     protected $fillable = [
         'code','name', 'start_stock','min_stock','description','selling_price_default','supplier_id',
-        'purchase_price_default','category_id','unit_id','can_sale'
+        'purchase_price_default','category_id','unit_id','can_sale','stock_at'
     ];
 
     protected $appends = ['stock'];
@@ -38,7 +37,12 @@ class Product extends Model {
     }
 
     public function getStockAttribute() {
+        if (in_array($this->attributes['category_id'], [2,4])) {
+            return 0;
+        }
+
         $trans = Transaction::where('product_id', $this->attributes['id'])
+            ->where('transactionable_type','!=','App\Models\SaleOrder')
             ->select(\DB::raw('sum(qty*attribute) as stock'))
             ->where('return_complete',0)
             ->first();

@@ -3,18 +3,25 @@ var sPO = $('.select-no-po');
 var sOrder = $('.select-no-order');
 var sSale = $('.select-no-sale');
 var sProductRaw = $('.select-product-raw');
+var sProductProduction = $('.select-product-production');
 var sCustomer = $('.select-customer');
 var sSupplier = $('.select-supplier');
 var sAccountCode = $('.select-account-code');
 
 function calculateTotal(el) {
     var sum = 0;
+    var charge = 0;
+    var cash = $('#cash');
     el.find('tbody tr').each(function () {
         var subtotal = numeral($(this).find('.subtotal').text()).value();
-        sum += parseInt(subtotal);
+        sum += parseFloat(subtotal);
     });
     $('#total').text(numeral(sum).format('0,0'));
-    $('#charge').text(numeral(sum).format('0,0'));
+    $('#charge').text('0');
+    if (cash.val()) {
+        charge = sum - parseFloat(cash.val())
+        $('#charge').text(numeral(charge).format('0,0'));
+    }
 }
 
 function buildDatatables(el, columns) {
@@ -101,6 +108,19 @@ $(document).ready(function () {
         }
     });
 
+    $('.datepicker').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoUpdateInput: false,
+        locale: {
+            format: 'DD/MM/YYYY'
+        }
+    });
+
+    $('.datepicker').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY'));
+    });
+
     sProduct.selectpicker({liveSearch: true})
     .ajaxSelectPicker({
         ajax: {
@@ -111,6 +131,17 @@ $(document).ready(function () {
             emptyTitle: '-'
         },
     });
+
+    sProductProduction.selectpicker({liveSearch: true})
+        .ajaxSelectPicker({
+            ajax: {
+                type: 'GET',
+                url: '/products/ajaxs/load_production',
+            },
+            locale: {
+                emptyTitle: '-'
+            },
+        });
 
     sPO.selectpicker({liveSearch: true})
     .ajaxSelectPicker({

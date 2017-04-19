@@ -28,12 +28,15 @@
 </fieldset>
 <div class="clearfix"></div>
 <hr class="hr-form"/>
-
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-4" id="units">
+</fieldset>
+<fieldset class="form-group col-md-10">
+    <label class="form-control-label">Desc</label>
+    <input type="text" id="desc" placeholder="desc" class="form-control"/>
 </fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Qty <span class="text-danger">*</span></label>
@@ -65,7 +68,7 @@
             @foreach($transactions as $transaction)
                 <tr>
                     <td>{{$transaction['code']}}</td>
-                    <td>{{$transaction['name']}}</td>
+                    <td>{{$transaction['name'] .' - '.$transaction['desc']}}</td>
                     <td>{{number_format($transaction['selling_price'])}}</td>
                     <td>{{number_format($transaction['disc'])}}</td>
                     <td>{{ $transaction['units'] }}</td>
@@ -83,7 +86,7 @@
             @endforeach
         @else
             <tr class="empty-row">
-                <td colspan="7" class="text-center">empty data</td>
+                <td colspan="8" class="text-center">empty data</td>
             </tr>
         @endif
         </tbody>
@@ -97,20 +100,14 @@
 <div class="col-md-3" style="margin-top: 10px">
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Rp</div>
+            <div class="input-group-addon">Disc Rp</div>
             <input type="number" name="disc" id="disc" class="form-control" placeholder="0">
-            <div class="input-group-btn">
-                <button id="count-btn" type="button" class="btn btn-info">disc</button>
-            </div>
         </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Rp</div>
+            <div class="input-group-addon">Dp&nbsp;&nbsp; Rp</div>
             <input type="number" id="cash" name="cash" placeholder="0" class="form-control">
-            <div class="input-group-btn">
-                <button id="pay-btn" type="button" class="btn btn-info">pay</button>
-            </div>
         </div>
     </div>
 </div>

@@ -1,3 +1,7 @@
 {
-  "/js/index.js": "/js/index.js"
+  "/js/index.js": "/js/index.js",
+  "/css/default.css": "/css/default.css",
+  "/css/login.min.css": "/css/login.min.css",
+  "/css/error.min.css": "/css/error.min.css",
+  "/js/main.js": "/js/main.js"
 }

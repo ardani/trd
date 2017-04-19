@@ -1,17 +1,8 @@
 @include('includes.alert')
 <div class="col-md-6">
     <fieldset class="form-group">
-        <label class="form-control-label">Code <span class="text-danger">*</span></label>
-        <input type="text" name="code" class="form-control"
-               value="{{ $model ? $model['code'] : old('code') }}"
-               data-validation="[NOTEMPTY]"
-               placeholder="code">
-        {{ csrf_field() }}
-    </fieldset>
-</div>
-<div class="col-md-6">
-    <fieldset class="form-group">
         <label class="form-control-label">Name <span class="text-danger">*</span></label>
+        {{ csrf_field() }}
         <input type="text" name="name" class="form-control"
                value="{{ $model ? $model['name'] : old('name') }}"
                data-validation="[NOTEMPTY]"
@@ -50,6 +41,14 @@
                value="{{ $model ? $model['purchase_price_default'] : old('purchase_price_default') }}"
                data-validation="[NOTEMPTY]"
                placeholder="purchase price">
+    </fieldset>
+</div>
+<div class="col-md-6">
+    <fieldset class="form-group">
+        <label class="form-control-label">Stock At</label>
+        <input type="text" name="stock_at" class="form-control datepicker"
+               value="{{ $model ? $stock_at : old('stock_at') }}"
+               placeholder="stock at">
     </fieldset>
 </div>
 <div class="col-md-6">

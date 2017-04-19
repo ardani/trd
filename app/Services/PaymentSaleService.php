@@ -65,4 +65,8 @@ class PaymentSaleService extends Service {
             ->where('payment_id',$id)
             ->make(true);
     }
+
+    public function detail() {
+
+    }
 }

@@ -44,7 +44,7 @@
         @foreach($model->sale_order->transactions as $transaction)
             <tr>
                 <td>{{$transaction->product->code}}</td>
-                <td>{{$transaction->product->name}}</td>
+                <td>{{$transaction->product->name .' - '.$transaction->desc}}</td>
                 <td>{{abs($transaction->qty)}}</td>
                 <td>
                     <button type="button" data-name="{{$transaction->product->name}}"

@@ -41,7 +41,7 @@ class OrdersController extends Controller
         $total = 0;
         if (session($auto_number)) {
             $total = collect(session($auto_number))->sum(function($val){
-                return $val['purchase_price']*$val['qty'];
+                return $val['purchase_price'] * $val['qty'] * $val['attribute'];
             });
         }
         $data['total'] = $total;
@@ -57,7 +57,7 @@ class OrdersController extends Controller
         $model = $this->service->find($id);
         $data = $this->service->meta();
         $total = $model->transactions->sum(function ($val){
-            return abs($val->qty) * ($val->purchase_price);
+            return abs($val->qty) * ($val->purchase_price) * $val->attribute;
         });
         $data['id'] = $id;
         $data['model'] = $model;
@@ -92,10 +92,10 @@ class OrdersController extends Controller
             $sessions[$request->product_id]['attribute'] == $request->attribute) {
             if (request()->has('is_edit')) {
                 $sessions[$request->product_id]['qty'] = $request->qty;
-                $sessions[$request->product_id]['subtotal'] = $request->qty * $purchase_price;
+                $sessions[$request->product_id]['subtotal'] = $request->qty * $purchase_price * $request->attribute;
             } else {
                 $sessions[ $request->product_id ]['qty'] += $request->qty;
-                $sessions[$request->product_id]['subtotal'] = $sessions[$request->product_id]['qty'] * $purchase_price;
+                $sessions[$request->product_id]['subtotal'] = $sessions[$request->product_id]['qty'] * $purchase_price * $request->attribute;
             }
         } else {
             $sessions[ $product->id ] = [
@@ -107,7 +107,7 @@ class OrdersController extends Controller
                 'qty'            => $request->qty,
                 'purchase_price' => $purchase_price,
                 'selling_price'  => $selling_price,
-                'subtotal'       => $request->qty * $purchase_price
+                'subtotal'       => $request->qty * $purchase_price * $request->attribute
             ];
         }
         session([$request->no => $sessions]);
@@ -136,7 +136,7 @@ class OrdersController extends Controller
                 'selling_price'  => $val->selling_price,
                 'attribute'      => $val->attribute,
                 'units'          => $val->units,
-                'subtotal'       => $qty * ($val->purchase_price)
+                'subtotal'       => $qty * ($val->purchase_price) * $val->attribute
             ];
         });
 
@@ -150,13 +150,13 @@ class OrdersController extends Controller
         $purchase_price = $product->purchase_price;
         $selling_price = $product->selling_price;
 
-        if (array_key_exists($request->product_id,$transactions)) {
+        if (array_key_exists($request->product_id, $transactions)) {
             if (request()->has('is_edit')) {
                 $transactions[$request->product_id]['qty'] = $request->qty;
-                $transactions[$request->product_id]['subtotal'] = $request->qty * $purchase_price;
+                $transactions[$request->product_id]['subtotal'] = $request->qty * $purchase_price * $request->units;
             } else {
                 $transactions[$request->product_id]['qty'] += $request->qty;
-                $transactions[$request->product_id]['subtotal'] = $transactions[$request->product_id]['qty'] * $purchase_price;
+                $transactions[$request->product_id]['subtotal'] = $transactions[$request->product_id]['qty'] * $purchase_price * $request->units;
             }
         } else {
             $transactions[ $product->id ] = [
@@ -168,7 +168,7 @@ class OrdersController extends Controller
                 'qty'            => $request->qty,
                 'purchase_price' => $purchase_price,
                 'selling_price'  => $selling_price,
-                'subtotal'       => $request->qty * ($purchase_price)
+                'subtotal'       => $request->qty * ($purchase_price) * $request->attribute
             ];
         }
 
@@ -191,36 +191,39 @@ class OrdersController extends Controller
     }
 
     public function load() {
-        if ($q = request()->input('q')) {
-            $where =  function($query) use ($q){
-                $query->whereRaw('(no like "%'.$q.'%")');
-            };
-            $sale = $this->service->filter($where,20);
-            return $sale->map(function($val,$key) {
-                return [
-                    'value' => $val->id,
-                    'text' => $val->no.' - '.$val->supplier->name,
-                    'data' => [
-                        'supplier' => $val->supplier->name,
-                    ]
-                ];
-            })->toArray();
+        $q = request()->input('q');
+        if (!$q) {
+            return [];
         }
-        return [];
+        $where =  function($query) use ($q){
+            $query->whereRaw('(no like "%'.$q.'%")');
+        };
+        $sale = $this->service->filter($where,20);
+        return $sale->map(function($val,$key) {
+            return [
+                'value' => $val->id,
+                'text' => $val->no.' - '.$val->supplier->name,
+                'data' => [
+                    'supplier' => $val->supplier->name,
+                ]
+            ];
+        })->toArray();
     }
 
     public function detail() {
-        if ($q = request()->input('id')) {
-            $sale = $this->service->find($q);
-            return $sale->transactions->map(function($val){
-                return [
-                    'code' => $val->product->code,
-                    'name' => $val->product->name,
-                    'product_id' => $val->product_id,
-                    'qty' => abs($val->qty)
-                ];
-            })->toArray();
+        $q = request()->input('id');
+        if (!$q) {
+            return [];
         }
-        return [];
+
+        $sale = $this->service->find($q);
+        return $sale->transactions->map(function($val){
+            return [
+                'code' => $val->product->code,
+                'name' => $val->product->name,
+                'product_id' => $val->product_id,
+                'qty' => abs($val->qty)
+            ];
+        })->toArray();
     }
 }

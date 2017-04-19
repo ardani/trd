@@ -9,6 +9,11 @@
     <label class="form-control-label">Invoice No</label>
     <input type="text" class="form-control" name="invoice_no">
 </fieldset>
+<fieldset class="form-group col-md-2">
+    <label class="form-control-label">Delivery No</label>
+    <input type="text" class="form-control" name="delivery_order_noo">
+</fieldset>
+<div class="clearfix"></div>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Supplier <span class="text-danger">*</span></label>
     <select name="supplier_id" class="form-control select-supplier" data-live-search="true">
@@ -23,7 +28,7 @@
         <input disabled type="text" id="paid-until-at" name="paid_until_at" class="form-control daterange" placeholder="credit date">
     </div>
 </fieldset>
-<fieldset class="form-group col-md-2 pull-md-right">
+<fieldset class="form-group col-md-2">
     <label class="form-control-label">Date <span class="text-danger">*</span></label>
     <input type="text" class="form-control daterange" name="created_at"
            data-validation="[NOTEMPTY]">
@@ -32,7 +37,7 @@
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
-    <select id="product_id" class="form-control select-product" data-live-search="true"></select>
+    <select id="product_id" class="form-control select-product-raw" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-2">
         <label class="form-control-label">Purchase Price <span class="text-danger">*</span></label>
@@ -93,7 +98,7 @@
             @endforeach
         @else
         <tr class="empty-row">
-            <td colspan="7" class="text-center">empty data</td>
+            <td colspan="8" class="text-center">empty data</td>
         </tr>
         @endif
     </tbody>
@@ -102,11 +107,8 @@
 <div class="col-md-3 pull-md-right" style="margin-top: 10px">
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Rp</div>
+            <div class="input-group-addon">Dp Rp</div>
             <input type="number" id="cash" name="cash" placeholder="0" class="form-control">
-            <div class="input-group-btn">
-                <button id="pay-btn" type="button" class="btn btn-info">pay</button>
-            </div>
         </div>
     </div>
 </div>

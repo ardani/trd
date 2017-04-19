@@ -42,6 +42,7 @@ mix.combine([
         'resources/assets/js/app.js',
         'resources/assets/js/custom.js'
     ], 'public/js/main.js')
+
     .js('resources/assets/js/index.js', 'public/js/index.js')
     .copy('resources/assets/js/sale-orders.js', 'public/js/sale-orders.js')
     .copy('resources/assets/js/correction-stocks.js', 'public/js/correction-stocks.js')

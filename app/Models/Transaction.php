@@ -9,6 +9,7 @@ class Transaction extends Model {
         'product_id','disc','return_qty',
         'attribute',
         'units',
+        'desc',
         'return_complete',
         'production_product_id'
     ];

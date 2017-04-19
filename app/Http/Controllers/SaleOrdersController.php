@@ -97,25 +97,26 @@ class SaleOrdersController extends Controller {
             $sessions[$request->product_id]['attribute'] == $request->attribute) {
             if (request()->has('is_edit')) {
                 $sessions[ $request->product_id ]['qty']      = $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc);
+                $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc) * $request->attribute;
             }
             else {
                 $sessions[ $request->product_id ]['qty'] += $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $sessions[ $request->product_id ]['qty'] * ($selling_price - $disc);
+                $sessions[ $request->product_id ]['subtotal'] = $sessions[ $request->product_id ]['qty'] * ($selling_price - $disc) * $request->attribute;
             }
         }
         else {
             $sessions[ $product->id ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
-                'name'           => $product->name,
+                'name'           => $product->name.' - '.$request->desc,
                 'attribute'      => $request->attribute,
                 'units'          => $request->units,
                 'qty'            => $request->qty,
+                'desc'           => $request->desc,
                 'disc'           => $disc,
                 'selling_price'  => $selling_price,
                 'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * ($selling_price - $disc)
+                'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
             ];
         }
 
@@ -142,14 +143,15 @@ class SaleOrdersController extends Controller {
             return [
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
-                'name'           => $val->product->name,
+                'name'           => $val->product->name.' - '.$val->desc,
                 'attribute'      => $val->attribute,
                 'units'          => $val->units,
                 'qty'            => $qty,
                 'disc'           => $disc,
+                'desc'           => $val->desc,
                 'selling_price'  => $val->selling_price,
                 'purchase_price' => $val->purchase_price,
-                'subtotal'       => $qty * ($val->selling_price - $disc)
+                'subtotal'       => $qty * ($val->selling_price - $disc) * $val->attribute
             ];
         });
 
@@ -174,25 +176,28 @@ class SaleOrdersController extends Controller {
         if (array_key_exists($request->product_id, $transactions)) {
             if (request()->has('is_edit')) {
                 $transactions[ $request->product_id ]['qty']      = $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price-$disc);
+                $transactions[ $request->product_id ]['subtotal'] =
+                    $request->qty * ($selling_price-$disc) * $request->attribute;
             }
             else {
                 $transactions[ $request->product_id ]['qty'] += $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] = $transactions[ $request->product_id ]['qty'] * ($selling_price - $disc);
+                $transactions[ $request->product_id ]['subtotal'] =
+                    $transactions[ $request->product_id ]['qty'] * ($selling_price - $disc) * $request->attribute;
             }
         }
         else {
             $transactions[ $product->id ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
-                'name'           => $product->name,
+                'name'           => $product->name.' - '.$request->desc,
                 'attribute'      => $request->attribute,
                 'units'          => $request->units,
                 'qty'            => $request->qty,
+                'desc'           => $request->desc,
                 'disc'           => $disc,
                 'selling_price'  => $selling_price,
                 'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * ($selling_price - $disc)
+                'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
             ];
         }
 
@@ -242,7 +247,7 @@ class SaleOrdersController extends Controller {
             return $sale->transactions->map(function($val){
               return [
                   'code' => $val->product->code,
-                  'name' => $val->product->name,
+                  'name' => $val->product->name.' - '.$val->desc,
                   'product_id' => $val->product_id,
                   'qty' => abs($val->qty)
               ];

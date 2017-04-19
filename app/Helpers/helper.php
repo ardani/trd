@@ -260,6 +260,19 @@ function auto_number_productions($reserve = 0) {
     return $new;
 }
 
+function auto_number_product($name) {
+    $len   = 5;
+    $start = substr($name, 0, 1);
+    $last  = DB::table('products')
+        ->whereRaw('left(code,1) = "'.$name.'"')
+        ->orderBy('code', 'DESC')
+        ->first(['code']);
+    $num   = ($last) ? (int) str_replace($name, '', $last->code) + 1 : 1;
+    $num_format = str_repeat('0', $len - strlen($num)) . $num;
+    $new        = sprintf('%s', $start . $num_format);
+    return $new;
+}
+
 function romawi($i) {
     $romawi = [
         1  => 'I',

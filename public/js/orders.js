@@ -20,7 +20,7 @@ $(document).ready(function () {
             alert('supplier belum dipilih');
             return false;
         }
-        if (!sProduct.val()) {
+        if (!sProductRaw.val()) {
             alert('product belum dipilih');
             return false;
         }
@@ -62,7 +62,7 @@ $(document).ready(function () {
             type: 'POST',
             url: $(this).data('url'),
             data: {
-                product_id: sProduct.val(),
+                product_id: sProductRaw.val(),
                 qty: qty.val(),
                 attribute: vT*vL*vP,
                 units: units.join('x'),
@@ -73,7 +73,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 tOrderDetails.find('tbody').loadTemplate("#row-order", data);
-                sProduct.selectpicker('refresh');
+                sProductRaw.selectpicker('refresh');
                 resetForm();
                 calculateTotal(tOrderDetails);
             }
@@ -94,6 +94,7 @@ $(document).ready(function () {
     $('#pay-btn').click(function (e) {
         var total = parseInt(numeral($('#total').text()).value());
         var cash = parseInt($('#cash').val());
+
     });
 
     tOrderDetails.on('keypress', '.qty-input', function (e) {
@@ -107,6 +108,7 @@ $(document).ready(function () {
                     qty: self.val(),
                     purchase_price: self.data('purchase_price'),
                     selling_price: self.data('selling_price'),
+                    attribute: self.data('attribute'),
                     _token: Laravel.csrfToken,
                     is_edit: 1,
                     no: $('#no-order').val()
@@ -140,6 +142,7 @@ $(document).ready(function () {
     });
 
     $('#save-order-btn').click(function (e) {
+        var url = $(this).data('redirect');
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
@@ -149,26 +152,35 @@ $(document).ready(function () {
             },
             success: function (data) {
                 alert('Save Order success');
+                window.location.replace(url);
             }
         }).fail(function () {
             alert('Save Order Error. Try Again Later');
         })
     });
 
-    sProduct.on('changed.bs.select', function (e) {
+    sProductRaw.on('changed.bs.select', function (e) {
         var units = $(this).find(':selected').data();
         var html = '';
-        if (Object.keys(units).length == 1) {
+        if (Object.keys(units).length == 2) {
             unitsWrapper.html(html);
             return;
         }
 
         Object.keys(units).forEach(function (key) {
+            if (key == 'sellingprice') {
+                return true;
+            }
+
             html += '<div class="col-md-4"> ' +
                 '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
                 '<input data-unit="'+units[key]+'" type="number" id="'+key+'" class="form-control " value="1" required></div>';
         })
         unitsWrapper.html(html);
+
+        // set selling price
+        var sellingPrice = $(this).find(':selected').data('sellingprice');
+        $('#selling_price').val(sellingPrice);
     });
 
 });

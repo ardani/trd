@@ -33,7 +33,7 @@
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
-    <select id="product_id" class="form-control select-product" data-live-search="true"></select>
+    <select id="product_id" class="form-control select-product-raw" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-1">
     <label class="form-control-label">Purchase Price <span class="text-danger">*</span></label>
@@ -102,7 +102,7 @@
             <div class="input-group-addon">Rp</div>
             <input type="number" id="cash" value="{{$model->cash}}" name="cash" placeholder="0" class="form-control">
             <div class="input-group-btn">
-                <button id="pay-btn" type="button" class="btn btn-info">pay</button>
+                <button id="pay-btn" type="button" class="btn btn-info">DP</button>
             </div>
         </div>
     </div>

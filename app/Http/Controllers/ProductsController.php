@@ -8,6 +8,7 @@ use App\Services\ComponentUnitService;
 use App\Services\ProductService;
 use App\Services\SupplierService;
 use App\Services\UnitService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -61,6 +62,8 @@ class ProductsController extends Controller
     public function store(ProductsRequest $request)
     {
         $data = $request->all();
+        $data['stock_at'] = empty($data['stock_at']) ? null : Carbon::createFromFormat('d/m/Y', $data['stock_at'])->format('Y-m-d');
+        $data['code'] = auto_number_product($data['product_name']);
         $this->service->store($data);
         return redirect()->back()->with('message', 'Save Success');
     }
@@ -75,6 +78,7 @@ class ProductsController extends Controller
         $data['categories'] = $this->category->all();
         $data['units'] = $this->unit->all();
         $data['product_units'] = $this->mappingUnit($model->product_unit);
+        $data['stock_at'] = empty($model['stock_at']) ? null : $model['stock_at']->format('d/m/Y');
         return view('pages.' . $this->page . '.edit', $data);
     }
 
@@ -90,6 +94,7 @@ class ProductsController extends Controller
     public function update(ProductsRequest $request, $id)
     {
         $data = $request->all();
+        $data['stock_at'] = Carbon::createFromFormat('d/m/Y', $data['stock_at'])->format('Y-m-d');
         $this->service->update($data, $id);
         return redirect()->back()->with('message', 'Update Success');
     }
@@ -136,18 +141,58 @@ class ProductsController extends Controller
     public function loadRaw()
     {
         $q = request()->input('q');
-        if ($q) {
-            $where = function ($query) use ($q) {
-                $query->whereRaw('can_sale=0 AND (name like "%' . $q . '%" OR code like "%' . $q . '%")');
-            };
-            $product = $this->service->filter($where, 20);
-            return $product->map(function ($val, $key) {
-                return [
-                    'value' => $val->id,
-                    'text' => $val->code . ' - ' . $val->name
-                ];
-            })->toArray();
+        if (!$q) {
+            return [];
         }
-        return [];
+        $where = function ($query) use ($q) {
+            $query->whereRaw('(name like "%' . $q . '%" OR code like "%' . $q . '%")')
+                ->whereIn('category_id', [1, 3]);
+        };
+
+        $product = $this->service->filter($where, 20);
+        return $product->map(function ($val) {
+            $appends['data'] = [
+                'sellingprice' => $val->selling_price_default
+            ];
+
+            foreach ($val->product_unit as $unit) {
+                $appends['data'][$unit->component_unit_code] = $unit->value;
+            }
+
+            return array_merge([
+                'value' => $val->id,
+                'text' => $val->code . ' - ' . $val->name
+            ], $appends);
+
+        })->toArray();
+    }
+
+    public function loadProduction()
+    {
+        $q = request()->input('q');
+        if (!$q) {
+            return [];
+        }
+        $where = function ($query) use ($q) {
+            $query->whereRaw('(name like "%' . $q . '%" OR code like "%' . $q . '%")')
+                ->where('category_id','!=', 2);
+        };
+
+        $product = $this->service->filter($where, 20);
+        return $product->map(function ($val) {
+            $appends['data'] = [
+                'sellingprice' => $val->selling_price_default
+            ];
+
+            foreach ($val->product_unit as $unit) {
+                $appends['data'][$unit->component_unit_code] = $unit->value;
+            }
+
+            return array_merge([
+                'value' => $val->id,
+                'text' => $val->code . ' - ' . $val->name
+            ], $appends);
+
+        })->toArray();
     }
 }

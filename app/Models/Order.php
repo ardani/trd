@@ -10,7 +10,8 @@ class Order extends Model {
     protected $appends = ['total'];
 
     protected $fillable = [
-        'supplier_id','payment_method_id','cashier_id','cash','paid_until_at','arrive_at'
+        'supplier_id','payment_method_id','cashier_id','cash','paid_until_at',
+        'arrive_at','invoice_no','delivery_order_no'
     ];
 
     public function supplier() {

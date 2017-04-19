@@ -21,6 +21,25 @@
             @endpermission
             <section class="card">
                 <div class="card-block">
+                    <div class="form-group col-md-3">
+                        <label for="">Customer</label>
+                        <select name="status" id="status" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="">Status</label>
+                        <select name="status" id="status" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="">Date</label>
+                        <input type="text" name="range" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-primary" style="margin-top: 20px">Filter</button>
+                    </div>
+                </div>
+            </section>
+            <section class="card">
+                <div class="card-block">
                     <table id="table-po" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>

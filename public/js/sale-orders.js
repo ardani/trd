@@ -45,6 +45,7 @@ $(document).ready(function () {
             data: {
                 product_id: sProduct.val(),
                 qty: qty.val(),
+                desc:  $('#desc').val(),
                 attribute: vP * vL * vT,
                 units: units.join('x'),
                 customer_type_id: custTypeId,
@@ -127,6 +128,7 @@ $(document).ready(function () {
     });
 
     $('#save-sale-btn').click(function (e) {
+        var url = $(this).data('redirect');
         $.ajax({
             type: 'POST',
             url: $('#form-sales').data('url'),
@@ -136,6 +138,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 alert('Save PO success');
+                window.location.replace(url);
             }
         }).fail(function () {
             alert('Save PO Error. Try Again Later');
@@ -152,8 +155,8 @@ $(document).ready(function () {
 
         Object.keys(units).forEach(function (key) {
             html += '<div class="col-md-4"> ' +
-                '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
-                '<input data-unit="'+units[key]+'" type="number" id="'+key+'" class="form-control " value="1" required></div>';
+                '<label class="form-control-label">' + key.toUpperCase() + '(' + units[key] + ')</label> ' +
+                '<input data-unit="' + units[key] + '" type="number" id="' + key + '" class="form-control " value="1" required></div>';
         })
         unitsWrapper.html(html);
     });

@@ -64,8 +64,9 @@ class PaymentOrderController extends Controller
         if (request()->ajax()) {
             return $this->service->datatablesDetail($payment_id);
         }
+        $payment = $this->service->find($payment_id);
         $metas = [
-            'name' => 'Payment Detail',
+            'name' => 'Payment Detail '.$payment->order->no,
             'description' => '',
             'payment_id' => $payment_id,
             'path' => url('payment_order/detail/'.$payment_id)

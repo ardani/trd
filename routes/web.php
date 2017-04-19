@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('products/units/{id}','ProductsController@loadUnit');
     Route::get('products/ajaxs/load','ProductsController@load');
     Route::get('products/ajaxs/load_raw','ProductsController@loadRaw');
+    Route::get('products/ajaxs/load_production','ProductsController@loadProduction');
     Route::get('account_codes/ajaxs/load','AccountCodesController@load');
     Route::get('sale_orders/ajaxs/load','SaleOrdersController@load');
     Route::get('sale_orders/ajaxs/detail','SaleOrdersController@detail');

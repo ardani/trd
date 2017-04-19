@@ -34,6 +34,10 @@
 </fieldset>
 <fieldset class="form-group col-md-4" id="units">
 </fieldset>
+<fieldset class="form-group col-md-10">
+    <label class="form-control-label">Desc</label>
+    <input type="text" id="desc" placeholder="desc" class="form-control"/>
+</fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Qty <span class="text-danger">*</span></label>
     <div class="input-group">
@@ -64,7 +68,7 @@
             @foreach($model->transactions as $transaction)
             <tr>
                 <td>{{$transaction->product->code}}</td>
-                <td>{{$transaction->product->name}}</td>
+                <td>{{$transaction->product->name.' - '.$transaction->desc}}</td>
                 <td class="text-right">{{number_format($transaction->selling_price)}}</td>
                 <td class="text-right">{{$transaction->disc}}</td>
                 <td>{{ $transaction->units}}</td>
@@ -93,20 +97,14 @@
 <div class="col-md-3" style="margin-top: 10px">
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Rp</div>
+            <div class="input-group-addon">Disc Rp</div>
             <input type="number" name="disc" id="disc" value="{{$model->disc}}" class="form-control" placeholder="0">
-            <div class="input-group-btn">
-                <button id="count-btn" type="button" class="btn btn-info">disc</button>
-            </div>
         </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Rp</div>
+            <div class="input-group-addon">Dp &nbsp;&nbsp; Rp</div>
             <input type="number" id="cash" value="{{$model->cash}}" name="cash" placeholder="0" class="form-control">
-            <div class="input-group-btn">
-                <button id="pay-btn" type="button" class="btn btn-info">pay</button>
-            </div>
         </div>
     </div>
 </div>
