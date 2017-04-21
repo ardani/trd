@@ -42,7 +42,7 @@ class Product extends Model {
         }
 
         $trans = Transaction::where('product_id', $this->attributes['id'])
-            ->where('transactionable_type','!=','App\Models\SaleOrder')
+            ->whereNotIn('transactionable_type',['App\Models\SaleOrder','App\Models\RequestProduct'])
             ->select(\DB::raw('sum(qty*attribute) as stock'))
             ->where('return_complete',0)
             ->first();
