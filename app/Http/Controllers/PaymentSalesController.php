@@ -6,9 +6,9 @@ use App\Services\CashFlowService;
 use App\Services\PaymentOrderService;
 use App\Services\PaymentSaleService;
 use Illuminate\Http\Request;
-class PaymentSaleController extends Controller
+class PaymentSalesController extends Controller
 {
-    private $page = 'payment_sale';
+    private $page = 'payment_sales';
     private $service;
     private $service_detail;
 

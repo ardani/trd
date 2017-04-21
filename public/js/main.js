@@ -2866,16 +2866,17 @@ var sProductProduction = $('.select-product-production');
 var sCustomer = $('.select-customer');
 var sSupplier = $('.select-supplier');
 var sAccountCode = $('.select-account-code');
+var sum = 0;
+var charge = 0;
 
 function calculateTotal(el) {
-    var sum = 0;
-    var charge = 0;
     var cash = $('#cash');
     el.find('tbody tr').each(function () {
         var subtotal = numeral($(this).find('.subtotal').text()).value();
         sum += parseFloat(subtotal);
     });
     $('#total').text(numeral(sum).format('0,0'));
+    $('#afterDisc').text(numeral(sum).format('0,0'));
     $('#charge').text('0');
     if (cash.val()) {
         charge = sum - parseFloat(cash.val())
@@ -3366,5 +3367,28 @@ $(document).ready(function () {
     ];
 
     buildDatatables($('#table-payment-detail'), paymentDetail);
+
+    var cashIns = [
+        {data: 'account_code_id'},
+        {data: 'account_name', searchable: false, orderable: false},
+        {data: 'debit', searchable: false, orderable: false},
+        {data: 'credit', searchable: false, orderable: false},
+        {data: 'note', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+    buildDatatables($('#table-cash-ins'), cashIns);
+
+    var cashOuts = [
+        {data: 'account_code_id'},
+        {data: 'account_name', searchable: false, orderable: false},
+        {data: 'debit', searchable: false, orderable: false},
+        {data: 'credit', searchable: false, orderable: false},
+        {data: 'note', searchable: false, orderable: false},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+    buildDatatables($('#table-cash-outs'), cashOuts);
+
 
 });

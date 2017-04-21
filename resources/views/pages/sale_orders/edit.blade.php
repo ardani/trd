@@ -6,14 +6,17 @@
                 <div class="row">
                     <div class="col-md-2">
                         <h2 style="margin:0">Total</h2>
+                        <h2 style="margin:0">After Disc</h2>
                         <h2 style="margin:0">Charge</h2>
                     </div>
                     <div class="col-md-3">
                         <h2 style="margin:0">Rp.</h2>
                         <h2 style="margin:0">Rp.</h2>
+                        <h2 style="margin:0">Rp.</h2>
                     </div>
                     <div class="col-md-7 text-right">
                         <h2 style="margin:0" id="total">{{number_format($total)}}</h2>
+                        <h2 style="margin:0" id="afterDisc">{{number_format($total)}}</h2>
                         <h2 style="margin:0" id="charge">{{number_format($charge)}}</h2>
                     </div>
                 </div>

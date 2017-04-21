@@ -8,7 +8,6 @@
 
 namespace App\Services;
 
-use App\Models\CashFlow;
 use App\Models\Payment;
 use App\Models\Production;
 use App\Models\SaleOrder;
@@ -53,7 +52,13 @@ class SaleOrderService extends Service {
             ->editColumn('created_at',function ($model) {
                 return $model->created_at->format('d/m/Y');
             })
-            ->addColumn('action','actions.'.$this->name)
+            ->addColumn('action',function ($model) {
+                $data = [
+                    'id' => $model->id,
+                    'status_id' => $model->sale_order_state->state_id
+                ];
+                return view('actions.'.$this->name, $data);
+            })
             ->orderBy('id','Desc')
             ->make(true);
     }

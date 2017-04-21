@@ -33,7 +33,7 @@ class Order extends Model {
     public function getTotalAttribute() {
         $orders = Order::find($this->attributes['id']);
         return $orders->transactions->sum(function ($detail){
-            return ($detail['selling_price']-$detail['disc']) * $detail['qty'];
+            return ($detail['purchase_price'] - $detail['disc']) * $detail['qty'] * $detail['attribute'];
         });
     }
 

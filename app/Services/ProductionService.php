@@ -35,10 +35,16 @@ class ProductionService extends Service {
             ->addColumn('state',function ($model) {
                 return $model->sale_order->sale_order_state->state->name;
             })
-            ->addColumn('sale_order_code',function($model){
+            ->addColumn('sale_order_code',function($model) {
                 return $model->sale_order->no;
             })
-            ->addColumn('action','actions.'.$this->name)
+            ->addColumn('action',function ($model) {
+                $data = [
+                    'id' => $model->id,
+                    'state_id' => $model->sale_order->sale_order_state->state_id
+                ];
+                return view('actions.'.$this->name, $data);
+            })
             ->make(true);
     }
 

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Services\CashFlowService;
 use App\Services\PaymentOrderService;
 use Illuminate\Http\Request;
-class PaymentOrderController extends Controller
+class PaymentOrdersController extends Controller
 {
-    private $page = 'payment_order';
+    private $page = 'payment_orders';
     private $service;
     private $service_detail;
 

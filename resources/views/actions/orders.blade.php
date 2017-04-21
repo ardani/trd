@@ -13,7 +13,7 @@
     <div class="dropdown-menu">
         <a title="invoice" href="{{url('return_orders/create/'.$id)}}" class="dropdown-item"><span
                 class="glyphicon glyphicon-arrow-left"></span> Return Order</a>
-        <a title="invoice" href="{{url('order/invoice/'.$id)}}" class="dropdown-item"><span
+        <a title="invoice" target="_blank" href="{{url('orders/actions/print/invoice/'.$id)}}" class="dropdown-item"><span
                 class="glyphicon glyphicon-print"></span> Print Invoice</a>
     </div>
 </div>

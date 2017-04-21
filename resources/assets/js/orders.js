@@ -14,6 +14,24 @@ $(document).ready(function () {
         qty.val('');
     }
 
+    function calculateTotal(el) {
+        var sum = 0;
+        var charge = 0;
+        var cash = $('#cash');
+        el.find('tbody tr').each(function () {
+            var subtotal = numeral($(this).find('.subtotal').text()).value();
+            sum += parseFloat(subtotal);
+        });
+        $('#total').text(numeral(sum).format('0,0'));
+        $('#afterDisc').text(numeral(sum).format('0,0'));
+        $('#charge').text('0');
+        if (cash.val()) {
+            charge = parseFloat(cash.val()) - sum
+            $('#charge').text(numeral(charge).format('0,0'));
+        }
+    }
+
+
     $('#save-btn').click(function (e) {
         var suppId = sSupplier.val();
         if (!suppId) {
@@ -87,7 +105,7 @@ $(document).ready(function () {
         $('#total').text(numeral(total).format('0,0'));
     });
 
-    $('#calculate-btn').click(function (e) {
+    $('#cash').keyup(function (e) {
         calculateTotal(tOrderDetails);
     });
 

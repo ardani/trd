@@ -190,6 +190,13 @@ class OrdersController extends Controller
         return array_values($this->viewPODetail($no));
     }
 
+    public function printInvoice($no) {
+        $data = [
+            'order' => $this->service->find($no)
+        ];
+        return view('pages.orders.print-invoice', $data);
+    }
+
     public function load() {
         $q = request()->input('q');
         if (!$q) {

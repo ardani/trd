@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CustomerService;
 use App\Services\ProductService;
-use App\Services\SaleOrderService;
-use App\Services\SaleService;
+use App\Services\RequestProductService;
 use Illuminate\Http\Request;
 
-class SaleOrdersController extends Controller {
-    private $page = 'sale_orders';
+class RequestProductsController extends Controller {
+    private $page = 'request_products';
     private $service;
-    private $customer;
     private $product;
 
-    public function __construct(SaleOrderService $service, CustomerService $customer, ProductService $product) {
+    public function __construct(RequestProductService $service, ProductService $product) {
         $this->service  = $service;
-        $this->customer = $customer;
         $this->product  = $product;
     }
 
@@ -34,8 +30,8 @@ class SaleOrdersController extends Controller {
 
     public function create() {
         $data                      = $this->service->meta();
-        $auto_number               = auto_number_sales();
-        $data['auto_number_sales'] = $auto_number;
+        $auto_number               = auto_number_request_product();
+        $data['auto_number'] = $auto_number;
         $data['transactions']      = session($auto_number);
 
         return view('pages.' . $this->page . '.create', $data);
@@ -50,15 +46,8 @@ class SaleOrdersController extends Controller {
     public function edit($id) {
         $model          = $this->service->find($id);
         $data           = $this->service->meta();
-        $total          = $model->transactions->sum(function ($val) {
-            return abs($val->qty) * ($val->selling_price - $val->disc);
-        });
         $data['id']     = $id;
         $data['model']  = $model;
-        $data['total']  = $total;
-        $data['disc']  = $model->disc ?: 0;
-        $data['charge'] = $model->cash - $total;
-
         return view('pages.' . $this->page . '.edit', $data);
     }
 
@@ -73,7 +62,7 @@ class SaleOrdersController extends Controller {
         $deleted = $this->service->delete($id);
         return ['status' => $deleted];
     }
-
+    // create PO
     public function viewTempPODetail($no) {
         return session($no);
     }
@@ -83,39 +72,25 @@ class SaleOrdersController extends Controller {
         $product        = $this->product->find($request->product_id);
         $selling_price  = $product->selling_price_default;
         $purchase_price = $product->purchase_price_default;
-        $disc           = $product->product_discount ? $product->product_discount->amount : 0;
 
-        if ($selling_price_customer = $product->product_price()
-            ->where('customer_type_id', $request->customer_type_id)->first()
-        ) {
-            $selling_price  = $selling_price_customer->selling_price;
-            $purchase_price = $selling_price_customer->purchase_price;
-        }
-
-        if (array_key_exists($request->product_id, $sessions) &&
-            $sessions[$request->product_id]['desc'] == $request->desc) {
+        if (array_key_exists($request->product_id, $sessions)) {
             if (request()->has('is_edit')) {
-                $sessions[ $request->product_id ]['qty']      = $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc) * $request->attribute;
+                $sessions[ $request->product_id ]['qty'] = $request->qty;
             }
             else {
                 $sessions[ $request->product_id ]['qty'] += $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $sessions[ $request->product_id ]['qty'] * ($selling_price - $disc) * $request->attribute;
             }
         }
         else {
             $sessions[ $product->id ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
-                'name'           => $product->name.' - '.$request->desc,
+                'name'           => $product->name,
                 'attribute'      => $request->attribute,
                 'units'          => $request->units,
                 'qty'            => $request->qty,
-                'desc'           => $request->desc,
-                'disc'           => $disc,
                 'selling_price'  => $selling_price,
                 'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
             ];
         }
 
@@ -129,27 +104,23 @@ class SaleOrdersController extends Controller {
         return array_values($this->viewTempPODetail($request->no));
     }
 
+    // edit PO
     public function viewPODetail($no) {
         $PO = $this->service->where(function ($query) use ($no) {
             $query->where('no', $no);
         });
 
         $transactions = $PO->transactions->map(function ($val, $key) {
-            $disc = $val->disc ?: 0;
             $qty  = abs($val->qty);
-
             return [
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
-                'name'           => $val->product->name.' - '.$val->desc,
+                'name'           => $val->product->name,
                 'attribute'      => $val->attribute,
                 'units'          => $val->units,
                 'qty'            => $qty,
-                'disc'           => $disc,
-                'desc'           => $val->desc,
                 'selling_price'  => $val->selling_price,
-                'purchase_price' => $val->purchase_price,
-                'subtotal'       => $qty * ($val->selling_price - $disc) * $val->attribute
+                'purchase_price' => $val->purchase_price
             ];
         });
 
@@ -162,40 +133,25 @@ class SaleOrdersController extends Controller {
         $product        = $this->product->find($request->product_id);
         $selling_price  = $product->selling_price_default;
         $purchase_price = $product->purchase_price_default;
-        $disc           = $product->product_discount ? $product->product_discount->amount : 0;
-
-        if ($selling_price_customer = $product->product_price()
-            ->where('customer_type_id', $request->customer_type_id)->first()
-        ) {
-            $selling_price  = $selling_price_customer->selling_price;
-            $purchase_price = $selling_price_customer->purchase_price;
-        }
 
         if (array_key_exists($request->product_id, $transactions)) {
             if (request()->has('is_edit')) {
-                $transactions[ $request->product_id ]['qty']      = $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] =
-                    $request->qty * ($selling_price-$disc) * $request->attribute;
+                $transactions[ $request->product_id ]['qty'] = $request->qty;
             }
             else {
                 $transactions[ $request->product_id ]['qty'] += $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] =
-                    $transactions[ $request->product_id ]['qty'] * ($selling_price - $disc) * $request->attribute;
             }
         }
         else {
             $transactions[ $product->id ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
-                'name'           => $product->name.' - '.$request->desc,
+                'name'           => $product->name,
                 'attribute'      => $request->attribute,
                 'units'          => $request->units,
                 'qty'            => $request->qty,
-                'desc'           => $request->desc,
-                'disc'           => $disc,
                 'selling_price'  => $selling_price,
-                'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
+                'purchase_price' => $purchase_price
             ];
         }
 
@@ -203,7 +159,7 @@ class SaleOrdersController extends Controller {
             $query->where('no', $no);
         });
         $param        = $transactions[ $product->id ];
-        $param['qty'] = $param['qty'] * -1;
+        $param['qty'] = $param['qty'];
         $PO->transactions()->updateOrCreate(['product_id' => $product->id], $param);
 
         return array_values($transactions);
@@ -218,53 +174,5 @@ class SaleOrdersController extends Controller {
         $PO->transactions()->where('product_id', $request->product_id)->delete();
 
         return array_values($this->viewPODetail($no));
-    }
-
-    public function printInvoice($no) {
-        $data = [
-            'sale' => $this->service->find($no)
-        ];
-        return view('pages.sale_orders.print-invoice', $data);
-    }
-
-    public function printDo($no) {
-        $data = [
-            'sale' => $this->service->find($no)
-        ];
-        return view('pages.sale_orders.print-do', $data);
-    }
-
-    public function load() {
-        if ($q = request()->input('q')) {
-            $where =  function($query) use ($q){
-                $query->whereRaw('(no like "%'.$q.'%")');
-            };
-            $sale = $this->service->filter($where,20);
-            return $sale->map(function($val,$key) {
-                return [
-                    'value' => $val->id,
-                    'text' => $val->no.' - '.$val->customer->name,
-                    'data' => [
-                        'customer' => $val->customer->name,
-                    ]
-                ];
-            })->toArray();
-        }
-        return [];
-    }
-
-    public function detail() {
-        if ($q = request()->input('id')) {
-            $sale = $this->service->find($q);
-            return $sale->transactions->map(function($val){
-              return [
-                  'code' => $val->product->code,
-                  'name' => $val->product->name.' - '.$val->desc,
-                  'product_id' => $val->product_id,
-                  'qty' => abs($val->qty)
-              ];
-            })->toArray();
-        }
-        return [];
     }
 }

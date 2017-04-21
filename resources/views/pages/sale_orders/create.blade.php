@@ -6,14 +6,17 @@
                 <div class="row">
                     <div class="col-md-2">
                         <h2 style="margin:0">Total</h2>
+                        <h2 style="margin:0">Disc</h2>
                         <h2 style="margin:0">Charge</h2>
                     </div>
                     <div class="col-md-3">
                         <h2 style="margin:0">Rp.</h2>
                         <h2 style="margin:0">Rp.</h2>
+                        <h2 style="margin:0">Rp.</h2>
                     </div>
                     <div class="col-md-7 text-right">
                         <h2 style="margin:0" id="total">0</h2>
+                        <h2 style="margin:0" id="afterDisc">0</h2>
                         <h2 style="margin:0" id="charge">0</h2>
                     </div>
                 </div>

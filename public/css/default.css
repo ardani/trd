@@ -370,3 +370,7 @@ div.dataTables_wrapper div.dataTables_processing {
 .active {
     background-color: #d9edf7;
 }
+
+h2 {
+    font-size: 1.8rem;
+}

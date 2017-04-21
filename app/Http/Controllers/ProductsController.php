@@ -63,7 +63,7 @@ class ProductsController extends Controller
     {
         $data = $request->all();
         $data['stock_at'] = empty($data['stock_at']) ? null : Carbon::createFromFormat('d/m/Y', $data['stock_at'])->format('Y-m-d');
-        $data['code'] = auto_number_product($data['product_name']);
+        $data['code'] = auto_number_product($data['name']);
         $this->service->store($data);
         return redirect()->back()->with('message', 'Save Success');
     }

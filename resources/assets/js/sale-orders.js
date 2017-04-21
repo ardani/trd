@@ -64,26 +64,18 @@ $(document).ready(function () {
         })
     });
 
-    $('#count-btn').click(function (e) {
-        var total = parseInt(numeral($('#total').text()).value());
-        var disc = parseInt($('#disc').val());
-        $('#total').text(numeral(total - disc).format('0,0'));
-    });
-
-    $('#calculate-btn').click(function (e) {
-        calculateTotal(tSaleDetails);
+    $('#disc,#cash').keyup(function () {
         chargeCalculation();
     });
 
     function chargeCalculation() {
-        var total = parseInt(numeral($('#total').text()).value());
-        var cash = parseInt($('#cash').val());
-        $('#charge').text(numeral(cash - total).format('0,0'));
+        var total = parseFloat(numeral($('#total').text()).value());
+        var cash = $('#cash').val() ? parseFloat($('#cash').val()) : 0;
+        var disc = $('#disc').val() ? parseFloat($('#disc').val()) : 0;
+        var afterDisc = total-disc;
+        $('#afterDisc').text(numeral(afterDisc).format('0,0'));
+        $('#charge').text(numeral(cash - afterDisc).format('0,0'));
     }
-
-    $('#pay-btn').click(function (e) {
-        chargeCalculation();
-    });
 
     $('table').on('keypress', '.qty-input', function (e) {
         if (e.which == 13) {

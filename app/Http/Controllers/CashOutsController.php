@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SupplierService;
-use App\Services\TakeProductService;
+use App\Services\AccountCodeService;
+use App\Services\CashOutService;
 use Illuminate\Http\Request;
-class TakeProductController extends Controller
+class CashOutsController extends Controller
 {
-    private $page = 'take_product';
+    private $page = 'cash_outs';
     private $service;
+    private $account;
 
-    public function __construct(TakeProductService $service) {
+    public function __construct(CashOutService $service, AccountCodeService $account) {
         $this->service = $service;
+        $this->account = $account;
     }
 
     public function index() {
@@ -33,7 +35,7 @@ class TakeProductController extends Controller
 
     public function store(Request $request) {
         $data = $request->all();
-        $data['cashier_id'] = auth()->user()->id;
+        $data['value'] = $data['value'] * -1;
         $this->service->store($data);
         return redirect()->back()->with('message','Save Success');
     }
@@ -48,8 +50,8 @@ class TakeProductController extends Controller
 
     public function update(Request $request, $id) {
         $data = $request->all();
-        $data['cashier_id'] = auth()->user()->id;
-        $this->service->update($data,$id);
+        $data['value'] = $data['value'] * -1;
+        $this->service->update($data, $id);
         return redirect()->back()->with('message','Update Success');
     }
 
