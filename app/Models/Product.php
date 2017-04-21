@@ -52,7 +52,7 @@ class Product extends Model {
         $takeProduct = TakeProduct::where('product_id', $this->attributes['id'])
             ->select(\DB::raw('sum(qty) as stock'))
             ->first();
-        return $this->attributes['stock'] = $this->attributes['start_stock'] +
-            $trans->stock - $correction->stock - $takeProduct->stock;
+        return $this->attributes['stock'] = round($this->attributes['start_stock'] +
+            $trans->stock - $correction->stock - $takeProduct->stock,2);
     }
 }
