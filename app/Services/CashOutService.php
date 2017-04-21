@@ -28,9 +28,6 @@ class CashOutService extends Service {
             ->addColumn('account_name',function($model){
                 return $model->account_code->name;
             })
-            ->addColumn('debit',function($model){
-                return $model->value < 0 ? 0 : $model->value;
-            })
             ->addColumn('credit', function ($model){
                 return $model->value > 0 ? 0 : $model->value;
             })

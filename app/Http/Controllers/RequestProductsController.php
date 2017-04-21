@@ -31,7 +31,7 @@ class RequestProductsController extends Controller {
     public function create() {
         $data                      = $this->service->meta();
         $auto_number               = auto_number_request_product();
-        $data['auto_number'] = $auto_number;
+        $data['auto_number']       = $auto_number;
         $data['transactions']      = session($auto_number);
 
         return view('pages.' . $this->page . '.create', $data);
@@ -70,8 +70,6 @@ class RequestProductsController extends Controller {
     public function addTempPODetail(Request $request) {
         $sessions       = session()->has($request->no) ? session($request->no) : [];
         $product        = $this->product->find($request->product_id);
-        $selling_price  = $product->selling_price_default;
-        $purchase_price = $product->purchase_price_default;
 
         if (array_key_exists($request->product_id, $sessions)) {
             if (request()->has('is_edit')) {
@@ -88,9 +86,7 @@ class RequestProductsController extends Controller {
                 'name'           => $product->name,
                 'attribute'      => $request->attribute,
                 'units'          => $request->units,
-                'qty'            => $request->qty,
-                'selling_price'  => $selling_price,
-                'purchase_price' => $purchase_price,
+                'qty'            => $request->qty
             ];
         }
 
@@ -118,9 +114,7 @@ class RequestProductsController extends Controller {
                 'name'           => $val->product->name,
                 'attribute'      => $val->attribute,
                 'units'          => $val->units,
-                'qty'            => $qty,
-                'selling_price'  => $val->selling_price,
-                'purchase_price' => $val->purchase_price
+                'qty'            => $qty
             ];
         });
 
@@ -131,8 +125,6 @@ class RequestProductsController extends Controller {
         $no             = $request->no;
         $transactions   = $this->viewPODetail($no);
         $product        = $this->product->find($request->product_id);
-        $selling_price  = $product->selling_price_default;
-        $purchase_price = $product->purchase_price_default;
 
         if (array_key_exists($request->product_id, $transactions)) {
             if (request()->has('is_edit')) {
@@ -149,9 +141,7 @@ class RequestProductsController extends Controller {
                 'name'           => $product->name,
                 'attribute'      => $request->attribute,
                 'units'          => $request->units,
-                'qty'            => $request->qty,
-                'selling_price'  => $selling_price,
-                'purchase_price' => $purchase_price
+                'qty'            => $request->qty
             ];
         }
 

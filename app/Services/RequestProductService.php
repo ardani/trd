@@ -32,11 +32,24 @@ class RequestProductService extends Service {
             ->addColumn('created_by',function ($model) {
                 return $model->employee->name;
             })
+            ->addColumn('state',function ($model) {
+                return $model->state->name;
+            })
             ->editColumn('created_at',function ($model) {
                 return $model->created_at->format('d/m/Y');
             })
             ->addColumn('action','actions.'.$this->name)
             ->orderBy('id','Desc')
+            ->where(function ($model) {
+                if ($date_untils = date_until(request()->input('date_until'))) {
+                    $model->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
+                }
+
+                if ($state_id = request()->input('state_id')) {
+                    $model->where('state_id', $state_id);
+                }
+            })
             ->make(true);
     }
 
@@ -52,8 +65,6 @@ class RequestProductService extends Service {
         $model->transactions()->delete();
         foreach ($sessions as $session) {
             $model->transactions()->create([
-                'selling_price' => $session['selling_price'],
-                'purchase_price' => $session['purchase_price'],
                 'attribute' => $session['attribute'],
                 'units' => $session['units'],
                 'product_id' => $session['product_id'],

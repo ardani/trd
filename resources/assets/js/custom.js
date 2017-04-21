@@ -32,7 +32,15 @@ function buildDatatables(el, columns) {
         processing: true,
         serverSide: true,
         deferRender: true,
-        ajax: el.data('url'),
+        ajax: {
+            url: el.data('url'),
+            data: function (d) {
+                d.date_until = $('.dateuntil').val();
+                d.state_id = $('#state_id').val();
+                d.supplier_id = $('[name=supplier_id]').val();
+                d.customer_id = $('[name=customer_id]').val();
+            }
+        },
         columns: columns
     });
 
@@ -120,6 +128,13 @@ $(document).ready(function () {
 
     $('.datepicker').on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY'));
+    });
+
+    $('.dateuntil').daterangepicker({
+        showDropdowns: true,
+        locale: {
+            format: 'DD/MM/YYYY'
+        }
     });
 
     sProduct.selectpicker({liveSearch: true})
@@ -513,7 +528,6 @@ $(document).ready(function () {
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
         {data: 'debit', searchable: false, orderable: false},
-        {data: 'credit', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false},
@@ -523,7 +537,6 @@ $(document).ready(function () {
     var cashOuts = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
-        {data: 'debit', searchable: false, orderable: false},
         {data: 'credit', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
@@ -531,5 +544,13 @@ $(document).ready(function () {
     ];
     buildDatatables($('#table-cash-outs'), cashOuts);
 
+    var requestProduct = [
+        {data: 'no'},
+        {data: 'note'},
+        {data: 'state'},
+        {data: 'created_at', searchable: false},
+        {data: 'action', searchable: false, orderable: false},
+    ];
+    buildDatatables($('#table-request-product'), requestProduct);
 
 });

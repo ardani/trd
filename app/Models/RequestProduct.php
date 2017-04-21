@@ -11,4 +11,12 @@ class RequestProduct extends Model {
     public function employee() {
         return $this->belongsTo(Employee::class,'cashier_id');
     }
+
+    public function transactions() {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
+
+    public function state() {
+        return $this->belongsTo(State::class);
+    }
 }

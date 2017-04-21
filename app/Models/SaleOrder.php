@@ -9,7 +9,7 @@ class SaleOrder extends Model {
     protected $dates = ['paid_until_at'];
     protected $appends = ['total'];
     protected $fillable = [
-        'customer_id','cashier_id','payment_method_id','cash','disc','paid_until_at', 'cash_flows_id', 'note'
+        'customer_id','cashier_id','payment_method_id','cash','disc','paid_until_at', 'cash_flows_id', 'note', 'state_id'
     ];
 
     public function payment_method() {
@@ -28,8 +28,8 @@ class SaleOrder extends Model {
         return $this->morphMany(Transaction::class, 'transactionable');
     }
 
-    public function sale_order_state() {
-        return $this->hasOne(SaleOrderState::class)->orderBy('created_at','desc');
+    public function state() {
+        return $this->belongsTo(State::class);
     }
 
     public function getTotalAttribute() {

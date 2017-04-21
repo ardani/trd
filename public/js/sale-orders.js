@@ -4,7 +4,6 @@
 $(document).ready(function () {
     var tSaleDetails = $('#table-sale-details');
     var unitsWrapper = $('#units');
-
     $('#save-btn').click(function (e) {
         var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
         var qty = $('#qty');

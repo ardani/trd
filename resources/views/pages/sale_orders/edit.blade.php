@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <a href="/sale_orders/create" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> New</a>
-                            <button type="button" id="save-sale-btn" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                            <button type="button" id="save-sale-btn" data-redirect="{{url('sale_orders')}}" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
                             <a href="/sale_orders" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Cancel</a>
                         </div>
                     </div>

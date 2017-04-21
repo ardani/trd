@@ -290,6 +290,11 @@ Route::group(['middleware' => 'auth'], function () {
         'uses'       => 'PaymentOrdersController@delete'
     ]);
 
+    Route::post('payment_orders/actions/print/{no}', [
+        'middleware' => ['permission:create.payment_orders'],
+        'uses'       => 'PaymentOrdersController@printPayment'
+    ]);
+
     Route::get('payment_sales/detail/{id}', [
         'middleware' => ['permission:edit.payment_sales'],
         'uses'       => 'PaymentSalesController@detail'
@@ -318,5 +323,34 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('payment_sales/detail/{payment_id}/delete/{id}', [
         'middleware' => ['permission:delete.payment_sales'],
         'uses'       => 'PaymentSalesController@delete'
+    ]);
+    Route::post('payment_sales/actions/print/{no}', [
+        'middleware' => ['permission:create.payment_sales'],
+        'uses'       => 'PaymentSalesController@printPayment'
+    ]);
+    // request products
+    Route::post('request_products/actions/addTemp', [
+        'middleware' => ['permission:create.request_products'],
+        'uses'       => 'RequestProductsController@addTempPODetail'
+    ]);
+    Route::post('request_products/actions/deleteTemp', [
+        'middleware' => ['permission:create.request_products'],
+        'uses'       => 'RequestProductsController@deleteTempPODetail'
+    ]);
+    Route::get('request_products/actions/viewTemp/{no}', [
+        'middleware' => ['permission:create.request_products'],
+        'uses'       => 'RequestProductsController@viewTempPODetail'
+    ]);
+    Route::post('request_products/actions/add', [
+        'middleware' => ['permission:create.request_products'],
+        'uses'       => 'RequestProductsController@addPODetail'
+    ]);
+    Route::post('request_products/actions/delete', [
+        'middleware' => ['permission:create.request_products'],
+        'uses'       => 'RequestProductsController@deletePODetail'
+    ]);
+    Route::get('request_products/actions/view/{no}', [
+        'middleware' => ['permission:create.request_products'],
+        'uses'       => 'RequestProductsController@viewPODetail'
     ]);
 });

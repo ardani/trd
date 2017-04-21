@@ -29,7 +29,6 @@ class SaleOrderService extends Service {
     }
 
     public function datatables($param = array()) {
-
         return Datatables::eloquent($this->model->query())
             ->addColumn('customer',function ($model) {
                 return $model->customer->name;
@@ -38,7 +37,7 @@ class SaleOrderService extends Service {
                 return view('pages.sale_orders.info',compact('model'));
             })
             ->addColumn('state',function ($model) {
-                return $model->sale_order_state->state->name;
+                return $model->state->name;
             })
             ->editColumn('cash',function ($model) {
                 return number_format($model->cash);
@@ -55,11 +54,26 @@ class SaleOrderService extends Service {
             ->addColumn('action',function ($model) {
                 $data = [
                     'id' => $model->id,
-                    'status_id' => $model->sale_order_state->state_id
+                    'status_id' => $model->state_id
                 ];
                 return view('actions.'.$this->name, $data);
             })
             ->orderBy('id','Desc')
+            ->where(function ($model) {
+                if ($customer_id = request()->input('customer_id')) {
+                    $model->where('customer_id', $customer_id);
+                }
+
+                if ($date_untils = date_until(request()->input('date_until'))) {
+                    $model->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
+                }
+
+                if ($state_id = request()->input('state_id')) {
+                    $model->where('state_id', $state_id);
+                }
+
+            })
             ->make(true);
     }
 
@@ -72,7 +86,6 @@ class SaleOrderService extends Service {
         $model->note = $data['note'];
         $model->cash = $data['cash'];
         $model->cashier_id = auth()->id();
-
         if (request()->has('payment_method_id')) {
             $model->payment_method_id = 2;
             $model->paid_until_at = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
@@ -81,7 +94,6 @@ class SaleOrderService extends Service {
         $model->save();
         $total = $model->total > $data['cash'] ? $data['cash'] : $model->total;
         $this->savePayment($model, $total);
-        $model->sale_order_state()->firstOrCreate(['state_id' => 1]);
         $sessions = session($data['no']);
         $model->transactions()->delete();
         foreach ($sessions as $session) {

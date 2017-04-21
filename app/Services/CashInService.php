@@ -31,9 +31,6 @@ class CashInService extends Service {
             ->addColumn('debit',function($model){
                 return $model->value < 0 ? 0 : $model->value;
             })
-            ->addColumn('credit', function ($model){
-                return $model->value > 0 ? 0 : $model->value;
-            })
             ->editColumn('created_at', function ($model){
                 return $model->created_at->format('d/m/Y');
             })

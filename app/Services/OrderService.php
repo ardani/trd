@@ -47,6 +47,16 @@ class OrderService extends Service {
             })
             ->addColumn('action','actions.'.$this->name)
             ->orderBy('created_at','DESC')
+            ->where(function ($model) {
+                if ($supplier_id = request()->input('supplier_id')) {
+                    $model->where('supplier_id', $supplier_id);
+                }
+
+                if ($date_untils = date_until(request()->input('date_until'))) {
+                    $model->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
+                }
+            })
             ->make(true);
     }
 
@@ -90,16 +100,15 @@ class OrderService extends Service {
             'type' => 'order',
             'ref_id' => $model->id
         ]);
-
-        $payment->detail()->updateOrCreate([
+        $where = [
             'value' => $cash * -1,
             'account_code_id' => setting('account.order'),
             'is_direct' => 1
-        ],['value' => $cash * -1]);
+        ];
+        $payment->detail()->updateOrCreate($where,['value' => $cash * -1]);
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $note = request()->input('note','');
         $this->model->find($id)->update(['note' => $note]);
         return parent::delete($id);
@@ -108,7 +117,7 @@ class OrderService extends Service {
     private function updateSellingPrice($product_id, $selling_price, $purchase_price) {
         // using average
         $product = $this->product->find($product_id);
-        $avg_selling_price = ($product->selling_price_default + $selling_price) / 2;
+        $avg_selling_price = $selling_price;
         $avg_purchase_price = ($product->purchase_price_default + $purchase_price) / 2;
         $product->selling_price_default = round($avg_selling_price);
         $product->purchase_price_default = round($avg_purchase_price);

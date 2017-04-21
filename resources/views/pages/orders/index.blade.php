@@ -23,18 +23,14 @@
                 <div class="card-block">
                     <div class="form-group col-md-3">
                         <label for="">Supplier</label>
-                        <select name="status" id="status" class="form-control"></select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="">Status</label>
-                        <select name="status" id="status" class="form-control"></select>
+                        <select name="supplier_id" id="supplier_id" class="form-control select-supplier"></select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="">Date</label>
-                        <input type="text" name="range" class="form-control">
+                        <input type="text" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
                     </div>
                     <div class="form-group col-md-3">
-                        <button type="button" class="btn btn-primary" style="margin-top: 20px">Filter</button>
+                        <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
                     </div>
                 </div>
             </section>
@@ -60,4 +56,12 @@
             </section>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script type="text/javascript">
+        $('.btn-filter').click(function (e) {
+            console.log('test');
+            $('#table-orders').DataTable().ajax.reload();
+        });
+    </script>
 @endsection
