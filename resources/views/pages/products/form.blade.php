@@ -12,7 +12,7 @@
 <div class="col-md-6">
     <fieldset class="form-group">
         <label class="form-control-label">Start Stock</label>
-        <input type="text" name="start_stock" class="form-control"
+        <input type="number" name="start_stock" class="form-control"
                value="{{ $model ? $model['start_stock'] : old('start_stock') }}"
                placeholder="start stock">
     </fieldset>
@@ -20,7 +20,7 @@
 <div class="col-md-6">
     <fieldset class="form-group">
         <label class="form-control-label">Min Stock</label>
-        <input type="text" name="min_stock" class="form-control"
+        <input type="number" name="min_stock" class="form-control"
                value="{{ $model ? $model['start_stock'] : old('start_stock') }}"
                placeholder="min stock">
     </fieldset>
@@ -28,7 +28,7 @@
 <div class="col-md-6">
     <fieldset class="form-group">
         <label class="form-control-label">Selling Price Default <span class="text-danger">*</span></label>
-        <input type="text" name="selling_price_default" class="form-control"
+        <input type="number" name="selling_price_default" class="form-control"
                value="{{ $model ? $model['selling_price_default'] : old('selling_price_default') }}"
                data-validation="[NOTEMPTY]"
                placeholder="selling price">
@@ -37,7 +37,7 @@
 <div class="col-md-6">
     <fieldset class="form-group">
         <label class="form-control-label">Purchase Price Default <span class="text-danger">*</span></label>
-        <input type="text" name="purchase_price_default" class="form-control"
+        <input type="number" name="purchase_price_default" class="form-control"
                value="{{ $model ? $model['purchase_price_default'] : old('purchase_price_default') }}"
                data-validation="[NOTEMPTY]"
                placeholder="purchase price">
