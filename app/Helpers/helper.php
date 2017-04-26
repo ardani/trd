@@ -316,10 +316,10 @@ function auto_number_product($name) {
     $len   = 5;
     $start = substr($name, 0, 1);
     $last  = DB::table('products')
-        ->whereRaw('left(code,1) = "'.$name.'"')
+        ->whereRaw('left(code,1) = "'.$start.'"')
         ->orderBy('code', 'DESC')
         ->first(['code']);
-    $num   = ($last) ? (int) str_replace($name, '', $last->code) + 1 : 1;
+    $num   = ($last) ? (int) str_replace($start, '', $last->code) + 1 : 1;
     $num_format = str_repeat('0', $len - strlen($num)) . $num;
     $new        = sprintf('%s', $start . $num_format);
     return $new;
