@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('debug', function(){
+    echo auto_number_product('Design 1231');
+});
 
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('login', 'LoginController@showLoginForm')->name('login');

@@ -92,11 +92,12 @@ class SaleOrderService extends Service {
         }
         $model->disc = request('disc',0);
         $model->save();
-        $total = $model->total > $data['cash'] ? $data['cash'] : $model->total;
-        $this->savePayment($model, $total);
+
         $sessions = session($data['no']);
         $model->transactions()->delete();
+        $total = 0;
         foreach ($sessions as $session) {
+            $total+= ($session['selling_price']-$session['disc']) * $session['qty'] * $session['attribute'];
             $model->transactions()->create([
                 'selling_price' => $session['selling_price'],
                 'purchase_price' => $session['purchase_price'],
@@ -107,6 +108,8 @@ class SaleOrderService extends Service {
                 'qty' => $session['qty'] * -1
             ]);
         }
+        $total = $total > $data['cash'] ? $data['cash'] : $total;
+        $this->savePayment($model, $total);
         return clear_nota($data['no']);
     }
 
@@ -120,6 +123,7 @@ class SaleOrderService extends Service {
     public function update($data, $id) {
         $model = $this->model->find($id);
         $model->fill($data);
+        $this->savePayment($model, $data['cash']);
         return $model->save();
     }
 

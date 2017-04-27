@@ -92,19 +92,12 @@ class SaleOrdersController extends Controller {
             $purchase_price = $selling_price_customer->purchase_price;
         }
 
-        if (array_key_exists($request->product_id, $sessions) &&
-            $sessions[$request->product_id]['desc'] == $request->desc) {
-            if (request()->has('is_edit')) {
-                $sessions[ $request->product_id ]['qty']      = $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc) * $request->attribute;
-            }
-            else {
-                $sessions[ $request->product_id ]['qty'] += $request->qty;
-                $sessions[ $request->product_id ]['subtotal'] = $sessions[ $request->product_id ]['qty'] * ($selling_price - $disc) * $request->attribute;
-            }
+        if (array_key_exists($request->product_id.$request->units, $sessions) && request()->has('is_edit')) {
+            $sessions[ $request->product_id ]['qty']      = $request->qty;
+            $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc) * $request->attribute;
         }
         else {
-            $sessions[ $product->id ] = [
+            $sessions[ $product->id.$request->units ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name.' - '.$request->desc,
@@ -171,20 +164,13 @@ class SaleOrdersController extends Controller {
             $purchase_price = $selling_price_customer->purchase_price;
         }
 
-        if (array_key_exists($request->product_id, $transactions)) {
-            if (request()->has('is_edit')) {
-                $transactions[ $request->product_id ]['qty']      = $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] =
-                    $request->qty * ($selling_price-$disc) * $request->attribute;
-            }
-            else {
-                $transactions[ $request->product_id ]['qty'] += $request->qty;
-                $transactions[ $request->product_id ]['subtotal'] =
-                    $transactions[ $request->product_id ]['qty'] * ($selling_price - $disc) * $request->attribute;
-            }
+        if (array_key_exists($request->product_id.$request->units, $transactions) && request()->has('is_edit')) {
+            $transactions[ $request->product_id ]['qty']      = $request->qty;
+            $transactions[ $request->product_id ]['subtotal'] =
+                $request->qty * ($selling_price-$disc) * $request->attribute;
         }
         else {
-            $transactions[ $product->id ] = [
+            $transactions[ $product->id . $request->units ] = [
                 'product_id'     => $product->id,
                 'code'           => $product->code,
                 'name'           => $product->name.' - '.$request->desc,
@@ -202,7 +188,7 @@ class SaleOrdersController extends Controller {
         $PO           = $this->service->where(function ($query) use ($no) {
             $query->where('no', $no);
         });
-        $param        = $transactions[ $product->id ];
+        $param        = $transactions[ $product->id . $request->units ];
         $param['qty'] = $param['qty'] * -1;
         $PO->transactions()->updateOrCreate(['product_id' => $product->id], $param);
 

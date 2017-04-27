@@ -35,7 +35,7 @@ class SaleOrder extends Model {
     public function getTotalAttribute() {
         $purchase = SaleOrder::find($this->attributes['id']);
         return $purchase->transactions->sum(function ($detail){
-            return ($detail['selling_price']-$detail['disc']) * abs($detail['qty']);
+            return ($detail['selling_price'] - $detail['disc']) * abs($detail['qty']) * $detail['attribute'];
         });
     }
 

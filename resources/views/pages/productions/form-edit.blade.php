@@ -13,7 +13,7 @@
     <label class="form-control-label">Status</label>
     <select name="state_id" class="form-control">
         @foreach($states as $state)
-            @if($model->sale_order->sale_order_state->state_id == $state->id)
+            @if($model->sale_order->state_id == $state->id)
                 <option selected value="{{$state->id}}">{{$state->name}}</option>
             @else
                 <option value="{{$state->id}}">{{$state->name}}</option>

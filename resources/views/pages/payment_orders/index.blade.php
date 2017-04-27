@@ -12,13 +12,6 @@
                     </div>
                 </div>
             </header>
-            @permission(('create.'.$path))
-                <section class="card">
-                    <div class="card-block">
-                        <a href="{{url($path.'/create')}}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> New</a>
-                    </div>
-                </section>
-            @endpermission
             <section class="card">
                 <div class="card-block">
                     <table id="table-payment-order" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">

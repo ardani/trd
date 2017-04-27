@@ -94,7 +94,7 @@ class ProductsController extends Controller
     public function update(ProductsRequest $request, $id)
     {
         $data = $request->all();
-        $data['stock_at'] = Carbon::createFromFormat('d/m/Y', $data['stock_at'])->format('Y-m-d');
+        $data['stock_at'] = empty($data['stock_at']) ? null : Carbon::createFromFormat('d/m/Y', $data['stock_at'])->format('Y-m-d');
         $this->service->update($data, $id);
         return redirect()->back()->with('message', 'Update Success');
     }
