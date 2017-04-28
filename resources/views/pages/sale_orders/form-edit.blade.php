@@ -78,7 +78,10 @@
                            type="number" data-url="{{url('sale_orders/actions/add')}}"
                            value="{{abs($transaction->qty)}}" class="form-control col-md-1 qty-input"/>
                 </td>
-                <td class="text-right subtotal" data-content="subtotal">{{number_format(abs($transaction->qty)*($transaction->selling_price - $transaction->disc))}}</td>
+                <td class="text-right subtotal" data-content="subtotal">{{
+                    number_format(abs($transaction->qty) * ($transaction->selling_price - $transaction->disc) * $transaction->attribute)
+                }}
+                </td>
                 <td>
                     <a class="act-delete" data-url="{{url('sale_orders/actions/delete')}}"
                        data-id="{{$transaction->product_id}}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>

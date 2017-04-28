@@ -51,7 +51,7 @@ class SaleOrdersController extends Controller {
         $model          = $this->service->find($id);
         $data           = $this->service->meta();
         $total          = $model->transactions->sum(function ($val) {
-            return abs($val->qty) * ($val->selling_price - $val->disc);
+            return abs($val->qty) * ($val->selling_price - $val->disc) * $val->attribute;
         });
         $data['id']     = $id;
         $data['model']  = $model;
