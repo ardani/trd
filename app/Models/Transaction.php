@@ -11,7 +11,8 @@ class Transaction extends Model {
         'units',
         'desc',
         'return_complete',
-        'production_product_id'
+        'production_product_id',
+        'status'
     ];
 
     public function transactionable() {

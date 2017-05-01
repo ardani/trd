@@ -79,7 +79,7 @@
                     <td>{{number_format($transaction['subtotal'])}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('sale_orders/actions/deleteTemp')}}"
-                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)"><span
+                           data-id="{{$transaction['product_id']}}" data-units="{{$transaction['units']}}" href="javascript:void(0)"><span
                                     class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>
@@ -125,7 +125,7 @@
         <td class="text-right subtotal" data-content="subtotal" data-format="currency"></td>
         <td>
             <a class="act-delete" data-url="{{url('sale_orders/actions/deleteTemp')}}"
-               data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span
+               data-template-bind='[{"attribute": "data-id", "value": "product_id"},{"attribute": "data-units", "value": "units"}]' href="javascript:void(0)"><span
                         class="glyphicon glyphicon-remove"></span></a>
         </td>
     </tr>

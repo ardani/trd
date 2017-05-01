@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\State;
+use App\Models\Transaction;
 use App\Services\ProductionService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -12,10 +13,12 @@ class ProductionsController extends Controller
     private $page = 'productions';
     private $service;
     private $product;
+    private $transaction;
 
-    public function __construct(ProductionService $service, ProductService $product) {
+    public function __construct(ProductionService $service, ProductService $product, Transaction $transaction) {
         $this->service = $service;
         $this->product = $product;
+        $this->transaction = $transaction;
     }
 
     public function index() {
@@ -63,20 +66,18 @@ class ProductionsController extends Controller
         $PR = $this->service->where(function($query) use ($no){
             $query->where('no',$no);
         });
-        $transactions = $PR->transactions->where('production_product_id',$production_product_id)
-            ->map(function($val,$key){
-            $qty = abs($val->qty);
-            return  [
-                'product_id'     => $val->product->id,
-                'code'           => $val->product->code,
-                'name'           => $val->product->name,
-                'attribute'      => $val->attribute,
-                'units'          => $val->units,
-                'qty'            => $qty
+        $transactions = [];
+        foreach ($PR->transactions->where('production_product_id', $production_product_id)->all() as $row) {
+            $transactions[$row->product->id.$production_product_id] =  [
+                'product_id'     => $row->product->id,
+                'code'           => $row->product->code,
+                'name'           => $row->product->name,
+                'attribute'      => $row->attribute,
+                'units'          => $row->units,
+                'qty'            => abs($row->qty)
             ];
-        });
-
-        return $transactions->keyBy('product_id')->toArray();
+        }
+        return $transactions;
     }
 
     public function addPRDetail(Request $request) {
@@ -84,14 +85,14 @@ class ProductionsController extends Controller
         $transactions = $this->viewPRDetail($no, $request->production_product_id);
         $product = $this->product->find($request->product_id);
 
-        if (array_key_exists($request->product_id, $transactions)) {
+        if (array_key_exists($request->product_id . $request->production_product_id, $transactions)) {
             if (request()->has('is_edit')) {
-                $transactions[$request->product_id]['qty'] = $request->qty;
+                $transactions[$request->product_id . $request->production_product_id]['qty'] = $request->qty;
             } else {
-                $transactions[$request->product_id]['qty'] += $request->qty;
+                $transactions[$request->product_id . $request->production_product_id]['qty'] += $request->qty;
             }
         } else {
-            $transactions[ $product->id ] = [
+            $transactions[ $product->id . $request->production_product_id ] = [
                 'product_id'     => $product->id,
                 'selling_price'  => $product->selling_price_default,
                 'purchase_price' => $product->purchase_price_default,
@@ -108,10 +109,13 @@ class ProductionsController extends Controller
             $query->where('no',$no);
         });
 
-        $param = $transactions[$product->id];
+        $param = $transactions[$product->id . $request->production_product_id ];
         $param['qty'] = $param['qty'] * -1;
 
-        $pr->transactions()->updateOrCreate(['product_id' => $product->id], $param);
+        $pr->transactions()->updateOrCreate([
+            'product_id' => $product->id,
+            'production_product_id' => $request->production_product_id
+        ], $param);
         return array_values($transactions);
     }
 
@@ -121,14 +125,24 @@ class ProductionsController extends Controller
             $query->where('no',$no);
         });
 
-        $pr->transactions()->where('product_id',$request->product_id)->delete();
+        $pr->transactions()
+            ->where('production_product_id',$request->production_product_id)
+            ->where('product_id',$request->product_id)
+            ->delete();
         return array_values($this->viewPRDetail($no, $request->production_product_id));
     }
 
     public function finished($id) {
-        if ($production =  $this->service->find($id)) {
+        if ($transaction =  $this->transaction->find($id)) {
+            $transaction->update(['status' => 1]);
+            return ['status' => 'ok'];
+        }
+    }
+
+    public function completed($id) {
+        if ($production = $this->service->find($id)) {
             $production->sale_order->update(['state_id' => 3]);
-            return redirect()->back()->with('message','Update Status Success');
+            return redirect()->back()->with('message', 'Update Status Complete Success');
         }
         return redirect()->back()->withErrors('Update Status Failed');
     }

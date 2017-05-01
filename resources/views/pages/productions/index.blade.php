@@ -41,9 +41,8 @@
                             <th>No PO</th>
                             <th>Status</th>
                             <th>No Production</th>
-                            <th>Note</th>
                             <th>Created At</th>
-                            <th>Action</th>
+                            <th width="20%">Action</th>
                         </tr>
                         </thead>
                     </table>

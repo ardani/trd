@@ -104,10 +104,16 @@ $(document).ready(function () {
 
     $('table').on('click', 'a.act-delete', function (e) {
         var product_id = $(this).data('id');
+        var units = $(this).data('units');
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
-            data: {no: $('#no-po').val(), product_id: product_id, _token: Laravel.csrfToken},
+            data: {
+                no: $('#no-po').val(),
+                product_id: product_id,
+                units: units,
+                _token: Laravel.csrfToken
+            },
             success: function (data) {
                 tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
                 calculateTotal(tSaleDetails);

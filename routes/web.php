@@ -196,6 +196,10 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:edit.productions'],
         'uses'       => 'ProductionsController@finished'
     ]);
+    Route::get('productions/actions/complete/{id}', [
+        'middleware' => ['permission:edit.productions'],
+        'uses'       => 'ProductionsController@completed'
+    ]);
     Route::get('productions/actions/spk/{id}', [
         'middleware' => ['permission:create.productions'],
         'uses'       => 'ProductionsController@spk'

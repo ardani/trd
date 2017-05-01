@@ -9,18 +9,6 @@
     <label class="form-control-label">No PO</label>
     <input type="text" readonly class="form-control" value="{{$model->sale_order->no}}">
 </fieldset>
-<fieldset class="form-group col-md-2">
-    <label class="form-control-label">Status</label>
-    <select name="state_id" class="form-control">
-        @foreach($states as $state)
-            @if($model->sale_order->state_id == $state->id)
-                <option selected value="{{$state->id}}">{{$state->name}}</option>
-            @else
-                <option value="{{$state->id}}">{{$state->name}}</option>
-            @endif
-        @endforeach
-    </select>
-</fieldset>
 <fieldset class="form-group col-md-2 pull-md-right">
     <label class="form-control-label">Date <span class="text-danger">*</span></label>
     <input type="text" class="form-control daterange" name="created_at"
@@ -28,6 +16,12 @@
            data-validation="[NOTEMPTY]">
 </fieldset>
 <div class="clearfix"></div>
+<div class="col-md-12">
+    <fieldset class="form-group">
+        <label class="form-control-label">Note</label>
+        <p class="text-danger" style="font-weight: bold">{{$model->sale_order->note}}</p>
+    </fieldset>
+</div>
 <hr class="hr-form"/>
 <div class="col-md-12">
     <table id="listItemOrder" class="display table table-bordered" cellspacing="0" width="100%"
@@ -37,7 +31,8 @@
             <th width="10%">Code</th>
             <th>Product Name</th>
             <th width="10%">Qty</th>
-            <th width="10%">Action</th>
+            <th width="10%">Status</th>
+            <th width="15%">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -46,12 +41,19 @@
                 <td>{{$transaction->product->code}}</td>
                 <td>{{$transaction->product->name .' - '.$transaction->desc}}</td>
                 <td>{{abs($transaction->qty)}}</td>
+                <td class="status">{{$transaction->status ? 'finish' : '-'}}</td>
                 <td>
-                    <button type="button" data-name="{{$transaction->product->name}}"
-                            data-id="{{$transaction->product_id}}"
-                            data-url="{{url('productions/actions/detail')}}"
-                            class="btn btn-sm btn-success setActive">choose
-                    </button>
+                    @if($transaction->product->category_id == 2)
+                        <button type="button" data-name="{{$transaction->product->name}}"
+                                data-id="{{$transaction->product_id}}"
+                                data-url="{{url('productions/actions/detail')}}"
+                                class="btn btn-sm btn-success setActive">choose
+                        </button>
+                        <button type="button"
+                                data-url="{{url('productions/actions/finish/'.$transaction->id)}}"
+                                class="btn btn-sm btn-primary setFinish">finish
+                        </button>
+                    @endif
                 </td>
             </tr>
         @endforeach
@@ -60,7 +62,7 @@
 </div>
 <div class="clearfix"></div>
 <div class="col-md-12">
-    <h4>Product Selected : <span id="product-selected">-</span></h4>
+    <h4>Product : <span id="product-selected">-</span></h4>
     <input type="hidden" name="product_selected"/>
 </div>
 <hr class="hr-form"/>
@@ -123,12 +125,6 @@
             @endif
             </tbody>
         </table>
-    </div>
-    <div class="col-md-12">
-        <fieldset class="form-group">
-            <label class="form-control-label">Note</label>
-            <p class="text-danger" style="font-weight: bold">{{$model->sale_order->note}}</p>
-        </fieldset>
     </div>
 </div>
 <script type="text/html" id="row-production">

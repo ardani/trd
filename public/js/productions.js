@@ -100,20 +100,19 @@ $(document).ready(function () {
         })
     });
 
-    $('#save-production-btn').click(function (e) {
-        $.ajax({
-            type: 'POST',
-            url: $(this).data('url'),
-            data: $('#form-production').serialize(),
-            headers: {
-                'X-CSRF-Token': Laravel.csrfToken
-            },
-            success: function (data) {
-                alert('Save Production success');
-            }
-        }).fail(function () {
-            alert('Save Production Error. Try Again Later');
-        })
+    $('.setFinish').click(function (e) {
+        if (confirm('Are you sure finish product?')) {
+            $(this).parents('tr').find('.status').text('finish');
+            $.ajax({
+                type: 'GET',
+                url: $(this).data('url'),
+                headers: {
+                    'X-CSRF-Token': Laravel.csrfToken
+                }
+            }).fail(function () {
+                alert('Update Status Error. Try Again Later');
+            })
+        }
     });
 
     sProduct.on('changed.bs.select', function (e) {

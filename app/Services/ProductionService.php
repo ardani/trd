@@ -51,6 +51,7 @@ class ProductionService extends Service {
                 ];
                 return view('actions.'.$this->name, $data);
             })
+            ->orderBy('id','Desc')
             ->where(function ($model) {
                 if ($date_untils = date_until(request()->input('date_until'))) {
                     $model->where('created_at','>=',$date_untils[0])

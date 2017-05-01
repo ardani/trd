@@ -373,7 +373,7 @@ function setting($key) {
 
 function date_until($date) {
     $dates = explode(' - ', $date);
-    $dates[0] = Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d');
-    $dates[1] = Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d');
+    $dates[0] = Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d').' 00:00';
+    $dates[1] = Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d').' 23:59';
     return $dates;
 }

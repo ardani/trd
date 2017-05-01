@@ -37,7 +37,7 @@ class SaleOrdersController extends Controller {
         $auto_number               = auto_number_sales();
         $data['auto_number_sales'] = $auto_number;
         $data['transactions']      = session($auto_number);
-
+        $data['total']             = number_format(collect($data['transactions'])->sum('subtotal'));
         return view('pages.' . $this->page . '.create', $data);
     }
 
@@ -117,7 +117,7 @@ class SaleOrdersController extends Controller {
     }
 
     public function deleteTempPODetail(Request $request) {
-        session()->forget($request->no . '.' . $request->product_id);
+        session()->forget($request->no . '.' . $request->product_id . $request->units);
 
         return array_values($this->viewTempPODetail($request->no));
     }

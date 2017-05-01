@@ -15,7 +15,7 @@
                         <h2 style="margin:0">Rp.</h2>
                     </div>
                     <div class="col-md-7 text-right">
-                        <h2 style="margin:0" id="total">0</h2>
+                        <h2 style="margin:0" id="total">{{ $total }}</h2>
                         <h2 style="margin:0" id="afterDisc">0</h2>
                         <h2 style="margin:0" id="charge">0</h2>
                     </div>

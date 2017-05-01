@@ -2866,11 +2866,11 @@ var sProductProduction = $('.select-product-production');
 var sCustomer = $('.select-customer');
 var sSupplier = $('.select-supplier');
 var sAccountCode = $('.select-account-code');
-var sum = 0;
-var charge = 0;
 
 function calculateTotal(el) {
     var cash = $('#cash');
+    var sum = 0;
+    var charge = 0;
     el.find('tbody tr').each(function () {
         var subtotal = numeral($(this).find('.subtotal').text()).value();
         sum += parseFloat(subtotal);
@@ -3289,7 +3289,6 @@ $(document).ready(function () {
         {data: 'sale_order_code', orderable: false},
         {data: 'state',orderable: false,searchable: false},
         {data: 'no'},
-        {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false},
     ];
