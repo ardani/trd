@@ -31,6 +31,7 @@
             <th width="10%">Code</th>
             <th>Product Name</th>
             <th width="10%">Qty</th>
+            <th width="10%">Units</th>
             <th width="10%">Status</th>
             <th width="15%">Action</th>
         </tr>
@@ -41,6 +42,7 @@
                 <td>{{$transaction->product->code}}</td>
                 <td>{{$transaction->product->name .' - '.$transaction->desc}}</td>
                 <td>{{abs($transaction->qty)}}</td>
+                <td>{{$transaction->units}}</td>
                 <td class="status">{{$transaction->status ? 'finish' : '-'}}</td>
                 <td>
                     @if($transaction->product->category_id == 2)
