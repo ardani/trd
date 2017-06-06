@@ -52,14 +52,11 @@ class PaymentSaleService extends Service {
             ->addColumn('account_name',function($model){
                 return $model->account_code->name;
             })
-            ->addColumn('debit',function($model){
-                return $model->value < 0 ? 0 : $model->value;
-            })
-            ->addColumn('credit', function ($model){
-                return $model->value > 0 ? 0 : $model->value;
-            })
             ->editColumn('created_at', function ($model){
                 return $model->created_at->format('d/m/Y');
+            })
+            ->editColumn('value', function ($model){
+                return number_format($model->value);
             })
             ->addColumn('action','actions.payment_detail_sale')
             ->where('payment_id',$id)

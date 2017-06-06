@@ -26,7 +26,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Account Name</th>
-                            <th>Debit</th>
+                            <th>Value</th>
                             <th>Note</th>
                             <th>Created At</th>
                             <th>Action</th>

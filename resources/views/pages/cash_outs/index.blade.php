@@ -26,7 +26,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Account Name</th>
-                            <th>Credit</th>
+                            <th>Value</th>
                             <th>Note</th>
                             <th>Created At</th>
                             <th>Action</th>

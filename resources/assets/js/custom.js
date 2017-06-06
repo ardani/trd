@@ -378,6 +378,7 @@ $(document).ready(function () {
         {data: 'selling_price', searchable: false, orderable: false},
         {data: 'min_stock', searchable: false, orderable: false},
         {data: 'stock', searchable: false, orderable: false},
+        {data: 'unit', searchable: false, orderable: false},
         {data: 'supplier', searchable: false, orderable: false},
         {data: 'action', searchable: false, orderable: false},
     ];
@@ -513,8 +514,7 @@ $(document).ready(function () {
     var paymentDetail = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
-        {data: 'debit', searchable: false, orderable: false},
-        {data: 'credit', searchable: false, orderable: false},
+        {data: 'value', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'giro', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
@@ -526,7 +526,7 @@ $(document).ready(function () {
     var cashIns = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
-        {data: 'debit', searchable: false, orderable: false},
+        {data: 'value', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false},
@@ -536,7 +536,7 @@ $(document).ready(function () {
     var cashOuts = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
-        {data: 'credit', searchable: false, orderable: false},
+        {data: 'value', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false},

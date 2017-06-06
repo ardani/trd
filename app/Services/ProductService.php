@@ -29,6 +29,14 @@ class ProductService extends Service {
             ->addColumn('category',function($model){
                 return $model->category->name;
             })
+            ->addColumn('unit',function($model){
+                $units = $model->product_unit()
+                    ->get(['value'])
+                    ->map(function($value) {
+                    return $value['value'];
+                })->toArray();
+                return implode(' x ', $units);
+            })
             ->addColumn('supplier',function($model){
                 return ($model->supplier_id) ? $model->supplier->name : '-';
             })

@@ -30,6 +30,7 @@
                             <th>Selling Price</th>
                             <th>Min Stock</th>
                             <th>Stock</th>
+                            <th>Unit</th>
                             <th>Supplier</th>
                             <th>Action</th>
                         </tr>
