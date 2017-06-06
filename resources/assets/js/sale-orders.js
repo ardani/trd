@@ -54,7 +54,6 @@ $(document).ready(function () {
             success: function (data) {
                 tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
                 sProduct.selectpicker('refresh');
-                qty.val('');
                 calculateTotal(tSaleDetails);
                 chargeCalculation()
             }
@@ -71,47 +70,19 @@ $(document).ready(function () {
         var total = parseFloat(numeral($('#total').text()).value());
         var cash = $('#cash').val() ? parseFloat($('#cash').val()) : 0;
         var disc = $('#disc').val() ? parseFloat($('#disc').val()) : 0;
-        var afterDisc = total-disc;
+        var afterDisc = total - disc;
         $('#afterDisc').text(numeral(afterDisc).format('0,0'));
         $('#charge').text(numeral(cash - afterDisc).format('0,0'));
     }
 
-    $('table').on('keypress', '.qty-input', function (e) {
-        if (e.which == 13) {
-            var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
-            var self = $(this);
-            $.ajax({
-                type: 'POST',
-                url: self.data('url'),
-                data: {
-                    product_id: self.data('id'),
-                    qty: self.val(),
-                    customer_type_id: custTypeId,
-                    _token: Laravel.csrfToken,
-                    is_edit: 1,
-                    no: $('#no-po').val()
-                },
-                success: function (data) {
-                    tSaleDetails.find('tbody').loadTemplate("#row-sale", data);
-                    calculateTotal(tSaleDetails);
-                    chargeCalculation();
-                }
-            }).fail(function () {
-                alert('Update Purchase Product Error. Try Again Later');
-            })
-        }
-    });
-
     $('table').on('click', 'a.act-delete', function (e) {
-        var product_id = $(this).data('id');
-        var units = $(this).data('units');
+        var id = $(this).data('id');
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
             data: {
                 no: $('#no-po').val(),
-                product_id: product_id,
-                units: units,
+                id: id,
                 _token: Laravel.csrfToken
             },
             success: function (data) {
@@ -126,6 +97,13 @@ $(document).ready(function () {
 
     $('#save-sale-btn').click(function (e) {
         var url = $(this).data('redirect');
+        var isCredit = $('input[name=payment_method_id]').prop('checked');
+        var cash = $('input[name=cash]').val() ? numeral($('input[name=cash]').val()) : 0;
+        var total = $('#total').text() ? numeral($('#total').text()).value() : 0;
+        if (!isCredit && cash < total) {
+            alert('DP / Cash harus diisi')
+            return false;
+        }
         $.ajax({
             type: 'POST',
             url: $('#form-sales').data('url'),
@@ -133,7 +111,7 @@ $(document).ready(function () {
             headers: {
                 'X-CSRF-Token': Laravel.csrfToken
             },
-            success: function (data) {
+            success: function () {
                 alert('Save PO success');
                 window.location.replace(url);
             }

@@ -24,7 +24,6 @@ class SaleOrdersController extends Controller {
         if (request()->ajax()) {
             return $this->service->datatables();
         }
-
         return view('pages.' . $this->page . '.index', $this->service->meta());
     }
 
@@ -43,7 +42,6 @@ class SaleOrdersController extends Controller {
 
     public function store(Request $request) {
         $data = $request->all();
-
         return $this->service->store($data);
     }
 
@@ -53,12 +51,12 @@ class SaleOrdersController extends Controller {
         $total          = $model->transactions->sum(function ($val) {
             return abs($val->qty) * ($val->selling_price - $val->disc) * $val->attribute;
         });
+
         $data['id']     = $id;
         $data['model']  = $model;
         $data['total']  = $total;
         $data['disc']  = $model->disc ?: 0;
         $data['charge'] = $model->cash - $total;
-
         return view('pages.' . $this->page . '.edit', $data);
     }
 
@@ -92,32 +90,29 @@ class SaleOrdersController extends Controller {
             $purchase_price = $selling_price_customer->purchase_price;
         }
 
-        if (array_key_exists($request->product_id.$request->units, $sessions) && request()->has('is_edit')) {
-            $sessions[ $request->product_id ]['qty']      = $request->qty;
-            $sessions[ $request->product_id ]['subtotal'] = $request->qty * ($selling_price - $disc) * $request->attribute;
-        }
-        else {
-            $sessions[ $product->id.$request->units ] = [
-                'product_id'     => $product->id,
-                'code'           => $product->code,
-                'name'           => $product->name.' - '.$request->desc,
-                'attribute'      => $request->attribute,
-                'units'          => $request->units,
-                'qty'            => $request->qty,
-                'desc'           => $request->desc,
-                'disc'           => $disc,
-                'selling_price'  => $selling_price,
-                'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
-            ];
-        }
+        $id = md5(time());
+        $sessions[ $id ] = [
+            'id'             => $id,
+            'product_id'     => $product->id,
+            'code'           => $product->code,
+            'name'           => $product->name.' - '.$request->desc,
+            'attribute'      => $request->attribute,
+            'units'          => $request->units,
+            'qty'            => $request->qty,
+            'desc'           => $request->desc,
+            'disc'           => $disc,
+            'selling_price'  => $selling_price,
+            'purchase_price' => $purchase_price,
+            'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
+        ];
 
         session([$request->no => $sessions]);
         return array_values($sessions);
     }
 
     public function deleteTempPODetail(Request $request) {
-        session()->forget($request->no . '.' . $request->product_id . $request->units);
+        $key = $request->id;
+        session()->forget($request->no . '.' . $key);
 
         return array_values($this->viewTempPODetail($request->no));
     }
@@ -132,6 +127,7 @@ class SaleOrdersController extends Controller {
             $qty  = abs($val->qty);
 
             return [
+                'id'             => $val->id,
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
                 'name'           => $val->product->name.' - '.$val->desc,
@@ -164,31 +160,25 @@ class SaleOrdersController extends Controller {
             $purchase_price = $selling_price_customer->purchase_price;
         }
 
-        if (array_key_exists($request->product_id.$request->units, $transactions) && request()->has('is_edit')) {
-            $transactions[ $request->product_id ]['qty']      = $request->qty;
-            $transactions[ $request->product_id ]['subtotal'] =
-                $request->qty * ($selling_price-$disc) * $request->attribute;
-        }
-        else {
-            $transactions[ $product->id . $request->units ] = [
-                'product_id'     => $product->id,
-                'code'           => $product->code,
-                'name'           => $product->name.' - '.$request->desc,
-                'attribute'      => $request->attribute,
-                'units'          => $request->units,
-                'qty'            => $request->qty,
-                'desc'           => $request->desc,
-                'disc'           => $disc,
-                'selling_price'  => $selling_price,
-                'purchase_price' => $purchase_price,
-                'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
-            ];
-        }
+        $key = md5(time());
+        $transactions[ $key ] = [
+            'product_id'     => $product->id,
+            'code'           => $product->code,
+            'name'           => $product->name.' - '.$request->desc,
+            'attribute'      => $request->attribute,
+            'units'          => $request->units,
+            'qty'            => $request->qty,
+            'desc'           => $request->desc,
+            'disc'           => $disc,
+            'selling_price'  => $selling_price,
+            'purchase_price' => $purchase_price,
+            'subtotal'       => $request->qty * ($selling_price - $disc) * $request->attribute
+        ];
 
         $PO           = $this->service->where(function ($query) use ($no) {
             $query->where('no', $no);
         });
-        $param        = $transactions[ $product->id . $request->units ];
+        $param        = $transactions[ $key ];
         $param['qty'] = $param['qty'] * -1;
         $PO->transactions()->updateOrCreate(['product_id' => $product->id], $param);
 
@@ -201,8 +191,7 @@ class SaleOrdersController extends Controller {
             $query->where('no', $no);
         });
 
-        $PO->transactions()->where('product_id', $request->product_id)->delete();
-
+        $PO->transactions()->where('id', $request->id)->delete();
         return array_values($this->viewPODetail($no));
     }
 

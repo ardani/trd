@@ -122,6 +122,11 @@ class SaleOrderService extends Service {
 
     public function update($data, $id) {
         $model = $this->model->find($id);
+        $data['created_at'] = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
+        if (isset($data['payment_method_id']) && $data['payment_method_id'] == 2) {
+            $data['paid_until_at'] = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
+        }
+
         $model->fill($data);
         $this->savePayment($model, $data['cash']);
         return $model->save();

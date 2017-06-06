@@ -141,7 +141,7 @@ class ProductionsController extends Controller
 
     public function completed($id) {
         if ($production = $this->service->find($id)) {
-            $production->sale_order->update(['state_id' => 3]);
+            $production->sale_order->update(['state_id' => 3, 'cashier_id' => auth()->id()]);
             return redirect()->back()->with('message', 'Update Status Complete Success');
         }
         return redirect()->back()->withErrors('Update Status Failed');
