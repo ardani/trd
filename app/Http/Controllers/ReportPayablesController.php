@@ -21,7 +21,7 @@ class ReportPayablesController extends Controller
         return view('pages.'.$this->page.'.index', $data);
     }
 
-    public function print() {
+    public function doPrint() {
         return view('pages.'.$this->page.'.print',$this->service->find());
     }
 }

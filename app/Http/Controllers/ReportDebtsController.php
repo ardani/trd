@@ -21,7 +21,7 @@ class ReportDebtsController extends Controller
         return view('pages.'.$this->page.'.index', $data);
     }
 
-    public function print($id) {
+    public function doPrint($id) {
         return view('pages.'.$this->page.'.show',$this->service->find($id));
     }
 }

@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
         Route::get($menu->path . '/print', [
             'middleware' => ['permission:view.' . $menu->path],
-            'uses'       => studly_case($menu->path) . 'Controller@print'
+            'uses'       => studly_case($menu->path) . 'Controller@doPrint'
         ]);
     }
 });
