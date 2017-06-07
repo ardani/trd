@@ -45,6 +45,9 @@ class OrderService extends Service {
             ->editColumn('created_at',function($model){
                 return $model->created_at->format('d/m/Y');
             })
+            ->editColumn('total',function($model){
+                return number_format($model->total);
+            })
             ->addColumn('action','actions.'.$this->name)
             ->orderBy('created_at','DESC')
             ->where(function ($model) {

@@ -83,12 +83,7 @@
                     <td>{{number_format($transaction['purchase_price'])}}</td>
                     <td>{{number_format($transaction['selling_price'])}}</td>
                     <td>{{$transaction['units']}}</td>
-                    <td><input data-id="{{$transaction['product_id']}}"
-                               data-purchase_price="{{$transaction['purchase_price']}}"
-                               data-selling_price="{{$transaction['selling_price']}}"
-                               data-attribute="{{$transaction['attribute']}}"
-                               type="number" data-url="{{url('orders/actions/addTemp')}}"
-                               value="{{$transaction['qty']}}" class="form-control col-md-1 qty-input"/></td>
+                    <td>{{$transaction['qty']}}</td>
                     <td>{{number_format($transaction['subtotal'])}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('orders/actions/deleteTemp')}}"
@@ -119,12 +114,7 @@
         <td class="text-right" data-content="purchase_price" data-format="currency"></td>
         <td class="text-right" data-content="selling_price" data-format="currency"></td>
         <td data-content="units"></td>
-        <td><input type="number" data-url="{{url('orders/actions/addTemp')}}" data-template-bind='[
-            {"attribute": "data-id", "value": "product_id"},
-            {"attribute": "data-attribute", "value": "attribute"},
-            {"attribute": "data-purchase_price", "value": "purchase_price"},
-            {"attribute": "data-selling_price", "value": "selling_price"}
-        ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
+        <td data-content="qty"></td>
         <td class="text-right subtotal" data-content="subtotal" data-format="currency"></td>
         <td>
             <a class="act-delete" data-url="{{url('orders/actions/deleteTemp')}}" data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>

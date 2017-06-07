@@ -57,6 +57,10 @@ Route::group(['middleware' => 'auth'], function () {
             'middleware' => ['permission:delete.' . $menu->path],
             'uses'       => studly_case($menu->path) . 'Controller@delete'
         ]);
+        Route::get($menu->path . '/print', [
+            'middleware' => ['permission:view.' . $menu->path],
+            'uses'       => studly_case($menu->path) . 'Controller@print'
+        ]);
     }
 });
 

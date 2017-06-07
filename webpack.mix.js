@@ -52,4 +52,6 @@ mix.combine([
     .copy('resources/assets/js/productions.js', 'public/js/productions.js')
     .copy('resources/assets/js/return-orders.js', 'public/js/return-orders.js')
     .copy('resources/assets/js/return-sales.js', 'public/js/return-sales.js')
+    .copy('resources/assets/js/report-debt.js', 'public/js/report-debt.js')
+    .copy('resources/assets/js/report-payables.js', 'public/js/report-payables.js')
     .copy('resources/assets/js/request-products.js', 'public/js/request-products.js');
