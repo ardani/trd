@@ -66,6 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 // custom
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('profile', 'DashboardController@profile');
+    Route::post('profile', 'DashboardController@updateProfile');
     Route::get('customers/ajaxs/load','CustomersController@load');
     Route::get('suppliers/ajaxs/load','SuppliersController@load');
     Route::get('products/units/{id}','ProductsController@loadUnit');
