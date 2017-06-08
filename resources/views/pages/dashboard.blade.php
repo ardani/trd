@@ -6,7 +6,7 @@
                 <div class="col-xl-12 dahsboard-column">
                     <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
-                            <h3 class="panel-title">Sale Due Date</h3>
+                            <h3 class="panel-title">Sale Due Date Before {{$date->format('d M Y')}}</h3>
                         </header>
                         <div class="box-typical-body panel-body">
                             <table class="tbl-typical">
@@ -16,18 +16,29 @@
                                         <div>Status</div>
                                     </th>
                                     <th>
-                                        <div>Clients</div>
+                                        <div>Customer</div>
                                     </th>
                                     <th align="center">
-                                        <div>Orders#</div>
+                                        <div>Sale#</div>
                                     </th>
                                     <th align="center">
                                         <div>Due Date</div>
                                     </th>
+                                    <th align="left">Total</th>
+                                    <th align="left">Payment</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                @foreach($payables as $row)
+                                    <tr>
+                                        <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
+                                        <td>{{$row->customer->name}}</td>
+                                        <td>{{$row->no}}</td>
+                                        <td>{{$row->paid_until_at->format('d M Y')}}</td>
+                                        <td>{{number_format($row->total)}}</td>
+                                        <td>{{number_format($row->payment->total)}}</td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div><!--.box-typical-body-->
@@ -36,7 +47,7 @@
                 <div class="col-xl-12 dahsboard-column">
                     <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">
-                            <h3 class="panel-title">Orders Due Date</h3>
+                            <h3 class="panel-title">Orders Due Date Before {{$date->format('d M Y')}}</h3>
                         </header>
                         <div class="box-typical-body panel-body">
                             <table class="tbl-typical">
@@ -46,18 +57,29 @@
                                         <div>Status</div>
                                     </th>
                                     <th>
-                                        <div>Clients</div>
+                                        <div>Supplier</div>
                                     </th>
                                     <th align="center">
-                                        <div>Sale#</div>
+                                        <div>Order#</div>
                                     </th>
                                     <th align="center">
                                         <div>Due Date</div>
                                     </th>
+                                    <th align="left">Total</th>
+                                    <th align="left">Payment</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach($debts as $row)
+                                        <tr>
+                                            <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
+                                            <td>{{$row->supplier->name}}</td>
+                                            <td>{{$row->no}}</td>
+                                            <td>{{$row->paid_until_at->format('d M Y')}}</td>
+                                            <td>{{number_format($row->total)}}</td>
+                                            <td>{{number_format($row->payment->total)}}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div><!--.box-typical-body-->

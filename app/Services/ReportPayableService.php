@@ -46,4 +46,15 @@ class ReportPayableService extends Service {
             return true;
         });
     }
+
+    public function getDataDashboard($date = '') {
+        $result = $this->model
+            ->whereNotNull('paid_until_at')
+            ->where('paid_until_at','<=', $date)
+            ->get();
+
+        return $result->filter(function($value) {
+            return $value->payment->total < $value->total;
+        });
+    }
 }
