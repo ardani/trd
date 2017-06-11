@@ -49,7 +49,7 @@ class OrderService extends Service {
                 return number_format($model->total);
             })
             ->addColumn('action','actions.'.$this->name)
-            ->orderBy('created_at','DESC')
+            ->orderBy('id','DESC')
             ->where(function ($model) {
                 if ($supplier_id = request()->input('supplier_id')) {
                     $model->where('supplier_id', $supplier_id);
@@ -71,21 +71,23 @@ class OrderService extends Service {
         $model->created_at = $created_at;
         $model->cash = $data['cash'];
         $model->cashier_id = auth()->id();
+        $model->invoice_no = $data['invoice_no'];
+        $model->delivery_order_no = $data['delivery_order_no'];
 
         if (request()->has('payment_method_id')) {
             $model->payment_method_id = 2;
             $model->paid_until_at = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
         }
         $model->save();
-        $total = $model->total > $data['cash'] ? $data['cash'] : $model->total;
-        $this->savePayment($model, $total);
-
         $sessions = session($data['no']);
         $model->transactions()->delete();
+        $total = 0;
         foreach ($sessions as $session) {
+            $total += $session['purchase_price'] * $session['qty'] * $session['attribute'];
             $model->transactions()->create([
                 'purchase_price' => $session['purchase_price'],
                 'selling_price' => $session['selling_price'],
+                'attribute' => $session['attribute'],
                 'units' => $session['units'],
                 'product_id' => $session['product_id'],
                 'qty' => $session['qty'],
@@ -94,7 +96,24 @@ class OrderService extends Service {
             $this->updateSellingPrice($session['product_id'], $session['selling_price'], $session['purchase_price']);
         }
 
+        if (request()->has('payment_method_id')) {
+            $total = $total > $data['cash'] ? $data['cash'] : $total;
+            $this->savePayment($model, $total);
+        }
+
         return clear_nota($data['no']);
+    }
+
+    public function update($data, $id) {
+        $model = $this->model->find($id);
+        $data['created_at'] = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
+        if (isset($data['payment_method_id']) && $data['payment_method_id'] == 2) {
+            $data['paid_until_at'] = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
+        }
+
+        $model->fill($data);
+        $this->savePayment($model, $data['cash']);
+        return $model->save();
     }
 
     private function savePayment($model, $cash) {
@@ -108,7 +127,7 @@ class OrderService extends Service {
             'account_code_id' => setting('account.order'),
             'is_direct' => 1
         ];
-        $payment->detail()->updateOrCreate($where,['value' => $cash * -1]);
+        $payment->detail()->updateOrCreate($where, ['value' => $cash * -1]);
     }
 
     public function delete($id) {

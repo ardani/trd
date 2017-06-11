@@ -11,4 +11,8 @@ class CashFlow extends Model {
     public function account_code() {
         return $this->belongsTo(AccountCode::class);
     }
+
+    public function payment() {
+        return $this->belongsTo(Payment::class);
+    }
 }

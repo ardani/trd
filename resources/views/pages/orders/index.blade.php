@@ -60,7 +60,6 @@
 @section('scripts')
     <script type="text/javascript">
         $('.btn-filter').click(function (e) {
-            console.log('test');
             $('#table-orders').DataTable().ajax.reload();
         });
     </script>

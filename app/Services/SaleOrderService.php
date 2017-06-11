@@ -72,7 +72,6 @@ class SaleOrderService extends Service {
                 if ($state_id = request()->input('state_id')) {
                     $model->where('state_id', $state_id);
                 }
-
             })
             ->make(true);
     }
@@ -108,8 +107,10 @@ class SaleOrderService extends Service {
                 'qty' => $session['qty'] * -1
             ]);
         }
-        $total = $total > $data['cash'] ? $data['cash'] : $total;
-        $this->savePayment($model, $total);
+        if (request()->has('payment_method_id')) {
+            $total = $total > $data['cash'] ? $data['cash'] : $total;
+            $this->savePayment($model, $total);
+        }
         return clear_nota($data['no']);
     }
 

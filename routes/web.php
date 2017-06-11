@@ -288,9 +288,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses'       => 'PaymentOrdersController@store'
     ]);
 
-    Route::get('payment_order/detail/{payment_id}/edit/{id}', [
-        'middleware' => ['permission:edit.payment_order'],
-        'uses'       => 'PaymentOrderController@edit'
+    Route::get('payment_orders/detail/{payment_id}/edit/{id}', [
+        'middleware' => ['permission:edit.payment_orders'],
+        'uses'       => 'PaymentOrdersController@edit'
     ]);
 
     Route::post('payment_orders/detail/{payment_id}/edit/{id}', [
@@ -303,7 +303,7 @@ Route::group(['middleware' => 'auth'], function () {
         'uses'       => 'PaymentOrdersController@delete'
     ]);
 
-    Route::post('payment_orders/actions/print/{no}', [
+    Route::get('payment_orders/actions/print/{no}', [
         'middleware' => ['permission:create.payment_orders'],
         'uses'       => 'PaymentOrdersController@printPayment'
     ]);
@@ -337,7 +337,7 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:delete.payment_sales'],
         'uses'       => 'PaymentSalesController@delete'
     ]);
-    Route::post('payment_sales/actions/print/{no}', [
+    Route::get('payment_sales/actions/print/{no}', [
         'middleware' => ['permission:create.payment_sales'],
         'uses'       => 'PaymentSalesController@printPayment'
     ]);

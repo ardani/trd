@@ -10,6 +10,7 @@ namespace App\Services;
 
 use App\Models\CashFlow;
 use App\Models\Payment;
+use App\Models\SaleOrder;
 use Entrust;
 use Datatables;
 
@@ -19,7 +20,7 @@ class PaymentSaleService extends Service {
     protected $name = 'payment_sales';
     private $detail;
 
-    public function __construct(Payment $model, CashFlow $detail) {
+    public function __construct(SaleOrder $model, CashFlow $detail) {
         $this->model = $model;
         $this->detail = $detail;
     }
@@ -27,23 +28,37 @@ class PaymentSaleService extends Service {
     public function datatables($param = array()) {
         return Datatables::eloquent($this->model->query())
             ->addColumn('sale_no',function($model){
-                return $model->sale->no;
+                return $model->no;
             })
             ->addColumn('total',function($model){
-                return number_format($model->sale->total);
+                return number_format($model->total);
+            })
+            ->addColumn('customer',function($model){
+                return $model->customer->name;
             })
             ->addColumn('payment',function($model){
-                return number_format($model->detail->sum('value'));
+                return number_format($model->payment->detail->sum('value'));
             })
             ->addColumn('status',function($model){
-                return $model->detail->sum('value') >= $model->sale->total ? '<label class="label label-success">paid</label>'
+                return $model->payment->detail->sum('value') >= $model->total ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';
             })
             ->editColumn('created_at', function ($model){
-                return $model->created_at->format('d/m/Y');
+                return $model->payment->created_at->format('d/m/Y');
             })
-            ->addColumn('action','actions.'.$this->name)
-            ->where('type','sale')
+            ->addColumn('action',function ($model) {
+                $data = [
+                    'id' => $model->id,
+                    'payment' => $model->payment
+                ];
+                return view('actions.'.$this->name, $data);
+            })
+            ->where(function ($model) {
+                $model->where('payment_method_id', 2);
+                if ($customer_id = request()->input('customer_id')) {
+                    $model->where('customer_id', $customer_id);
+                }
+            })
             ->make(true);
     }
 
@@ -58,7 +73,13 @@ class PaymentSaleService extends Service {
             ->editColumn('value', function ($model){
                 return number_format($model->value);
             })
-            ->addColumn('action','actions.payment_detail_sale')
+            ->addColumn('action', function ($model) {
+                $data = [
+                    'id' => $model->id,
+                    'payment' => $model->payment
+                ];
+                return view('actions.payment_detail_sale', $data);
+            })
             ->where('payment_id',$id)
             ->make(true);
     }

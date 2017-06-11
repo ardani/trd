@@ -12,10 +12,10 @@
                 </div>
             </header>
             <div class="box-typical box-typical-padding">
-                <form id="formValid" method="post" action="{{ url($path.'/detail/'.$payment_id.'/edit/'.$id) }}">
+                <form id="formValid" method="post" action="{{ url($path.'/detail/'.$order_id.'/edit/'.$id) }}">
                     @include('pages.'.$path.'.form')
                     <button class="btn btn-primary" type="submit">Update</button>
-                    <a class="pull-right btn btn-default" href="{{url($path.'/detail/'.$payment_id)}}">Back</a>
+                    <a class="pull-right btn btn-default" href="{{url($path.'/detail/'.$order_id)}}">Back</a>
                 </form>
             </div>
         </div>

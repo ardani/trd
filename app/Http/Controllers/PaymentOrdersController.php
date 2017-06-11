@@ -28,49 +28,55 @@ class PaymentOrdersController extends Controller
         return view('pages.'.$this->page.'.show',$this->service->find($id));
     }
 
-    public function create($payment_id) {
+    public function create($order_id) {
         $data = $this->service->meta();
-        $data['payment_id'] = $payment_id;
+        $data['order_id'] = $order_id;
         return view('pages.'.$this->page.'.create',$data);
     }
 
     public function store(Request $request) {
         $data = $request->all();
+        $order = $this->service->find($data['order_id']);
+        $data['payment_id'] = $order->payment->id;
         $this->service_detail->store($data);
         return redirect()->back()->with('message','Save Success');
     }
 
-    public function edit($payment_id, $id) {
+    public function edit($order_id, $id) {
         $model = $this->service_detail->find($id);
         $data = $this->service->meta();
         $data['id'] = $id;
-        $data['payment_id'] = $payment_id;
+        $data['order_id'] = $order_id;
         $data['model'] = $model;
         return view('pages.'.$this->page.'.edit', $data);
     }
 
-    public function update($payment_id, $id) {
+    public function update($order_id, $id) {
         $data = request()->all();
         $this->service_detail->update($data,$id);
         return redirect()->back()->with('message','Update Success');
     }
 
-    public function delete($payment_id, $id) {
+    public function delete($order_id, $id) {
         $deleted = $this->service_detail->delete($id);
         return ['status' => $deleted];
     }
 
-    public function detail($payment_id) {
+    public function detail($order_id) {
+        $order = $this->service->find($order_id);
         if (request()->ajax()) {
-            return $this->service->datatablesDetail($payment_id);
+            return $this->service->datatablesDetail($order->payment->id);
         }
-        $payment = $this->service->find($payment_id);
+
         $metas = [
-            'name' => 'Payment Detail '.$payment->order->no,
+            'name' => 'Payment Detail '.$order->no,
             'description' => '',
-            'payment_id' => $payment_id,
-            'path' => url('payment_order/detail/'.$payment_id)
+            'order_id' => $order_id
         ];
         return view('pages.'.$this->page.'.index_detail',$metas);
+    }
+
+    public function printPayment(Request $request) {
+
     }
 }

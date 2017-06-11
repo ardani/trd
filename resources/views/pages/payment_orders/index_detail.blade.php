@@ -15,7 +15,7 @@
             @permission(('create.payment_orders'))
             <section class="card">
                 <div class="card-block">
-                    <a href="{{url('payment_orders/detail/'.$payment_id.'/create')}}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> New</a>
+                    <a href="{{url('payment_orders/detail/'.$order_id.'/create')}}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> New</a>
                 </div>
             </section>
             @endpermission

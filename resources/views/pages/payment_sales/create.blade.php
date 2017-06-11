@@ -12,11 +12,11 @@
                 </div>
             </header>
             <div class="box-typical box-typical-padding">
-                <form id="formValid" method="post" action="{{ url($path.'/detail/'.$payment_id.'/create') }}">
+                <form id="formValid" method="post" action="{{ url($path.'/detail/'.$sale_id.'/create') }}">
                     @include('pages.'.$path.'.form',['model' => ''])
-                    <input type="hidden" name="payment_id" value="{{$payment_id}}"/>
+                    <input type="hidden" name="sale_id" value="{{$sale_id}}"/>
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <a class="pull-right btn btn-default" href="{{url($path.'/detail/'.$payment_id)}}">Back</a>
+                    <a class="pull-right btn btn-default" href="{{url($path.'/detail/'.$sale_id)}}">Back</a>
                 </form>
             </div>
         </div>

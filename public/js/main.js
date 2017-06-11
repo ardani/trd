@@ -3347,8 +3347,8 @@ $(document).ready(function () {
     buildDatatables($('#table-take-product'), takeProduct);
 
     var paymentOrder = [
-        {data: 'id'},
         {data: 'order_no', searchable: false, orderable: false},
+        {data: 'supplier', searchable: false, orderable: false},
         {data: 'total', searchable: false, orderable: false},
         {data: 'payment', searchable: false, orderable: false},
         {data: 'status', searchable: false, orderable: false},
@@ -3359,8 +3359,8 @@ $(document).ready(function () {
     buildDatatables($('#table-payment-order'), paymentOrder);
 
     var paymentSale = [
-        {data: 'id'},
         {data: 'sale_no', searchable: false, orderable: false},
+        {data: 'customer', searchable: false, orderable: false},
         {data: 'total', searchable: false, orderable: false},
         {data: 'payment', searchable: false, orderable: false},
         {data: 'status', searchable: false, orderable: false},

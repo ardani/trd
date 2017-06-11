@@ -11,7 +11,7 @@
 </fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Delivery No</label>
-    <input type="text" class="form-control" name="delivery_order_noo" value="{{ $model->deliver_order_no }}">
+    <input type="text" class="form-control" name="delivery_order_no" value="{{ $model->deliver_order_no }}">
 </fieldset>
 <div class="clearfix"></div>
 <fieldset class="form-group col-md-3">
