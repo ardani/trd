@@ -21,7 +21,16 @@ class ReportDebtsController extends Controller
         return view('pages.'.$this->page.'.index', $data);
     }
 
-    public function doPrint($id) {
-        return view('pages.'.$this->page.'.show',$this->service->find($id));
+    public function doPrint(Request $request) {
+        $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
+        $data['orders'] = $this->service->getData($request->supplier_id, $request->status, $date);
+        switch ($request->type) {
+            case 'normal':
+                return view('pages.'.$this->page.'.print', $data);
+                break;
+            case 'excel':
+
+                break;
+        }
     }
 }

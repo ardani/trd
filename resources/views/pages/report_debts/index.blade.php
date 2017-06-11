@@ -72,7 +72,7 @@
                                 <td>{{$row->supplier->name}}</td>
                                 <td>{{$row->paid_until_at->format('d M Y')}}</td>
                                 <td>{{number_format($row->total)}}</td>
-                                <td>{{number_format($row->payment->total)}}</td>
+                                <td>{{number_format(abs($row->payment->total))}}</td>
                                 <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
                                 <td>{{$row->created_at->format('d M Y')}}</td>
                             </tr>

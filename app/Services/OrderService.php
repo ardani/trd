@@ -96,11 +96,8 @@ class OrderService extends Service {
             $this->updateSellingPrice($session['product_id'], $session['selling_price'], $session['purchase_price']);
         }
 
-        if (request()->has('payment_method_id')) {
-            $total = $total > $data['cash'] ? $data['cash'] : $total;
-            $this->savePayment($model, $total);
-        }
-
+        $total = $total > $data['cash'] ? $data['cash'] : $total;
+        $this->savePayment($model, $total);
         return clear_nota($data['no']);
     }
 

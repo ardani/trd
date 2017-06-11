@@ -107,10 +107,9 @@ class SaleOrderService extends Service {
                 'qty' => $session['qty'] * -1
             ]);
         }
-        if (request()->has('payment_method_id')) {
-            $total = $total > $data['cash'] ? $data['cash'] : $total;
-            $this->savePayment($model, $total);
-        }
+
+        $total = $total > $data['cash'] ? $data['cash'] : $total;
+        $this->savePayment($model, $total);
         return clear_nota($data['no']);
     }
 

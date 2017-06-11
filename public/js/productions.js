@@ -102,6 +102,7 @@ $(document).ready(function () {
 
     $('.setFinish').click(function (e) {
         if (confirm('Are you sure finish product?')) {
+            var self = $(this);
             $(this).parents('tr').find('.status').text('finish');
             $.ajax({
                 type: 'GET',
@@ -109,6 +110,8 @@ $(document).ready(function () {
                 headers: {
                     'X-CSRF-Token': Laravel.csrfToken
                 }
+            }).done(function () {
+                self.hide();
             }).fail(function () {
                 alert('Update Status Error. Try Again Later');
             })

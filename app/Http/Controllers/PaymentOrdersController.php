@@ -76,7 +76,8 @@ class PaymentOrdersController extends Controller
         return view('pages.'.$this->page.'.index_detail',$metas);
     }
 
-    public function printPayment(Request $request) {
-
+    public function printPayment($id) {
+        $data['order'] = $order = $this->service->find($id);
+        return view('pages.'.$this->page.'.print-payment', $data);
     }
 }

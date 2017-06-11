@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Payment Order</title>
+    <title>Payment Sale</title>
     <style>
         .text-right {
             text-align: right;
@@ -26,35 +26,33 @@
         <tbody>
         <tr >
             <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
-                {{$order->supplier->name}}
-                <div style="float: right">PAYMENT ORDER</div>
+                {{$sale->customer->name}}
+                <div style="float: right">PAYMENT SALE</div>
             </th>
         </tr>
         <tr valign="top">
             <td style="width: 5%;">Address</td>
-            <td style="width: 40%;">: {{$order->supplier->address}}</td>
+            <td style="width: 40%;">: {{$sale->customer->address}}</td>
         </tr>
         <tr valign="top">
             <td style="width: 5%;">Phone</td>
-            <td style="width: 40%;">: {{$order->supplier->phone}}</td>
+            <td style="width: 40%;">: {{$sale->customer->phone}}</td>
         </tr>
         </tbody>
     </table>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="border-bottom text-left" style="width: 30%;">ORDER NO</th>
-            <th class="border-bottom text-left" style="width: 20%;">INVOICE NO</th>
-            <th class="border-bottom text-left" style="width: 20%;">DO NO</th>
+            <th class="border-bottom text-left" style="width: 30%;">PO NUMBER</th>
             <th class="border-bottom text-left" style="width: 20%;">CREATED AT</th>
             <th class="border-bottom text-left" style="width: 20%;">PAYMENT</th>
+            <th class="border-bottom text-left" style="width: 20%;">PAYMENT UNTIL</th>
         </tr>
         <tr valign="top">
-            <td>{{$order->no}}</td>
-            <td>{{$order->invoice_no}}</td>
-            <td>{{$order->delivery_order_no}}</td>
-            <td>{{$order->created_at->format('d M Y')}}</td>
-            <td>{{$order->payment_method->name}}</td>
+            <td>{{$sale->no}}</td>
+            <td>{{$sale->created_at->format('d M Y')}}</td>
+            <td>{{$sale->payment_method->name}}</td>
+            <td>{{$sale->paid_until_at ? $sale->paid_until_at->format('d M Y') : '-'}}</td>
         </tr>
         </tbody>
     </table>
@@ -64,12 +62,12 @@
             <th class="text-left border-bottom">ID</th>
             <th class="text-left border-bottom">Account Name</th>
             <th class="text-left border-bottom">Amount</th>
-            <th class="border-bottom">Note</th>
-            <th class=" border-bottom">Giro</th>
-            <th class="border-bottom">Created At</th>
+            <th class="text-left border-bottom">Note</th>
+            <th class="text-left border-bottom">Giro</th>
+            <th class="text-left border-bottom">Created At</th>
         </tr>
         <?php $total = 0 ?>
-        @foreach($order->payment->detail as $row)
+        @foreach($sale->payment->detail as $row)
             <tr valign="top">
                 <td>{{$row->account_code_id}}</td>
                 <td>{{$row->account_code->name}}</td>
@@ -88,8 +86,8 @@
             <td class="border-bottom" colspan="2"></td>
         </tr>
         <tr valign="top">
-            <td class="text-right" style="width: 85%">Total Order:</td>
-            <td class="text-right">{{number_format($order->total)}}</td>
+            <td class="text-right" style="width: 85%">Total Sale:</td>
+            <td class="text-right">{{number_format($sale->total)}}</td>
         </tr>
         <tr valign="top" class="border-bottom">
             <td class="border-bottom text-right"><b>Total Payment:</b></td>
@@ -98,7 +96,7 @@
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} by {{$order->employee->name}}</h5>
+        <h5>print at {{ date('d-m-Y') }} by {{$sale->employee->name}}</h5>
     </div>
 </div>
 <script>

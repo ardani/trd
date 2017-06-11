@@ -21,7 +21,16 @@ class ReportPayablesController extends Controller
         return view('pages.'.$this->page.'.index', $data);
     }
 
-    public function doPrint() {
-        return view('pages.'.$this->page.'.print',$this->service->find());
+    public function doPrint(Request $request) {
+        $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
+        $data['sales'] = $this->service->getData($request->customer_id, $request->status, $date);
+        switch ($request->type) {
+            case 'normal':
+                return view('pages.'.$this->page.'.print', $data);
+                break;
+            case 'excel':
+
+                break;
+        }
     }
 }

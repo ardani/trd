@@ -32,7 +32,7 @@ class ReportDebtService extends Service {
                 $finish_at = Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d');
                 $query->whereBetween('created_at', [$start_at, $finish_at]);
             }
-            $query->whereNotNull('paid_until_at');
+            $query->where('payment_method_id', 2);
         })->get();
 
         return $result->filter(function($value) use ($status) {

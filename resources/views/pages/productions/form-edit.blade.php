@@ -47,14 +47,16 @@
                 <td>
                     @if($transaction->product->category_id == 2)
                         <button type="button" data-name="{{$transaction->product->name}}"
-                                data-id="{{$transaction->product_id}}"
+                                data-id="{{$transaction->id}}"
                                 data-url="{{url('productions/actions/detail')}}"
                                 class="btn btn-sm btn-success setActive">choose
                         </button>
-                        <button type="button"
-                                data-url="{{url('productions/actions/finish/'.$transaction->id)}}"
-                                class="btn btn-sm btn-primary setFinish">finish
-                        </button>
+                        @if(!$transaction->status)
+                            <button type="button"
+                                    data-url="{{url('productions/actions/finish/'.$transaction->id)}}"
+                                    class="btn btn-sm btn-primary setFinish">finish
+                            </button>
+                        @endif
                     @endif
                 </td>
             </tr>
