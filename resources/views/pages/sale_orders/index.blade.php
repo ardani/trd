@@ -68,7 +68,6 @@
 @section('scripts')
     <script type="text/javascript">
         $('.btn-filter').click(function (e) {
-            console.log('test');
             $('#table-po').DataTable().ajax.reload();
         });
     </script>

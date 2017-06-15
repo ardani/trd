@@ -57,4 +57,10 @@ class CashInsController extends Controller
         $deleted = $this->service->delete($id);
         return ['status' => $deleted];
     }
+
+    public function doPrint(Request $request) {
+        $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
+        $data['cashs'] = $this->service->getData($date);
+        return view('pages.'.$this->page.'.print', $data);
+    }
 }

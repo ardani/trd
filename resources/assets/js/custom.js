@@ -526,6 +526,7 @@ $(document).ready(function () {
     var cashIns = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
+        {data: 'pay_to', searchable: false, orderable: false},
         {data: 'value', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
@@ -536,6 +537,7 @@ $(document).ready(function () {
     var cashOuts = [
         {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
+        {data: 'pay_from', searchable: false, orderable: false},
         {data: 'value', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},

@@ -1,6 +1,14 @@
 @include('includes.alert')
 <div class="row">
-    <fieldset class="form-group col-md-6">
+    <fieldset class="form-group col-md-4">
+        <label class="form-control-label">Pay From <span class="text-danger">*</span></label>
+        <select name="account_code_ref_id" class="form-control select-account-code" data-live-search="true">
+            @if($model)
+                <option value="{{$model->account_code_ref_id}}">{{$model->account_code_ref->name}}</option>
+            @endif
+        </select>
+    </fieldset>
+    <fieldset class="form-group col-md-4">
         <label class="form-control-label">Account Code <span class="text-danger">*</span></label>
         <select name="account_code_id" class="form-control select-account-code" data-live-search="true">
             @if($model)
@@ -8,7 +16,7 @@
             @endif
         </select>
     </fieldset>
-    <fieldset class="form-group col-md-6">
+    <fieldset class="form-group col-md-4">
         <label class="form-control-label">Value <span class="text-danger">*</span></label>
         <input type="number" name="value" class="form-control"
                value="{{ $model ? $model['value'] : old('value') }}"

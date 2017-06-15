@@ -96,7 +96,6 @@ class OrderService extends Service {
             $this->updateSellingPrice($session['product_id'], $session['selling_price'], $session['purchase_price']);
         }
 
-        $total = $total > $data['cash'] ? $data['cash'] : $total;
         $this->savePayment($model, $total);
         return clear_nota($data['no']);
     }
@@ -109,22 +108,50 @@ class OrderService extends Service {
         }
 
         $model->fill($data);
-        $this->savePayment($model, $data['cash']);
-        return $model->save();
+        $model->save();
+        return $this->savePayment($model, $model->total);
     }
 
-    private function savePayment($model, $cash) {
+    private function savePayment($model, $total) {
+        $cash = $total > $model->cash ? $model->cash : $total;
         $payment = $this->payment->firstOrCreate([
             'cashier_id' => auth()->user()->id,
             'type' => 'order',
             'ref_id' => $model->id
         ]);
-        $where = [
-            'value' => $cash * -1,
-            'account_code_id' => setting('account.order'),
-            'is_direct' => 1
-        ];
-        $payment->detail()->updateOrCreate($where, ['value' => $cash * -1]);
+        // kas kecil
+        $exist = $payment->detail()->where('account_code_id', setting('account.order'))
+            ->where('is_direct', 1)
+            ->first();
+
+        if ($exist) {
+            $payment->detail()->where('id', $exist->id)->update(['value' => $cash]);
+        } else {
+            $payment->detail()->create([
+                'value' => $model->cash,
+                'account_code_id' => setting('account.order'),
+                'is_direct' => 1,
+                'note' =>  'order no '.$model->no
+            ]);
+        }
+
+        if ($model->payment_method_id == 2) {
+            // hutang usaha
+            $exist = $payment->detail()->where('account_code_id', 1140)
+                ->where('is_direct', 1)
+                ->first();
+
+            if ($exist) {
+                $payment->detail()->where('id', $exist->id)->update(['value' => $total]);
+            } else {
+                $payment->detail()->create([
+                    'value' => $total * -1,
+                    'account_code_id' => 1140,
+                    'is_direct' => 1,
+                    'note' =>  'order no '.$model->no
+                ]);
+            }
+        }
     }
 
     public function delete($id) {

@@ -101,7 +101,7 @@
     </div>
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Dp &nbsp;&nbsp; Rp</div>
+            <div class="input-group-addon">Pay &nbsp;Rp</div>
             <input type="number" id="cash" value="{{$model->cash}}" name="cash" placeholder="0" class="form-control">
         </div>
     </div>

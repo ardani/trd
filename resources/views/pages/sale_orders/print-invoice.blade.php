@@ -93,19 +93,23 @@
             <td class="text-right">Disc :</td>
             <td class="text-right">{{number_format($sale->disc)}}</td>
         </tr>
-        <tr valign="top">
-            <td class="text-right">Dp :</td>
-            <td class="text-right">{{number_format($sale->cash)}}</td>
-        </tr>
         <tr valign="top" class="border-bottom">
-            <td class="border-bottom text-right"><b>Grand Total :</b></td>
-            <td class="border-bottom text-right">{{number_format($sale->cash - $sale->total - $sale->disc )}}</td>
+            <td class="text-right">Grand Total :</td>
+            <td class="text-right">{{number_format($sale->total - $sale->disc )}}</td>
+        </tr>
+        <tr valign="top">
+            <td class="text-right border-bottom ">Pay :</td>
+            <td class="text-right border-bottom ">{{number_format($sale->cash)}}</td>
         </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-left" colspan="2">
+                    <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}} | created : {{$sale->employee->name}}</h5>
+                </td>
+            </tr>
+        </tfoot>
     </table>
-    <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} by {{$sale->employee->name}}</h5>
-    </div>
 </div>
 <script>
     window.print();

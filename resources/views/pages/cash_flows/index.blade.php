@@ -12,16 +12,23 @@
                     </div>
                 </div>
             </header>
-            @permission(('create.'.$path))
-                <section class="card">
-                    <div class="card-block">
-                        <a href="{{url($path.'/create')}}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> New</a>
-                    </div>
-                </section>
-            @endpermission
             <section class="card">
                 <div class="card-block">
-                    <table id="table-cash-flows" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
+                    <form method="get">
+                        <div class="form-group col-md-3">
+                            <label for="">Date</label>
+                            <input type="text" id="date" name="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <button type="submit" name="type" value="filter" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
+                            <button type="submit" name="type" value="print" class="btn btn-primary btn-filter" style="margin-top: 20px">Print</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section class="card">
+                <div class="card-block">
+                    <table class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>ID</th>
