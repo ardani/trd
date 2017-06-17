@@ -66,7 +66,7 @@
 </div>
 <div class="col-md-6 pull-md-right" style="margin-top: 10px">
     <div class="form-group col-md-6">
-        <label class="form-control-label">Akun</label>
+        <label class="form-control-label">Account</label>
         <select name="account_cash_id" class="form-control">
             @foreach($cashes as $cash)
                 @if($model->account_cash_id == $cash->id)
