@@ -127,22 +127,25 @@ class OrderService extends Service {
 
         $payment->detail()->delete();
         $account_code = $model->payment_method_id == 1 ? '1000.01' : '2000.01';
-        $amount = $model->payment_method_id == 1 ? $total : $model->cash;
-
-        if ($amount) {
-            $payment->detail()->create([
-                'credit' => $amount,
-                'account_code_id' => $account_code,
-                'note' => 'order no ' . $model->no
-            ]);
-        }
-
+        $payment->detail()->create([
+            'credit' => $total,
+            'account_code_id' => $account_code,
+            'note' => 'order no ' . $model->no
+        ]);
         // pembelian
         $payment->detail()->create([
-            'debit' => $amount,
+            'debit' => $total,
             'account_code_id' => '5000.01',
             'note' => 'order no ' . $model->no
         ]);
+
+        if ($model->cash &&  $model->payment_method_id == 2) {
+            $payment->detail()->create([
+                'credit' => $model->cash,
+                'account_code_id' => '1100.02',
+                'note' => 'dp order no ' . $model->no
+            ]);
+        }
     }
 
     public function delete($id) {

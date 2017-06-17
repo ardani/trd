@@ -26,7 +26,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Account Name</th>
-                            <th>Value</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
                             <th>Note</th>
                             <th>Giro</th>
                             <th>Created At</th>

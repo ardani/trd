@@ -37,10 +37,16 @@ class PaymentSaleService extends Service {
                 return $model->customer->name;
             })
             ->addColumn('payment',function($model){
-                return number_format($model->payment->detail->sum('value'));
+                $payment = $model->payment->detail->sum(function ($value){
+                    return $value['debit'] - $value['credit'];
+                });
+                return number_format($payment);
             })
             ->addColumn('status',function($model){
-                return $model->payment->detail->sum('value') >= $model->total ? '<label class="label label-success">paid</label>'
+                $payment = $model->payment->detail->sum(function ($value){
+                    return $value['debit'] - $value['credit'];
+                });
+                return $payment >= $model->total ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';
             })
             ->editColumn('created_at', function ($model){
@@ -70,8 +76,11 @@ class PaymentSaleService extends Service {
             ->editColumn('created_at', function ($model){
                 return $model->created_at->format('d/m/Y');
             })
-            ->editColumn('value', function ($model){
-                return number_format($model->value);
+            ->editColumn('debit', function ($model){
+                return number_format($model->debit);
+            })
+            ->editColumn('credit', function ($model){
+                return number_format($model->credit);
             })
             ->addColumn('action', function ($model) {
                 $data = [
@@ -81,10 +90,7 @@ class PaymentSaleService extends Service {
                 return view('actions.payment_detail_sale', $data);
             })
             ->where('payment_id',$id)
+            ->orderBy('id')
             ->make(true);
-    }
-
-    public function detail() {
-
     }
 }

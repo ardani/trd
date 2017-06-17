@@ -144,21 +144,24 @@ class SaleOrderService extends Service {
 
         $payment->detail()->delete();
         $account_code = $model->payment_method_id == 1 ? '1000.01' : '1100.01';
-        $amount = $model->payment_method_id == 1 ? $total : $model->cash;
-
-        if ($amount) {
-            $payment->detail()->create([
-                'debit' => $amount,
-                'account_code_id' => $account_code,
-                'note' => 'sale no ' . $model->no
-            ]);
-        }
-
-        // pemjualan
         $payment->detail()->create([
-            'credit' => $amount,
+            'debit' => $total,
+            'account_code_id' => $account_code,
+            'note' => 'sale no ' . $model->no
+        ]);
+        // penjualan
+        $payment->detail()->create([
+            'credit' => $total,
             'account_code_id' => '4000.01',
             'note' => 'sale no ' . $model->no
         ]);
+
+        if ($model->cash && $model->payment_method_id == 2) {
+            $payment->detail()->create([
+                'debit' => $model->cash,
+                'account_code_id' => '2000.02',
+                'note' => 'dp sale no ' . $model->no
+            ]);
+        }
     }
 }
