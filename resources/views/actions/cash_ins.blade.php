@@ -7,4 +7,8 @@
     <a title="delete" data-url="{{url('cash_ins/delete/'.$id)}}" class="btn btn-sm btn-danger delete-action"><span
             class="glyphicon glyphicon-trash"></span></a>
     @endpermission
+    @permission(('view.cash_ins'))
+    <a title="delete" href="{{url('cash_ins/print?id='.$id)}}" class="btn btn-sm btn-info"><span
+                class="glyphicon glyphicon-print"></span></a>
+    @endpermission
 </div>

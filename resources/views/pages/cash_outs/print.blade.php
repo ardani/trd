@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Report Cash Outs</title>
+    <title>Cash Out</title>
     <style>
         .text-right {
             text-align: right;
@@ -19,47 +19,56 @@
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
-        <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
+        <h4 style="margin-bottom: 5px;font-size: 16px">{{ setting('company.name') }}</h4>
         <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
-        <tr >
+        <tr>
             <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
-                <div style="float: right">REPORT CASH OUT</div>
+                <div style="float: right">CASH OUT</div>
             </th>
         </tr>
         </tbody>
     </table>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
-        <thead>
-            <tr>
-                <th class="border-bottom text-left">ACCOUNT</th>
-                <th class="border-bottom text-left">PAY FROM</th>
-                <th class="border-bottom text-right">AMOUNT</th>
-                <th class="border-bottom text-left">NOTE</th>
-                <th class="border-bottom text-left">GIRO</th>
-                <th class="border-bottom text-left">CREATED AT</th>
-            </tr>
-        </thead>
         <tbody>
-        @foreach($cashs as $row)
-            <?php
-                $ref = $row->account_ref_id ? $row->account_code_ref_id.' - '.$row->account_code_ref->name : '-'
-            ?>
+        <tr>
+            <th class="border-bottom text-left" style="width: 25%;">NO</th>
+            <th class="border-bottom text-left" style="width: 25%;">CASH ACCOUNT</th>
+            <th class="border-bottom text-left" style="width: 25%;">TOTAL</th>
+            <th class="border-bottom text-left" style="width: 25%;">CREATED AT</th>
+        </tr>
+        <tr valign="top">
+            <td>{{$cashes->no}}</td>
+            <td>{{$cashes->account_cash->name}}</td>
+            <td>{{number_format($cashes->total)}}</td>
+            <td>{{$cashes->created_at->format('d M Y')}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
+        <tbody>
+        <tr>
+            <th class="text-left border-bottom">No</th>
+            <th class="text-left border-bottom">Account</th>
+            <th class="border-bottom">Debit</th>
+            <th class="border-bottom">Credit</th>
+            <th class="border-bottom">Note</th>
+        </tr>
+        @foreach($cashes->details as $detail)
             <tr valign="top">
-                <td>{{$row->account_code_id .' - '.$row->account_code->name}}</td>
-                <td>{{$ref}}</td>
-                <td class="text-right">{{number_format($row->value)}}</td>
-                <td>{{$row->note}}</td>
-                <td>{{$row->giro}}</td>
-                <td>{{$row->created_at->format('d M Y')}}</td>
+                <td>{{$detail->id}}</td>
+                <td>{{$detail->account_code->name}}</td>
+                <td>{{number_format($detail->debit)}}</td>
+                <td>{{number_format($detail->credit)}}</td>
+                <td>{{$detail->note}}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} by {{auth()->user()->username}}</h5>
+        <h5>created by {{$cashes->employee->name}} print by {{auth()->user()->username}} at {{ date('d-m-Y') }} </h5>
     </div>
 </div>
 <script>

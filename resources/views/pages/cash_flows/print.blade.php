@@ -26,7 +26,7 @@
         <tbody>
         <tr>
             <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
-                <div style="float: right">CASH IN</div>
+                <div style="float: right">CASH FLOW</div>
             </th>
         </tr>
         </tbody>
@@ -34,16 +34,12 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="border-bottom text-left" style="width: 25%;">NO</th>
             <th class="border-bottom text-left" style="width: 25%;">CASH ACCOUNT</th>
-            <th class="border-bottom text-left" style="width: 25%;">TOTAL</th>
-            <th class="border-bottom text-left" style="width: 25%;">CREATED AT</th>
+            <th class="border-bottom text-left" style="width: 25%;">DATE</th>
         </tr>
         <tr valign="top">
-            <td>{{$cashes->no}}</td>
-            <td>{{$cashes->account_cash->name}}</td>
-            <td>{{number_format($cashes->total)}}</td>
-            <td>{{$cashes->created_at->format('d M Y')}}</td>
+            <td>{{request('account_code_id', 'all')}}</td>
+            <td>{{request('date')}}</td>
         </tr>
         </tbody>
     </table>
@@ -52,23 +48,23 @@
         <tr>
             <th class="text-left border-bottom">No</th>
             <th class="text-left border-bottom">Account</th>
-            <th class="border-bottom">Debit</th>
-            <th class="border-bottom">Credit</th>
-            <th class="border-bottom">Note</th>
+            <th class="border-bottom text-right">Debit</th>
+            <th class="border-bottom text-right">Credit</th>
+            <th class="border-bottom text-right">Saldo</th>
         </tr>
-        @foreach($cashes->details as $detail)
+        @foreach($cashes as $detail)
             <tr valign="top">
                 <td>{{$detail->id}}</td>
                 <td>{{$detail->account_code->name}}</td>
-                <td>{{number_format($detail->debit)}}</td>
-                <td>{{number_format($detail->credit)}}</td>
-                <td>{{$detail->note}}</td>
+                <td class="text-right">{{number_format($detail->sdebit)}}</td>
+                <td class="text-right">{{number_format($detail->scredit)}}</td>
+                <td class="text-right">{{number_format($detail->saldo)}}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>created by {{$cashes->employee->name}} print by {{auth()->user()->username}} at {{ date('d-m-Y') }} </h5>
+        <h5>print by {{auth()->user()->username}} at {{ date('d-m-Y') }} </h5>
     </div>
 </div>
 <script>

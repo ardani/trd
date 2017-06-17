@@ -261,6 +261,54 @@ function auto_number_productions($reserve = 0) {
     return $new;
 }
 
+function auto_number_cash_in($reserve = 0) {
+    $len   = 5;
+    $month = date('n');
+    $year  = date('Y');
+    $last  = DB::table('cashes')
+        ->where('type', 1)
+        ->orderBy('no', 'DESC')
+        ->first(['no']);
+
+    if ($last) {
+        $lasts = explode('/', $last->no);
+        $num   = (int) $lasts[0];
+        $num   = $reserve ?: $num + 1;
+    }
+    else {
+        $num = $reserve ?: 1;
+    }
+
+    $num_format = str_repeat('0', $len - strlen($num)) . $num;
+    $new        = sprintf('%s/CI/%s/%s', $num_format, romawi($month), $year);
+
+    return $new;
+}
+
+function auto_number_cash_out($reserve = 0) {
+    $len   = 5;
+    $month = date('n');
+    $year  = date('Y');
+    $last  = DB::table('cashes')
+        ->where('type', 0)
+        ->orderBy('no', 'DESC')
+        ->first(['no']);
+
+    if ($last) {
+        $lasts = explode('/', $last->no);
+        $num   = (int) $lasts[0];
+        $num   = $reserve ?: $num + 1;
+    }
+    else {
+        $num = $reserve ?: 1;
+    }
+
+    $num_format = str_repeat('0', $len - strlen($num)) . $num;
+    $new        = sprintf('%s/C0/%s/%s', $num_format, romawi($month), $year);
+
+    return $new;
+}
+
 function auto_number_request_product($reserve = 0) {
     $nota = DB::table('nota')->where('ip', getIP())
         ->where('type', 5)

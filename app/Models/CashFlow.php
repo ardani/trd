@@ -5,15 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CashFlow extends Model {
     protected $fillable = [
-        'account_code_id','account_code_ref_id','value','note','giro','is_direct','payment_id'
+        'account_code_id','account_code_ref_id','credit',
+        'debit','note','giro','is_direct','payment_id',
+        'cash_id'
     ];
 
     public function account_code() {
         return $this->belongsTo(AccountCode::class);
-    }
-
-    public function account_code_ref() {
-        return $this->belongsTo(AccountCode::class,'account_code_ref_id');
     }
 
     public function payment() {

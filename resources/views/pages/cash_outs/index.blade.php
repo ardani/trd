@@ -21,7 +21,6 @@
                         </div>
                         <div class="form-group col-md-6">
                             <button type="button" name="type" value="filter" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
-                            <button type="submit" name="type" value="print" class="btn btn-warning btn-print" style="margin-top: 20px">Print</button>
                             @permission(('create.'.$path))
                             <a href="{{url($path.'/create')}}" class="btn btn-success" style="margin-top: 20px"><span class="glyphicon glyphicon-plus"></span> New</a>
                             @endpermission
@@ -34,11 +33,9 @@
                     <table id="table-cash-outs" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Account Name</th>
-                            <th>Pay From</th>
-                            <th>Value</th>
-                            <th>Note</th>
+                            <th>Cash No</th>
+                            <th>Account Cash</th>
+                            <th>Total</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>

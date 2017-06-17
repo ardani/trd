@@ -12,12 +12,22 @@
                 </div>
             </header>
             <div class="box-typical box-typical-padding">
-                <form id="formValid" method="post" action="{{ url($path.'/edit/'.$id) }}">
-                    @include('pages.'.$path.'.form')
-                    <button class="btn btn-primary" type="submit">Update</button>
-                    <a class="pull-right btn btn-default" href="{{url($path)}}">Back</a>
+                <form id="form-cashouts" data-url="{{ url($path.'/edit/'.$id) }}" onsubmit="return false">
+                    <div class="row">
+                        @include('pages.'.$path.'.form-edit')
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="/cash_outs/create" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> New</a>
+                            <button type="button" id="save-cashouts-btn" data-redirect="{{ url('cash_outs') }}" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                            <a href="/cash_outs" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Cancel</a>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{asset('js/cashouts.js')}}"></script>
 @endsection

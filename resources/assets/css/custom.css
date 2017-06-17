@@ -56,3 +56,7 @@ div.dataTables_wrapper div.dataTables_processing {
 h2 {
     font-size: 1.8rem;
 }
+
+tr.parent td {
+    font-weight: bold;
+}

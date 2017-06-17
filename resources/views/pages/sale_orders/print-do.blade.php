@@ -89,11 +89,11 @@
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} by {{$sale->employee->name}}</h5>
+        <h5>created by : {{$sale->employee->name}} print by {{auth()->user()->username}} {{ date('d-m-Y') }}</h5>
     </div>
 </div>
 <script>
-    //    window.print();
+    window.print();
 </script>
 </body>
 </html>

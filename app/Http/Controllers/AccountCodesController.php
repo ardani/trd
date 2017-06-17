@@ -14,11 +14,9 @@ class AccountCodesController extends Controller
     }
 
     public function index() {
-        if (request()->ajax()) {
-            return $this->service->datatables();
-        }
-
-        return view('pages.'.$this->page.'.index',$this->service->meta());
+        $meta = $this->service->meta();
+        $data = array_merge($meta, ['codes' => $this->service->all()]);
+        return view('pages.'.$this->page.'.index', $data);
     }
 
     public function show($id) {

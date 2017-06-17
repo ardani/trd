@@ -23,20 +23,26 @@ class CashFlowService extends Service {
     }
 
     public function datatables($param = array()) {
-        return Datatables::eloquent($this->model->query())
-            ->addColumn('account_name',function($model){
-                return $model->account_code->name;
+       return false;
+    }
+
+    public function getData($account, $date) {
+        $result = $this->model->where(function($query) use ($account, $date) {
+                if ($date_untils = date_until($date)) {
+                    $query->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
+                }
+
+                if ($account) {
+                    $query->where('account_code_id', $account);
+                }
             })
-            ->addColumn('debit',function($model){
-                return $model->value < 0 ? 0 : $model->value;
-            })
-            ->addColumn('credit', function ($model){
-                return $model->value > 0 ? 0 : $model->value;
-            })
-            ->editColumn('created_at', function ($model){
-                return $model->created_at->format('d/m/Y');
-            })
-            ->addColumn('action','actions.'.$this->name)
-            ->make(true);
+            ->selectRaw('sum(debit) as sdebit, sum(credit) as scredit, sum(debit-credit) as saldo, account_code_id')
+            ->groupBy('account_code_id')
+            ->havingRaw('saldo != 0')
+            ->orderBy('account_code_id')
+            ->get();
+        return $result;
+
     }
 }

@@ -112,8 +112,7 @@ class SaleOrderService extends Service {
         return clear_nota($data['no']);
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $note = request()->input('note','');
         $this->model->find($id)->update(['note' => $note]);
         return parent::delete($id);
@@ -132,44 +131,34 @@ class SaleOrderService extends Service {
     }
 
     private function savePayment($model, $total) {
-        $cash = $total > $model->cash ? $model->cash : $total;
+        /*5000.01 - pembelian
+        4000.01 - penjualan
+        1000.01 - kas kecil
+        1100.01 - piutang dagang
+        2000.01 - hutang dagang*/
         $payment = $this->payment->firstOrCreate([
             'cashier_id' => auth()->user()->id,
             'type' => 'sale',
             'ref_id' => $model->id
         ]);
-        // kas kecil
-        $exist = $payment->detail()->where('account_code_id', setting('account.sale'))
-            ->where('is_direct', 1)
-            ->first();
 
-        if ($exist) {
-            $payment->detail()->where('id', $exist->id)->update(['value' => $cash]);
-        } else {
+        $payment->detail()->delete();
+        $account_code = $model->payment_method_id == 1 ? '1000.01' : '1100.01';
+        $amount = $model->payment_method_id == 1 ? $total : $model->cash;
+
+        if ($amount) {
             $payment->detail()->create([
-                'value' => $model->cash,
-                'account_code_id' => setting('account.sale'),
-                'is_direct' => 1,
-                'note' =>  'sale no '.$model->no
+                'debit' => $amount,
+                'account_code_id' => $account_code,
+                'note' => 'sale no ' . $model->no
             ]);
         }
 
-        if ($model->payment_method_id == 2) {
-            // piutang usaha
-            $exist = $payment->detail()->where('account_code_id', 1140)
-                ->where('is_direct', 1)
-                ->first();
-
-            if ($exist) {
-                $payment->detail()->where('id', $exist->id)->update(['value' => $total]);
-            } else {
-                $payment->detail()->create([
-                    'value' => $total,
-                    'account_code_id' => 1140,
-                    'is_direct' => 1,
-                    'note' => 'sale no '.$model->no
-                ]);
-            }
-        }
+        // pemjualan
+        $payment->detail()->create([
+            'credit' => $amount,
+            'account_code_id' => '4000.01',
+            'note' => 'sale no ' . $model->no
+        ]);
     }
 }

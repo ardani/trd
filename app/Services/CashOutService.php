@@ -7,8 +7,7 @@
  */
 
 namespace App\Services;
-
-
+use App\Models\Cash;
 use App\Models\CashFlow;
 use Carbon\Carbon;
 use Entrust;
@@ -19,24 +18,21 @@ class CashOutService extends Service {
     protected $model;
     protected $name = 'cash_outs';
 
-    public function __construct(CashFlow $model) {
+    public function __construct(Cash $model, CashFlow $cash_flow) {
         $this->model = $model;
     }
 
     public function datatables($param = array()) {
         return Datatables::eloquent($this->model->query())
-            ->where('value','<',0)
-            ->addColumn('account_name',function($model){
-                return $model->account_code->name;
-            })
-            ->addColumn('pay_from',function($model){
-                if ($model->account_code_ref_id) {
-                    return $model->account_code_ref_id .' - '.$model->account_code_ref->name;
-                }
-                return '-';
-            })
+            ->where('type', 0)
             ->editColumn('created_at', function ($model){
                 return $model->created_at->format('d/m/Y');
+            })
+            ->addColumn('account_cash_name', function ($model){
+                return $model->account_cash->name;
+            })
+            ->addColumn('total', function ($model){
+                return number_format($model->total);
             })
             ->addColumn('action','actions.'.$this->name)
             ->where(function ($model) {
@@ -49,17 +45,51 @@ class CashOutService extends Service {
             ->make(true);
     }
 
-    public function getData($date = '') {
-        $result = $this->model->where(function ($query) use ($date) {
-            if ($date) {
-                $dates = explode(' - ', $date);
-                $start_at = Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d');
-                $finish_at = Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d');
-                $query->whereBetween('created_at', [$start_at, $finish_at]);
-            }
-            $query->where('value','<',0);
-        })->get();
+    public function store($data) {
+        $model = $this->model->firstOrNew(['no' => $data['no']]);
+        $model->no = $data['no'];
+        $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
+        $model->created_at = $created_at;
+        $model->type = 0;
+        $model->account_cash_id = $data['account_cash_id'];
+        $model->cashier_id = auth()->id();
+        $model->save();
 
-        return $result;
+        $sessions = session($data['no']);
+        $model->details()->delete();
+        $total = 0;
+        foreach ($sessions as $session) {
+            $model->details()->create([
+                'account_code_id' => $session['account_code_id'],
+                'credit' => $session['credit'],
+                'note' => $session['note']
+            ]);
+            $total += $session['credit'];
+        }
+
+        $model->details()->create([
+            'account_code_id' => $data['account_cash_id'],
+            'credit' => $total,
+            'note' => 'cash out from '.$data['no']
+        ]);
+
+        return $model;
+    }
+
+    public function update($data, $id) {
+        $model = $this->model->find($id);
+        $data['created_at'] = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
+        $this->cash_flow->where('cash_id', $id)
+            ->where('account_code_id', $model->account_cash_id)
+            ->delete();
+
+        $model->fill($data);
+        $model->save();
+        $model->details()->create([
+            'account_code_id' => $data['account_cash_id'],
+            'credit' => $model->total,
+            'note' => 'cash out from '.$data['no']
+        ]);
+        return $model;
     }
 }

@@ -180,7 +180,7 @@ class SaleOrdersController extends Controller {
         });
         $param        = $transactions[ $key ];
         $param['qty'] = $param['qty'] * -1;
-        $PO->transactions()->updateOrCreate(['product_id' => $product->id], $param);
+        $PO->transactions()->create($param);
 
         return array_values($transactions);
     }

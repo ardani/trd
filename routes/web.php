@@ -277,32 +277,26 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:edit.payment_orders'],
         'uses'       => 'PaymentOrdersController@detail'
     ]);
-
     Route::get('payment_orders/detail/{payment_id}/create', [
         'middleware' => ['permission:create.payment_orders'],
         'uses'       => 'PaymentOrdersController@create'
     ]);
-
     Route::post('payment_orders/detail/{id}/create', [
         'middleware' => ['permission:create.payment_orders'],
         'uses'       => 'PaymentOrdersController@store'
     ]);
-
     Route::get('payment_orders/detail/{payment_id}/edit/{id}', [
         'middleware' => ['permission:edit.payment_orders'],
         'uses'       => 'PaymentOrdersController@edit'
     ]);
-
     Route::post('payment_orders/detail/{payment_id}/edit/{id}', [
         'middleware' => ['permission:edit.payment_orders'],
         'uses'       => 'PaymentOrdersController@update'
     ]);
-
     Route::post('payment_orders/detail/{payment_id}/delete/{id}', [
         'middleware' => ['permission:delete.payment_orders'],
         'uses'       => 'PaymentOrdersController@delete'
     ]);
-
     Route::get('payment_orders/actions/print/{no}', [
         'middleware' => ['permission:create.payment_orders'],
         'uses'       => 'PaymentOrdersController@printPayment'
@@ -312,27 +306,22 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:edit.payment_sales'],
         'uses'       => 'PaymentSalesController@detail'
     ]);
-
     Route::get('payment_sales/detail/{id}/create', [
         'middleware' => ['permission:create.payment_sales'],
         'uses'       => 'PaymentSalesController@create'
     ]);
-
     Route::post('payment_sales/detail/{id}/create', [
         'middleware' => ['permission:create.payment_sales'],
         'uses'       => 'PaymentSalesController@store'
     ]);
-
     Route::get('payment_sales/detail/{payment_id}/edit/{id}', [
         'middleware' => ['permission:edit.payment_sales'],
         'uses'       => 'PaymentSalesController@edit'
     ]);
-
     Route::post('payment_sales/detail/{payment_id}/edit/{id}', [
         'middleware' => ['permission:edit.payment_sales'],
         'uses'       => 'PaymentSalesController@update'
     ]);
-
     Route::post('payment_sales/detail/{payment_id}/delete/{id}', [
         'middleware' => ['permission:delete.payment_sales'],
         'uses'       => 'PaymentSalesController@delete'
@@ -365,5 +354,55 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('request_products/actions/view/{no}', [
         'middleware' => ['permission:create.request_products'],
         'uses'       => 'RequestProductsController@viewPODetail'
+    ]);
+
+    Route::post('cash_ins/actions/addTemp', [
+        'middleware' => ['permission:create.cash_ins'],
+        'uses'       => 'CashinsController@addTempPODetail'
+    ]);
+    Route::post('cash_ins/actions/deleteTemp', [
+        'middleware' => ['permission:create.cash_ins'],
+        'uses'       => 'CashinsController@deleteTempPODetail'
+    ]);
+    Route::get('cash_ins/actions/viewTemp/{no}', [
+        'middleware' => ['permission:create.cash_ins'],
+        'uses'       => 'CashinsController@viewTempPODetail'
+    ]);
+    Route::post('cash_ins/actions/add', [
+        'middleware' => ['permission:create.cash_ins'],
+        'uses'       => 'CashinsController@addPODetail'
+    ]);
+    Route::post('cash_ins/actions/delete', [
+        'middleware' => ['permission:create.cash_ins'],
+        'uses'       => 'CashinsController@deletePODetail'
+    ]);
+    Route::get('cash_ins/actions/view/{no}', [
+        'middleware' => ['permission:create.cash_ins'],
+        'uses'       => 'CashinsController@viewPODetail'
+    ]);
+
+    Route::post('cash_outs/actions/addTemp', [
+        'middleware' => ['permission:create.cash_outs'],
+        'uses'       => 'CashOutsController@addTempPODetail'
+    ]);
+    Route::post('cash_outs/actions/deleteTemp', [
+        'middleware' => ['permission:create.cash_outs'],
+        'uses'       => 'CashOutsController@deleteTempPODetail'
+    ]);
+    Route::get('cash_outs/actions/viewTemp/{no}', [
+        'middleware' => ['permission:create.cash_outs'],
+        'uses'       => 'CashOutsController@viewTempPODetail'
+    ]);
+    Route::post('cash_outs/actions/add', [
+        'middleware' => ['permission:create.cash_outs'],
+        'uses'       => 'CashOutsController@addPODetail'
+    ]);
+    Route::post('cash_outs/actions/delete', [
+        'middleware' => ['permission:create.cash_outs'],
+        'uses'       => 'CashOutsController@deletePODetail'
+    ]);
+    Route::get('cash_outs/actions/view/{no}', [
+        'middleware' => ['permission:create.cash_outs'],
+        'uses'       => 'CashOutsController@viewPODetail'
     ]);
 });
