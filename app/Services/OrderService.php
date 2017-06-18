@@ -142,7 +142,13 @@ class OrderService extends Service {
         if ($model->cash &&  $model->payment_method_id == 2) {
             $payment->detail()->create([
                 'credit' => $model->cash,
-                'account_code_id' => '1100.02',
+                'account_code_id' => '1000.01',
+                'note' => 'dp order no ' . $model->no
+            ]);
+
+            $payment->detail()->create([
+                'debit' => $model->cash,
+                'account_code_id' => '2000.02',
                 'note' => 'dp order no ' . $model->no
             ]);
         }

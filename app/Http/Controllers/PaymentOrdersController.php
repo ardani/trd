@@ -37,6 +37,13 @@ class PaymentOrdersController extends Controller
     public function store(Request $request) {
         $data = $request->all();
         $order = $this->service->find($data['order_id']);
+        $cash = $this->service_detail->store([
+            'account_code_id' => '1000.01',
+            'credit' => $data['debit'],
+            'payment_id' => $order->payment->id,
+            'note' => 'installment sale ' . $order->no
+        ]);
+        $data['from_to_id'] = $cash->id;
         $data['payment_id'] = $order->payment->id;
         $this->service_detail->store($data);
         return redirect()->back()->with('message','Save Success');
@@ -53,7 +60,11 @@ class PaymentOrdersController extends Controller
 
     public function update($order_id, $id) {
         $data = request()->all();
-        $this->service_detail->update($data,$id);
+        $this->service_detail->update($data, $id);
+        $payment = $this->service_detail->find($id);
+        $cash = $this->service_detail->find($payment->from_to_id);
+        $cash->credit = $data['debit'];
+        $cash->save();
         return redirect()->back()->with('message','Update Success');
     }
 

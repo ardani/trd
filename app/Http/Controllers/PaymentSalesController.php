@@ -37,7 +37,14 @@ class PaymentSalesController extends Controller
     public function store(Request $request) {
         $data = $request->all();
         $sale = $this->service->find($data['sale_id']);
+        $cash = $this->service_detail->store([
+            'account_code_id' => '1000.01',
+            'debit' => $data['credit'],
+            'payment_id' => $sale->payment->id,
+            'note' => 'installment sale ' . $sale->no
+        ]);
         $data['payment_id'] = $sale->payment->id;
+        $data['from_to_id'] = $cash->id;
         $this->service_detail->store($data);
         return redirect()->back()->with('message','Save Success');
     }
@@ -54,6 +61,10 @@ class PaymentSalesController extends Controller
     public function update($sale_id, $id) {
         $data = request()->all();
         $this->service_detail->update($data, $id);
+        $payment = $this->service_detail->find($id);
+        $cash = $this->service_detail->find($payment->from_to_id);
+        $cash->debit = $data['credit'];
+        $cash->save();
         return redirect()->back()->with('message','Update Success');
     }
 

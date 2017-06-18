@@ -20,10 +20,16 @@ class Payment extends Model {
     }
 
     public function detail() {
-        return $this->hasMany(CashFlow::class);
+        return $this->hasMany(CashFlow::class)->where('account_code_id', '!=', '1000.01');
     }
 
     public function getTotalAttribute() {
-        return CashFlow::where('payment_id',$this->attributes['id'])->sum('value');
+        return CashFlow::where('payment_id',$this->attributes['id'])
+            ->get()
+            ->sum(function ($value){
+                if ($value['account_code_id'] != '1000.01') {
+                    return $value['debit'] - $value['credit'];
+                }
+            });
     }
 }

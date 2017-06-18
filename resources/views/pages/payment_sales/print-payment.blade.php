@@ -60,9 +60,10 @@
         <tbody>
         <tr>
             <th class="text-left border-bottom">ID</th>
-            <th class="text-left border-bottom">Account Name</th>
-            <th class="text-left border-bottom">Amount</th>
-            <th class="text-left border-bottom">Note</th>
+            <th class="text-left border-bottom" width="15%">Account Name</th>
+            <th class="text-left border-bottom">Debit</th>
+            <th class="text-left border-bottom">Credit</th>
+            <th class="text-left border-bottom" width="15%">Note</th>
             <th class="text-left border-bottom">Giro</th>
             <th class="text-left border-bottom">Created At</th>
         </tr>
@@ -71,12 +72,13 @@
             <tr valign="top">
                 <td>{{$row->account_code_id}}</td>
                 <td>{{$row->account_code->name}}</td>
-                <td class="text-right">{{number_format(abs($row->value))}}</td>
+                <td class="text-right">{{number_format($row->debit)}}</td>
+                <td class="text-right">{{number_format($row->credit)}}</td>
                 <td>{{$row->note}}</td>
                 <td>{{$row->giro}}</td>
                 <td>{{$row->created_at->format('d M Y')}}</td>
             </tr>
-            <?php $total += abs($row->value) ?>
+            <?php $total += $row->debit - $row->credit ?>
         @endforeach
         </tbody>
     </table>
@@ -91,7 +93,7 @@
         </tr>
         <tr valign="top" class="border-bottom">
             <td class="border-bottom text-right"><b>Total Payment:</b></td>
-            <td class="border-bottom text-right">{{number_format($total)}}</td>
+            <td class="border-bottom text-right">{{number_format(abs($total))}}</td>
         </tr>
         </tbody>
     </table>

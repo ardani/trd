@@ -37,16 +37,10 @@ class PaymentOrderService extends Service {
                 return $model->supplier->name;
             })
             ->addColumn('payment',function($model){
-                $payment = $model->payment->detail->sum(function ($value){
-                    return $value['debit'] - $value['credit'];
-                });
-                return number_format($payment);
+                return number_format($model->payment->total);
             })
             ->addColumn('status',function($model){
-                $payment = $model->payment->detail->sum(function ($value){
-                    return $value['debit'] - $value['credit'];
-                });
-                return $payment >= $model->total ? '<label class="label label-success">paid</label>'
+                return $model->payment->total >= $model->total ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';
             })
             ->editColumn('created_at', function ($model){
@@ -79,6 +73,7 @@ class PaymentOrderService extends Service {
             })
             ->addColumn('action','actions.payment_detail_order')
             ->where('payment_id',$id)
+            ->where('account_code_id','!=','1000.01')
             ->orderBy('id')
             ->make(true);
     }

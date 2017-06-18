@@ -37,16 +37,10 @@ class PaymentSaleService extends Service {
                 return $model->customer->name;
             })
             ->addColumn('payment',function($model){
-                $payment = $model->payment->detail->sum(function ($value){
-                    return $value['debit'] - $value['credit'];
-                });
-                return number_format($payment);
+                return number_format(abs($model->payment->total));
             })
             ->addColumn('status',function($model){
-                $payment = $model->payment->detail->sum(function ($value){
-                    return $value['debit'] - $value['credit'];
-                });
-                return $payment >= $model->total ? '<label class="label label-success">paid</label>'
+                return abs($model->payment->total) >= $model->total ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';
             })
             ->editColumn('created_at', function ($model){
@@ -85,11 +79,13 @@ class PaymentSaleService extends Service {
             ->addColumn('action', function ($model) {
                 $data = [
                     'id' => $model->id,
-                    'payment' => $model->payment
+                    'payment' => $model->payment,
+                    'account_code_id' => $model->account_code_id
                 ];
                 return view('actions.payment_detail_sale', $data);
             })
             ->where('payment_id',$id)
+            ->where('account_code_id','!=','1000.01')
             ->orderBy('id')
             ->make(true);
     }
