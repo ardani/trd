@@ -3371,10 +3371,8 @@ $(document).ready(function () {
     buildDatatables($('#table-payment-sale'), paymentSale);
 
     var paymentDetail = [
-        {data: 'account_code_id'},
         {data: 'account_name', searchable: false, orderable: false},
-        {data: 'debit', searchable: false, orderable: false},
-        {data: 'credit', searchable: false, orderable: false},
+        {data: 'amount', searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'giro', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},

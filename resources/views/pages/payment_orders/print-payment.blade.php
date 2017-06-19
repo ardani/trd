@@ -61,26 +61,20 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="text-left border-bottom">ID</th>
-            <th class="text-left border-bottom" width="15%">Account Name</th>
-            <th class="text-left border-bottom">Debit</th>
-            <th class="text-left border-bottom">Credit</th>
-            <th class="border-bottom" width="15%">Note</th>
-            <th class=" border-bottom">Giro</th>
-            <th class="border-bottom">Created At</th>
+            <th class="text-left border-bottom" width="15%">Created At</th>
+            <th class="text-left border-bottom">Amount</th>
+            <th class="text-left border-bottom">Note</th>
+            <th class="text-left border-bottom">Giro</th>
         </tr>
         <?php $total = 0 ?>
         @foreach($order->payment->detail as $row)
             <tr valign="top">
-                <td>{{$row->account_code_id}}</td>
-                <td>{{$row->account_code->name}}</td>
-                <td class="text-right">{{number_format($row->debit)}}</td>
-                <td class="text-right">{{number_format($row->credit)}}</td>
+                <td>{{$row->created_at->format('d M Y')}}</td>
+                <td class="text-right">{{number_format(abs($row->debit-$row->credit))}}</td>
                 <td>{{$row->note}}</td>
                 <td>{{$row->giro}}</td>
-                <td>{{$row->created_at->format('d M Y')}}</td>
             </tr>
-            <?php $total += $row->debit - $row->credit ?>
+            <?php $total += abs($row->debit - $row->credit) ?>
         @endforeach
         </tbody>
     </table>

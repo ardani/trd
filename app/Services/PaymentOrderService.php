@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Models\AccountCode;
 use App\Models\CashFlow;
 use App\Models\Order;
 use App\Models\Payment;
@@ -19,10 +20,12 @@ class PaymentOrderService extends Service {
     protected $model;
     protected $name = 'payment_orders';
     private $detail;
+    private $account;
 
-    public function __construct(Order $model, CashFlow $detail) {
+    public function __construct(Order $model, CashFlow $detail, AccountCode $accountCode) {
         $this->model = $model;
         $this->detail = $detail;
+        $this->account = $accountCode;
     }
 
     public function datatables($param = array()) {
@@ -57,6 +60,13 @@ class PaymentOrderService extends Service {
             ->make(true);
     }
 
+    private function listAccount() {
+        return $this->account->where(['type' => 1,'parent' => 0])
+            ->get()
+            ->pluck('id')
+            ->toArray();
+    }
+
     public function datatablesDetail($id) {
         return Datatables::eloquent($this->detail->query())
             ->addColumn('account_name',function($model){
@@ -65,15 +75,19 @@ class PaymentOrderService extends Service {
             ->editColumn('created_at', function ($model){
                 return $model->created_at->format('d/m/Y');
             })
-            ->editColumn('debit', function ($model){
-                return number_format($model->debit);
+            ->addColumn('amount', function ($model){
+                return number_format(abs($model->debit-$model->credit));
             })
-            ->editColumn('credit', function ($model){
-                return number_format($model->credit);
+            ->addColumn('action', function ($model) {
+                $data = [
+                    'id' => $model->id,
+                    'payment' => $model->payment,
+                    'account_code_id' => $model->account_code_id
+                ];
+                return view('actions.payment_detail_order', $data);
             })
-            ->addColumn('action','actions.payment_detail_order')
             ->where('payment_id',$id)
-            ->where('account_code_id','!=','1000.01')
+            ->whereIn('account_code_id',$this->listAccount())
             ->orderBy('id')
             ->make(true);
     }

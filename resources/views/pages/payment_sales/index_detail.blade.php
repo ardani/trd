@@ -24,10 +24,8 @@
                     <table id="table-payment-detail" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Account Name</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
+                            <th>Amount</th>
                             <th>Note</th>
                             <th>Giro</th>
                             <th>Created At</th>

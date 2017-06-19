@@ -21,6 +21,7 @@ class CashFlowsController extends Controller
         $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
         $account_code_id = $request->account_code_id ?: null;
         $data['cashes'] = $this->service->getData($account_code_id, $date);
+        $data['accounts'] = $this->account->filter(['type' => 1,'parent' => 0]);
         $data = array_merge($meta, $data);
         if ($request->type == 'print') {
             return view('pages.' . $this->page . '.print', $data);

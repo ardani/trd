@@ -8,8 +8,8 @@
 
 namespace App\Services;
 
+use App\Models\AccountCode;
 use App\Models\CashFlow;
-use App\Models\Payment;
 use App\Models\SaleOrder;
 use Entrust;
 use Datatables;
@@ -19,10 +19,12 @@ class PaymentSaleService extends Service {
     protected $model;
     protected $name = 'payment_sales';
     private $detail;
+    private $account;
 
-    public function __construct(SaleOrder $model, CashFlow $detail) {
+    public function __construct(SaleOrder $model, CashFlow $detail, AccountCode $account) {
         $this->model = $model;
         $this->detail = $detail;
+        $this->account = $account;
     }
 
     public function datatables($param = array()) {
@@ -62,6 +64,13 @@ class PaymentSaleService extends Service {
             ->make(true);
     }
 
+    private function listAccount() {
+        return $this->account->where(['type' => 1,'parent' => 0])
+            ->get()
+            ->pluck('id')
+            ->toArray();
+    }
+
     public function datatablesDetail($id) {
         return Datatables::eloquent($this->detail->query())
             ->addColumn('account_name',function($model){
@@ -70,11 +79,8 @@ class PaymentSaleService extends Service {
             ->editColumn('created_at', function ($model){
                 return $model->created_at->format('d/m/Y');
             })
-            ->editColumn('debit', function ($model){
-                return number_format($model->debit);
-            })
-            ->editColumn('credit', function ($model){
-                return number_format($model->credit);
+            ->addColumn('amount', function ($model){
+                return number_format(abs($model->debit-$model->credit));
             })
             ->addColumn('action', function ($model) {
                 $data = [
@@ -85,7 +91,7 @@ class PaymentSaleService extends Service {
                 return view('actions.payment_detail_sale', $data);
             })
             ->where('payment_id',$id)
-            ->where('account_code_id','!=','1000.01')
+            ->whereIN('account_code_id', $this->listAccount())
             ->orderBy('id')
             ->make(true);
     }

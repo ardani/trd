@@ -17,7 +17,10 @@
                     <form method="get">
                         <div class="form-group col-md-3">
                             <label for="">Account</label>
-                            <select name="account_code_id" class="form-control select-account-code" data-live-search="true">
+                            <select name="account_code_id" class="form-control">
+                                @foreach($accounts as $account)
+                                    <option value="{{$account->id}}">{{$account->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -44,18 +47,32 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @if($cashes)
-                                @foreach($cashes as $cash)
+                            <tr>
+                                <td colspan="2">cash flow before</td>
+                                <td>{{number_format($cashes['last']['debit'])}}</td>
+                                <td>{{number_format($cashes['last']['credit'])}}</td>
+                                <td>{{number_format($cashes['last']['saldo'])}}</td>
+                            </tr>
+                            @if($cashes['present'])
+                                <?php $saldo = 0;?>
+                                @foreach($cashes['present'] as $cash)
                                     <tr>
                                         <td>{{$cash->account_code_id}}</td>
                                         <td>{{$cash->account_code->name}}</td>
-                                        <td>{{number_format($cash->sdebit)}}</td>
-                                        <td>{{number_format($cash->scredit)}}</td>
+                                        <td>{{number_format($cash->debit)}}</td>
+                                        <td>{{number_format($cash->credit)}}</td>
                                         <td>{{number_format($cash->saldo)}}</td>
                                     </tr>
+                                    <?php $saldo += $cash->saldo?>
                                 @endforeach
                             @endif
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">Saldo Akhir</td>
+                                <td>{{number_format($saldo)}}</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </section>
