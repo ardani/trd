@@ -68,7 +68,7 @@
                                         <td>{{$cash->giro}}</td>
                                         <td>{{number_format($cash->debit)}}</td>
                                         <td>{{number_format($cash->credit)}}</td>
-                                        <td>{{$saldo}}</td>
+                                        <td>{{number_format($saldo)}}</td>
                                     </tr>
                                 @endforeach
                             @endif
