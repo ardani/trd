@@ -59,15 +59,14 @@ class CashFlowService extends Service {
         $dates = explode(' - ', $date);
         $dates = Carbon::createFromFormat('d/m/Y', $dates[0]);
 
-        $results = $this->model->whereMonth('created_at', '<=', $dates->month-1)
-            ->whereYear('created_at', '<=', $dates->year)
+        $results = $this->model->where('created_at', '<', $dates)
             ->selectRaw('sum(debit) as debit, sum(credit) as credit, sum(debit-credit) as saldo, account_code_id')
             ->groupBy('account_code_id')
             ->whereIn('account_code_id', $this->listAccount())
             ->orderBy('account_code_id')
             ->get();
         $lastMonth = [
-            'created_at' => $dates->month-1 . '/' . $dates->year,
+            'created_at' => $dates->format('d/M/Y'),
             'debit' => 0,
             'credit' => 0,
             'saldo' => 0
