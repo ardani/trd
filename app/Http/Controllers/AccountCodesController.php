@@ -15,7 +15,9 @@ class AccountCodesController extends Controller
 
     public function index() {
         $meta = $this->service->meta();
-        $data = array_merge($meta, ['codes' => $this->service->all()]);
+        $data['codes'] = $this->service->all();
+        $data['saldo'] = $this->service->getData();
+        $data = array_merge($meta, $data);
         return view('pages.'.$this->page.'.index', $data);
     }
 

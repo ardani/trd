@@ -26,16 +26,19 @@
                         <tr>
                             <th>No Account</th>
                             <th>Name</th>
+                            <th>Saldo</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach($codes as $code)
                                 <tr class="{{$code->parent ? 'parent' : ''}}">
+                                    <?php $account_saldo = array_key_exists($code->id, $saldo) ? $saldo[$code->id]['saldo'] : 0; ?>
                                     <td>{{$code->id}}</td>
-                                    <td>{{$code->name}}</td>
-                                    <td>
-                                        @if (!$code->parent)
+                                    <td colspan="{{$code->parent ? 3 : 1}}">{{$code->name}}</td>
+                                    @if (!$code->parent)
+                                        <td>{{number_format($account_saldo)}}</td>
+                                        <td>
                                             <div class="btn-group btn-group-sm">
                                                 @permission(('edit.account_codes'))
                                                 <a title="edit" href="{{url('account_codes/edit/'.$code->id)}}" class="btn btn-sm btn-primary"><span
@@ -46,8 +49,8 @@
                                                             class="glyphicon glyphicon-trash"></span></a>
                                                 @endpermission
                                             </div>
-                                        @endif
-                                    </td>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
