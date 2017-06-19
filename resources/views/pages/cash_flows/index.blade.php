@@ -39,8 +39,11 @@
                     <table class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Account Name</th>
+                            <th>Created</th>
+                            <th>Cash No</th>
+                            <th>Account</th>
+                            <th>Note</th>
+                            <th>Giro</th>
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Saldo</th>
@@ -48,28 +51,31 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="2">cash flow before</td>
+                                <td colspan="5"><strong>cash flow before</strong></td>
                                 <td>{{number_format($cashes['last']['debit'])}}</td>
                                 <td>{{number_format($cashes['last']['credit'])}}</td>
                                 <td>{{number_format($cashes['last']['saldo'])}}</td>
                             </tr>
                             @if($cashes['present'])
-                                <?php $saldo = 0;?>
+                                <?php $saldo = $cashes['last']['saldo'];?>
                                 @foreach($cashes['present'] as $cash)
+                                    <?php $saldo += ($cash->debit - $cash->credit) ?>
                                     <tr>
-                                        <td>{{$cash->account_code_id}}</td>
+                                        <td>{{$cash->created_at->format('d/M/Y')}}</td>
+                                        <td>{{$cash->cash_id ? $cash->cash->no : '-'}}</td>
                                         <td>{{$cash->account_code->name}}</td>
+                                        <td>{{$cash->note}}</td>
+                                        <td>{{$cash->giro}}</td>
                                         <td>{{number_format($cash->debit)}}</td>
                                         <td>{{number_format($cash->credit)}}</td>
-                                        <td>{{number_format($cash->saldo)}}</td>
+                                        <td>{{$saldo}}</td>
                                     </tr>
-                                    <?php $saldo += $cash->saldo?>
                                 @endforeach
                             @endif
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="4">Saldo Akhir</td>
+                                <td colspan="7"><strong>Saldo Akhir</strong></td>
                                 <td>{{number_format($saldo)}}</td>
                             </tr>
                         </tfoot>

@@ -49,10 +49,8 @@ class CashFlowService extends Service {
                     $query->where('account_code_id', $account);
                 }
             })
-            ->selectRaw('sum(debit) as debit, sum(credit) as credit, sum(debit-credit) as saldo, account_code_id')
-            ->groupBy('account_code_id')
             ->whereIn('account_code_id', $this->listAccount())
-            ->orderBy('account_code_id')
+            ->orderBy('id')
             ->get();
         return ['present' => $result, 'last' => $this->getDataLast($date)];
     }
