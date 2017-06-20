@@ -52,7 +52,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="5"><strong>cash flow before</strong></td>
+                                <td colspan="5"><strong>Cash Flow Before</strong></td>
                                 <td>{{number_format($cashes['last']['debit'])}}</td>
                                 <td>{{number_format($cashes['last']['credit'])}}</td>
                                 <td>{{number_format($cashes['last']['saldo'])}}</td>
