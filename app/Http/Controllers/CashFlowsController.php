@@ -22,6 +22,8 @@ class CashFlowsController extends Controller
         $account_code_id = $request->account_code_id ?: null;
         $data['cashes'] = $this->service->getData($account_code_id, $date);
         $data['accounts'] = $this->account->filter(['type' => 1,'parent' => 0]);
+        $data['date'] = $date;
+        $data['account_code_id'] = $account_code_id;
         $data = array_merge($meta, $data);
         if ($request->type == 'print') {
             return view('pages.' . $this->page . '.print', $data);

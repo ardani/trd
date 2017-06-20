@@ -57,7 +57,7 @@ class CashFlowService extends Service {
 
     private function getDataLast($date) {
         $dates = explode(' - ', $date);
-        $dates = Carbon::createFromFormat('d/m/Y', $dates[0]);
+        $dates = Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d').' 00:00';
 
         $results = $this->model->where('created_at', '<', $dates)
             ->selectRaw('sum(debit) as debit, sum(credit) as credit, sum(debit-credit) as saldo, account_code_id')
@@ -67,7 +67,7 @@ class CashFlowService extends Service {
             ->get();
 
         $lastMonth = [
-            'created_at' => $dates->format('d/M/Y'),
+            'created_at' => $dates,
             'debit' => 0,
             'credit' => 0,
             'saldo' => 0

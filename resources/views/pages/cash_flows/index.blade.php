@@ -20,13 +20,18 @@
                             <select name="account_code_id" class="form-control">
                                     <option value="">All</option>
                                 @foreach($accounts as $account)
-                                    <option value="{{$account->id}}">{{$account->name}}</option>
+                                    @if($account->id == $account_code_id)
+                                        <option selected value="{{$account->id}}">{{$account->name}}</option>
+                                        @else
+                                        <option value="{{$account->id}}">{{$account->name}}</option>
+                                    @endif
+
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="">Date</label>
-                            <input type="text" id="date" name="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
+                            <input type="text" id="date" name="date" class="form-control dateuntil" value="{{$date}}">
                         </div>
                         <div class="form-group col-md-6">
                             <button type="submit" name="type" value="filter" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
