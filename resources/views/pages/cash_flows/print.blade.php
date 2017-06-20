@@ -34,7 +34,7 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="border-bottom text-left" style="width: 25%;">CASH ACCOUNT</th>
+            <th class="border-bottom text-left" style="width: 25%;">ACCOUNT</th>
             <th class="border-bottom text-left" style="width: 25%;">DATE</th>
         </tr>
         <tr valign="top">
@@ -44,24 +44,46 @@
         </tbody>
     </table>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
+        <thead>
+            <tr>
+                <th class="text-left border-bottom">Created</th>
+                <th class="text-left border-bottom">Cash No</th>
+                <th class="text-left border-bottom">Account</th>
+                <th class="text-left border-bottom">Note</th>
+                <th class="text-left border-bottom">Giro</th>
+                <th class="border-bottom text-right">Debit</th>
+                <th class="border-bottom text-right">Credit</th>
+                <th class="border-bottom text-right">Saldo</th>
+            </tr>
+        </thead>
         <tbody>
         <tr>
-            <th class="text-left border-bottom">No</th>
-            <th class="text-left border-bottom">Account</th>
-            <th class="border-bottom text-right">Debit</th>
-            <th class="border-bottom text-right">Credit</th>
-            <th class="border-bottom text-right">Saldo</th>
+            <td colspan="5"><strong>Cash Flow Before</strong></td>
+            <td class="text-right">{{number_format($cashes['last']['debit'])}}</td>
+            <td class="text-right">{{number_format($cashes['last']['credit'])}}</td>
+            <td class="text-right">{{number_format($cashes['last']['saldo'])}}</td>
         </tr>
-        @foreach($cashes as $detail)
+        <?php $saldo = $cashes['last']['saldo'];?>
+        @foreach($cashes['present'] as $cash)
+            <?php $saldo += ($cash->debit - $cash->credit) ?>
             <tr valign="top">
-                <td>{{$detail->id}}</td>
-                <td>{{$detail->account_code->name}}</td>
-                <td class="text-right">{{number_format($detail->sdebit)}}</td>
-                <td class="text-right">{{number_format($detail->scredit)}}</td>
-                <td class="text-right">{{number_format($detail->saldo)}}</td>
+                <td>{{$cash->created_at->format('d/M/Y')}}</td>
+                <td>{{$cash->cash_id ? $cash->cash->no : '-'}}</td>
+                <td>{{$cash->account_code->name}}</td>
+                <td>{{$cash->note}}</td>
+                <td>{{$cash->giro}}</td>
+                <td class="text-right">{{number_format($cash->debit)}}</td>
+                <td class="text-right">{{number_format($cash->credit)}}</td>
+                <td class="text-right">{{number_format($saldo)}}</td>
             </tr>
         @endforeach
         </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="7"><strong>Last Saldo</strong></td>
+            <td class="text-right">{{number_format($saldo)}}</td>
+        </tr>
+        </tfoot>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
         <h5>print by {{auth()->user()->username}} at {{ date('d-m-Y') }} </h5>
