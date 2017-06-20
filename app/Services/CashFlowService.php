@@ -65,6 +65,7 @@ class CashFlowService extends Service {
             ->whereIn('account_code_id', $this->listAccount())
             ->orderBy('account_code_id')
             ->get();
+
         $lastMonth = [
             'created_at' => $dates->format('d/M/Y'),
             'debit' => 0,

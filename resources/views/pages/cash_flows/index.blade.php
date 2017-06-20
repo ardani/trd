@@ -18,6 +18,7 @@
                         <div class="form-group col-md-3">
                             <label for="">Account</label>
                             <select name="account_code_id" class="form-control">
+                                    <option value="">All</option>
                                 @foreach($accounts as $account)
                                     <option value="{{$account->id}}">{{$account->name}}</option>
                                 @endforeach
@@ -75,7 +76,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7"><strong>Saldo Akhir</strong></td>
+                                <td colspan="7"><strong>Last Saldo</strong></td>
                                 <td>{{number_format($saldo)}}</td>
                             </tr>
                         </tfoot>
