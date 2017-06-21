@@ -13,9 +13,10 @@
             border-bottom: 1px dotted #000
         }
     </style>
+    <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
 </head>
 <body>
-<div class="box box-info" style="font-family: monospace;">
+<div class="box box-info" style="font-family:'Courier New', Arial;">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">

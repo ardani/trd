@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: monospace;">
+<div class="box box-info" style="font-family: 'Courier New';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
