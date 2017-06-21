@@ -83,13 +83,15 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:35px;padding-left: 40px;">
         <tbody>
         <tr valign="top">
-            <td class="border-bottom" colspan="2"></td>
+            <td class="border-bottom" colspan="3"></td>
         </tr>
         <tr valign="top">
-            <td class="text-right" style="width: 85%">Total :</td>
+            <td class="text-left" style="width: 60%">Note:</td>
+            <td class="text-right" style="width: 25%">Total :</td>
             <td class="text-right">{{number_format($sale->total)}}</td>
         </tr>
         <tr valign="top">
+            <td class="text-left border-bottom" rowspan="3">{{$sale->note}}</td>
             <td class="text-right">Disc :</td>
             <td class="text-right">{{number_format($sale->disc)}}</td>
         </tr>
