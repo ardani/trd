@@ -87,7 +87,7 @@
                     <td>{{number_format($transaction['subtotal'])}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('orders/actions/deleteTemp')}}"
-                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
+                           data-id="{{$transaction['id']}}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>
             @endforeach
@@ -102,7 +102,7 @@
 <div class="col-md-3 pull-md-right" style="margin-top: 10px">
     <div class="form-group">
         <div class="input-group">
-            <div class="input-group-addon">Dp Rp</div>
+            <div class="input-group-addon">Cash Rp</div>
             <input type="number" id="cash" name="cash" placeholder="0" class="form-control">
         </div>
     </div>
@@ -117,7 +117,7 @@
         <td data-content="qty"></td>
         <td class="text-right subtotal" data-content="subtotal" data-format="currency"></td>
         <td>
-            <a class="act-delete" data-url="{{url('orders/actions/deleteTemp')}}" data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="act-delete" data-url="{{url('orders/actions/deleteTemp')}}" data-template-bind='[{"attribute": "data-id", "value": "id"}]' href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
         </td>
     </tr>
 </script> 

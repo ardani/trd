@@ -42,9 +42,8 @@
                             <th>No</th>
                             <th>Supplier</th>
                             <th>Invoice No</th>
-                            <th>Payment</th>
+                            <th>Payment Info</th>
                             <th>Cash</th>
-                            <th>Paid Until At</th>
                             <th>Total</th>
                             <th>Arrive At</th>
                             <th>Created At</th>

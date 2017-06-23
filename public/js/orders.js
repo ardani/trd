@@ -9,7 +9,6 @@ $(document).ready(function () {
     var qty = $('#qty');
 
     function resetForm() {
-        selling_price.val('');
         purchase_price.val('');
         qty.val('');
     }
@@ -160,6 +159,12 @@ $(document).ready(function () {
     });
 
     $('#save-order-btn').click(function (e) {
+        var suppId = sSupplier.val();
+        if (!suppId) {
+            alert('supplier belum dipilih');
+            return false;
+        }
+
         var url = $(this).data('redirect');
         $.ajax({
             type: 'POST',

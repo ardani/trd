@@ -111,9 +111,7 @@ class SaleOrdersController extends Controller {
     }
 
     public function deleteTempPODetail(Request $request) {
-        $key = $request->id;
-        session()->forget($request->no . '.' . $key);
-
+        session()->forget($request->no . '.' . $request->id);
         return array_values($this->viewTempPODetail($request->no));
     }
 

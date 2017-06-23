@@ -15,12 +15,12 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'Courier New';">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
-        <h4 style="margin-bottom: 5px;font-size: 16px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
@@ -56,14 +56,16 @@
             <th class="border-bottom">Credit</th>
             <th class="border-bottom">Note</th>
         </tr>
+        <?php $no = 1 ?>
         @foreach($cashes->details as $detail)
             <tr valign="top">
-                <td>{{$detail->id}}</td>
-                <td>{{$detail->account_code->name}}</td>
+                <td>{{$no}}</td>
+                <td>{{$detail->id .' '. $detail->account_code->name}}</td>
                 <td>{{number_format($detail->debit)}}</td>
                 <td>{{number_format($detail->credit)}}</td>
                 <td>{{$detail->note}}</td>
             </tr>
+            <?php $no++ ?>
         @endforeach
         </tbody>
     </table>

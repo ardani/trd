@@ -16,12 +16,12 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
 </head>
 <body>
-<div class="box box-info" style="font-family:'Courier New', Arial;">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
-        <h4 style="margin-bottom: 5px;font-size: 16px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
@@ -68,9 +68,10 @@
             <th class="border-bottom">Qty</th>
             <th class="border-bottom">Subtotal</th>
         </tr>
+        <?php $no = 1 ?>
         @foreach($sale->transactions as $transaction)
         <tr valign="top">
-            <td>{{$transaction->product->code}}</td>
+            <td>{{$no}}</td>
             <td>{{$transaction->product->name.' - '.$transaction->desc}}</td>
             <td class="text-right">{{number_format($transaction->selling_price)}}</td>
             <td class="text-right">{{$transaction->disc}}</td>
@@ -78,6 +79,7 @@
             <td class="text-right">{{abs($transaction->qty)}}</td>
             <td class="text-right">{{number_format(abs($transaction->qty)*($transaction->selling_price - $transaction->disc))}}</td>
         </tr>
+        <?php $no++ ?>
         @endforeach
         </tbody>
     </table>

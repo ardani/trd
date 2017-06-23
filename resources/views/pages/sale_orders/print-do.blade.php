@@ -17,12 +17,12 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'Courier New';">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
         <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>

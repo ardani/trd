@@ -9,7 +9,9 @@ class SaleOrder extends Model {
     protected $dates = ['paid_until_at'];
     protected $appends = ['total'];
     protected $fillable = [
-        'customer_id','cashier_id','payment_method_id','cash','disc','paid_until_at', 'cash_flows_id', 'note', 'state_id'
+        'customer_id','cashier_id','payment_method_id','cash',
+        'disc','paid_until_at','cash_flows_id','note','state_id',
+        'paid_status'
     ];
 
     public function payment_method() {

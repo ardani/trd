@@ -25,4 +25,24 @@ class CashFlow extends Model {
     public function cash() {
         return $this->belongsTo(Cash::class);
     }
+
+    protected static function boot() {
+        parent::boot();
+        static::saved(function($model) {
+            if ($model->payment_id) {
+                switch ($model->payment->type) {
+                    case 'sale':
+                        $sale = SaleOrder::find($model->payment->ref_id);
+                        $sale->paid_status = ($model->payment->total < $model->payment->sale->total) ? 0 : 1;
+                        $sale->save();
+                        break;
+                    case 'order':
+                        $order = Order::find($model->payment->ref_id);
+                        $order->paid_status = ($model->payment->total < $model->payment->order->total) ? 0 : 1;
+                        $order->save();
+                        break;
+                }
+            }
+        });
+    }
 }

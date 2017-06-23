@@ -15,12 +15,12 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'Courier New';">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
         <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
@@ -59,20 +59,23 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <tbody>
         <tr>
+            <th class="text-left border-bottom">No</th>
             <th class="text-left border-bottom" width="15%">Created At</th>
             <th class="text-left border-bottom">Amount</th>
             <th class="text-left border-bottom">Note</th>
             <th class="text-left border-bottom">Giro</th>
         </tr>
-        <?php $total = 0 ?>
+        <?php $total = 0; $no = 1?>
         @foreach($sale->payment->detail as $row)
             <tr valign="top">
+                <td>{{$no}}</td>
+                <td>{{$row->giro}}</td>
                 <td>{{$row->created_at->format('d M Y')}}</td>
                 <td class="text-right">{{number_format(abs($row->debit-$row->credit))}}</td>
                 <td>{{$row->note}}</td>
                 <td>{{$row->giro}}</td>
             </tr>
-            <?php $total += $row->debit - $row->credit ?>
+            <?php $total += $row->debit - $row->credit; $no++ ?>
         @endforeach
         </tbody>
     </table>
@@ -92,7 +95,7 @@
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} by {{$sale->employee->name}}</h5>
+        <h5>created by {{$sale->employee->name}} print by {{auth()->user()->username}} at {{ date('d-m-Y') }}</h5>
     </div>
 </div>
 <script>

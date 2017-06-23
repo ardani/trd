@@ -36,11 +36,8 @@ class OrderService extends Service {
             ->editColumn('arrive_at',function($model){
                 return $model->arrive_at ? $model->arrive_at->format('d/m/Y') : '-';
             })
-            ->editColumn('paid_until_at',function($model){
-                return $model->paid_until_at ? $model->paid_until_at->format('d/m/Y') : '-';
-            })
-            ->addColumn('payment_method',function($model){
-                return $model->payment_method->name;
+            ->addColumn('payment_info',function ($model) {
+                return view('pages.orders.info',compact('model'));
             })
             ->editColumn('created_at',function($model){
                 return $model->created_at->format('d/m/Y');

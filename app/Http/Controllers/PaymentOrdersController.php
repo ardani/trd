@@ -55,7 +55,7 @@ class PaymentOrdersController extends Controller
         $data['from_to_id'] = $cash->id;
         $data['payment_id'] = $order->payment->id;
         $this->service_detail->store($data);
-        return redirect()->back()->with('message','Save Success');
+        return redirect('payment_orders/detail/'. $data['order_id'])->with('message','Save Success');
     }
 
     public function edit($order_id, $id) {
@@ -75,7 +75,7 @@ class PaymentOrdersController extends Controller
         $cash = $this->service_detail->find($payment->from_to_id);
         $cash->debit = $data['credit'];
         $cash->save();
-        return redirect()->back()->with('message','Update Success');
+        return redirect('payment_orders/detail/'. $order_id)->with('message','Update Success');
     }
 
     public function delete($order_id, $id) {

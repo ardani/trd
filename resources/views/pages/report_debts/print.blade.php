@@ -15,12 +15,12 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'Courier New';">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
         <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
@@ -34,7 +34,8 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <thead>
             <tr>
-                <th class="border-bottom text-left" style="width: 30%;">NO</th>
+                <th class="border-bottom text-left">NO</th>
+                <th class="border-bottom text-left" style="width: 30%;">ORDER NO</th>
                 <th class="border-bottom text-left">SUPPLIER</th>
                 <th class="border-bottom text-left">PAID UNTIL</th>
                 <th class="border-bottom text-right">TOTAL</th>
@@ -44,8 +45,10 @@
             </tr>
         </thead>
         <tbody>
+        <?php $no = 1 ?>
         @foreach($orders as $order)
             <tr valign="top">
+                <td>{{$no}}</td>
                 <td>{{$order->no}}</td>
                 <td>{{$order->supplier->name}}</td>
                 <td>{{$order->paid_until_at->format('d M Y')}}</td>
@@ -54,11 +57,12 @@
                 <td>{{$order->payment->total >= $order->total ? 'paid' : 'unpaid'}}</td>
                 <td>{{$order->created_at->format('d M Y')}}</td>
             </tr>
+            <?php $no++ ?>
         @endforeach
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} by {{$order->employee->name}}</h5>
+        <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}} | created : {{$order->employee->name}}</h5>
     </div>
 </div>
 <script>

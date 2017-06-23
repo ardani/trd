@@ -131,6 +131,9 @@
         </table>
     </div>
 </div>
+<div class="col-md-12">
+    <a href="{{url('productions')}}" class="btn btn-success">Back</a>
+</div>
 <script type="text/html" id="row-production">
     <tr>
         <td data-content="code"></td>

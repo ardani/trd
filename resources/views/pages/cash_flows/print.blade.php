@@ -15,12 +15,12 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'Courier New';">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
-        <h4 style="margin-bottom: 5px;font-size: 16px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
@@ -46,6 +46,7 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <thead>
             <tr>
+                <th class="text-left border-bottom">No</th>
                 <th class="text-left border-bottom">Created</th>
                 <th class="text-left border-bottom">Cash No</th>
                 <th class="text-left border-bottom">Account</th>
@@ -58,15 +59,16 @@
         </thead>
         <tbody>
         <tr>
-            <td colspan="5"><strong>Cash Flow Before</strong></td>
+            <td colspan="6"><strong>Cash Flow Before</strong></td>
             <td class="text-right">{{number_format($cashes['last']['debit'])}}</td>
             <td class="text-right">{{number_format($cashes['last']['credit'])}}</td>
             <td class="text-right">{{number_format($cashes['last']['saldo'])}}</td>
         </tr>
-        <?php $saldo = $cashes['last']['saldo'];?>
+        <?php $saldo = $cashes['last']['saldo']; $no = 1?>
         @foreach($cashes['present'] as $cash)
             <?php $saldo += ($cash->debit - $cash->credit) ?>
             <tr valign="top">
+                <td>{{$no}}</td>
                 <td>{{$cash->created_at->format('d/M/Y')}}</td>
                 <td>{{$cash->cash_id ? $cash->cash->no : '-'}}</td>
                 <td>{{$cash->account_code->name}}</td>
@@ -76,11 +78,12 @@
                 <td class="text-right">{{number_format($cash->credit)}}</td>
                 <td class="text-right">{{number_format($saldo)}}</td>
             </tr>
+            <?php $no++ ?>
         @endforeach
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="7"><strong>Last Saldo</strong></td>
+            <td colspan="8"><strong>Last Saldo</strong></td>
             <td class="text-right">{{number_format($saldo)}}</td>
         </tr>
         </tfoot>

@@ -15,12 +15,12 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'Courier New';">
+<div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
     <div style="width: 20cm;text-align: center;padding-left: 40px;">
         <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
-        <div>{{ setting('company.address').' '.setting('company.phone')}}</div>
+        <div>{!!setting('company.address')!!}</div>
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
@@ -34,7 +34,8 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <thead>
         <tr>
-            <th class="border-bottom text-left" style="width: 30%;">NO</th>
+            <th class="border-bottom text-left">NO</th>
+            <th class="border-bottom text-left" style="width: 30%;">SALE NO</th>
             <th class="border-bottom text-left">CUSTOMER</th>
             <th class="border-bottom text-left">PAID UNTIL</th>
             <th class="border-bottom text-right">TOTAL</th>
@@ -44,8 +45,10 @@
         </tr>
         </thead>
         <tbody>
+        <?php $no = 1 ?>
         @foreach($sales as $sale)
             <tr valign="top">
+                <td>{{$no}}</td>
                 <td>{{$sale->no}}</td>
                 <td>{{$sale->customer->name}}</td>
                 <td>{{$sale->paid_until_at->format('d M Y')}}</td>
@@ -54,6 +57,7 @@
                 <td>{{$sale->payment->total >= $sale->total ? 'paid' : 'unpaid'}}</td>
                 <td>{{$sale->created_at->format('d M Y')}}</td>
             </tr>
+            <?php $no++ ?>
         @endforeach
         </tbody>
     </table>

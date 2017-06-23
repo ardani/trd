@@ -88,34 +88,26 @@ class OrdersController extends Controller
         $purchase_price = $request->purchase_price;
         $selling_price = $request->selling_price;
 
-        if (array_key_exists($request->product_id,$sessions) &&
-            $sessions[$request->product_id]['attribute'] == $request->attribute) {
-            if (request()->has('is_edit')) {
-                $sessions[$request->product_id]['qty'] = $request->qty;
-                $sessions[$request->product_id]['subtotal'] = $request->qty * $purchase_price * $request->attribute;
-            } else {
-                $sessions[ $request->product_id ]['qty'] += $request->qty;
-                $sessions[$request->product_id]['subtotal'] = $sessions[$request->product_id]['qty'] * $purchase_price * $request->attribute;
-            }
-        } else {
-            $sessions[ $product->id ] = [
-                'product_id'     => $request->product_id,
-                'code'           => $product->code,
-                'name'           => $product->name,
-                'attribute'      => $request->attribute,
-                'units'          => $request->units,
-                'qty'            => $request->qty,
-                'purchase_price' => $purchase_price,
-                'selling_price'  => $selling_price,
-                'subtotal'       => $request->qty * $purchase_price * $request->attribute
-            ];
-        }
+        $id = md5(time());
+        $sessions[ $id ] = [
+            'id'             => $id,
+            'product_id'     => $request->product_id,
+            'code'           => $product->code,
+            'name'           => $product->name,
+            'attribute'      => $request->attribute,
+            'units'          => $request->units,
+            'qty'            => $request->qty,
+            'purchase_price' => $purchase_price,
+            'selling_price'  => $selling_price,
+            'subtotal'       => $request->qty * $purchase_price * $request->attribute
+        ];
+
         session([$request->no => $sessions]);
         return array_values($sessions);
     }
 
     public function deleteTempPODetail(Request $request) {
-        session()->forget($request->no.'.'.$request->product_id);
+        session()->forget($request->no.'.'.$request->id);
         return array_values($this->viewTempPODetail($request->no));
     }
 
@@ -150,27 +142,18 @@ class OrdersController extends Controller
         $purchase_price = $product->purchase_price;
         $selling_price = $product->selling_price;
 
-        if (array_key_exists($request->product_id, $transactions)) {
-            if (request()->has('is_edit')) {
-                $transactions[$request->product_id]['qty'] = $request->qty;
-                $transactions[$request->product_id]['subtotal'] = $request->qty * $purchase_price * $request->units;
-            } else {
-                $transactions[$request->product_id]['qty'] += $request->qty;
-                $transactions[$request->product_id]['subtotal'] = $transactions[$request->product_id]['qty'] * $purchase_price * $request->units;
-            }
-        } else {
-            $transactions[ $product->id ] = [
-                'product_id'     => $product->id,
-                'code'           => $product->code,
-                'name'           => $product->name,
-                'attribute'      => $request->attribute,
-                'units'          => $request->units,
-                'qty'            => $request->qty,
-                'purchase_price' => $purchase_price,
-                'selling_price'  => $selling_price,
-                'subtotal'       => $request->qty * ($purchase_price) * $request->attribute
-            ];
-        }
+        $key = md5(time());
+        $transactions[ $key ] = [
+            'product_id'     => $product->id,
+            'code'           => $product->code,
+            'name'           => $product->name,
+            'attribute'      => $request->attribute,
+            'units'          => $request->units,
+            'qty'            => $request->qty,
+            'purchase_price' => $purchase_price,
+            'selling_price'  => $selling_price,
+            'subtotal'       => $request->qty * ($purchase_price) * $request->attribute
+        ];
 
         $PO = $this->service->where(function($query) use ($no){
             $query->where('no',$no);

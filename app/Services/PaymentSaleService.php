@@ -42,7 +42,7 @@ class PaymentSaleService extends Service {
                 return number_format(abs($model->payment->total));
             })
             ->addColumn('status',function($model){
-                return abs($model->payment->total) >= $model->total ? '<label class="label label-success">paid</label>'
+                return $model->paid_status ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';
             })
             ->editColumn('created_at', function ($model){
@@ -55,10 +55,10 @@ class PaymentSaleService extends Service {
                 ];
                 return view('actions.'.$this->name, $data);
             })
-            ->where(function ($model) {
-                $model->where('payment_method_id', 2);
+            ->where(function ($query) {
+                $query->where('payment_method_id', 2);
                 if ($customer_id = request()->input('customer_id')) {
-                    $model->where('customer_id', $customer_id);
+                    $query->where('customer_id', $customer_id);
                 }
             })
             ->make(true);
