@@ -358,27 +358,27 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('cash_ins/actions/addTemp', [
         'middleware' => ['permission:create.cash_ins'],
-        'uses'       => 'CashinsController@addTempPODetail'
+        'uses'       => 'CashInsController@addTempPODetail'
     ]);
     Route::post('cash_ins/actions/deleteTemp', [
         'middleware' => ['permission:create.cash_ins'],
-        'uses'       => 'CashinsController@deleteTempPODetail'
+        'uses'       => 'CashInsController@deleteTempPODetail'
     ]);
     Route::get('cash_ins/actions/viewTemp/{no}', [
         'middleware' => ['permission:create.cash_ins'],
-        'uses'       => 'CashinsController@viewTempPODetail'
+        'uses'       => 'CashInsController@viewTempPODetail'
     ]);
     Route::post('cash_ins/actions/add', [
         'middleware' => ['permission:create.cash_ins'],
-        'uses'       => 'CashinsController@addPODetail'
+        'uses'       => 'CashInsController@addPODetail'
     ]);
     Route::post('cash_ins/actions/delete', [
         'middleware' => ['permission:create.cash_ins'],
-        'uses'       => 'CashinsController@deletePODetail'
+        'uses'       => 'CashInsController@deletePODetail'
     ]);
     Route::get('cash_ins/actions/view/{no}', [
         'middleware' => ['permission:create.cash_ins'],
-        'uses'       => 'CashinsController@viewPODetail'
+        'uses'       => 'CashInsController@viewPODetail'
     ]);
 
     Route::post('cash_outs/actions/addTemp', [
