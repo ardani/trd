@@ -123,7 +123,6 @@ class SaleOrdersController extends Controller {
         $transactions = $PO->transactions->map(function ($val, $key) {
             $disc = $val->disc ?: 0;
             $qty  = abs($val->qty);
-
             return [
                 'id'             => $val->id,
                 'product_id'     => $val->product->id,
@@ -140,7 +139,7 @@ class SaleOrdersController extends Controller {
             ];
         });
 
-        return $transactions->keyBy('product_id')->toArray();
+        return $transactions->keyBy('id')->toArray();
     }
 
     public function addPODetail(Request $request) {
@@ -188,7 +187,6 @@ class SaleOrdersController extends Controller {
         $PO = $this->service->where(function ($query) use ($no) {
             $query->where('no', $no);
         });
-
         $PO->transactions()->where('id', $request->id)->delete();
         return array_values($this->viewPODetail($no));
     }
