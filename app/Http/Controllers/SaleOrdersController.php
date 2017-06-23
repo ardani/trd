@@ -179,7 +179,7 @@ class SaleOrdersController extends Controller {
         $param['qty'] = $param['qty'] * -1;
         $PO->transactions()->create($param);
 
-        return array_values($transactions);
+        return array_values($this->viewPODetail($no));
     }
 
     public function deletePODetail(Request $request) {

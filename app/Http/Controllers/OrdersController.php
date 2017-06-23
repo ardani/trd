@@ -120,6 +120,7 @@ class OrdersController extends Controller
         $transactions = $PO->transactions->map(function($val,$key){
             $qty = $val->qty;
             return  [
+                'id'             => $val->id,
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
                 'name'           => $val->product->name,
@@ -132,7 +133,7 @@ class OrdersController extends Controller
             ];
         });
 
-        return $transactions->keyBy('product_id')->toArray();
+        return $transactions->keyBy('id')->toArray();
     }
 
     public function addPODetail(Request $request) {
@@ -159,8 +160,8 @@ class OrdersController extends Controller
             $query->where('no',$no);
         });
 
-        $PO->transactions()->updateOrCreate(['product_id' => $product->id],$transactions[ $product->id ]);
-        return array_values($transactions);
+        $PO->transactions()->create($transactions[$key]);
+        return array_values($this->viewPODetail($no));
     }
 
     public function deletePODetail(Request $request) {
