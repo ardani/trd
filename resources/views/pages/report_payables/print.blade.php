@@ -41,7 +41,7 @@
             <th class="border-bottom text-right">TOTAL</th>
             <th class="border-bottom text-right">PAYMENT</th>
             <th class="border-bottom text-left">STATUS</th>
-            <th class="border-bottom text-left">CREATED AT</th>
+            <th class="border-bottom text-left">DATE</th>
         </tr>
         </thead>
         <tbody>
@@ -54,7 +54,7 @@
                 <td>{{$sale->paid_until_at->format('d M Y')}}</td>
                 <td class="text-right">{{number_format($sale->total)}}</td>
                 <td class="text-right">{{number_format(abs($sale->payment->total))}}</td>
-                <td>{{$sale->payment->total >= $sale->total ? 'paid' : 'unpaid'}}</td>
+                <td>{{$sale->paid_status ? 'paid' : 'unpaid'}}</td>
                 <td>{{$sale->created_at->format('d M Y')}}</td>
             </tr>
             <?php $no++ ?>

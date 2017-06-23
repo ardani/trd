@@ -41,7 +41,7 @@
                 <th class="border-bottom text-right">TOTAL</th>
                 <th class="border-bottom text-right">PAYMENT</th>
                 <th class="border-bottom text-left">STATUS</th>
-                <th class="border-bottom text-left">CREATED AT</th>
+                <th class="border-bottom text-left">DATE</th>
             </tr>
         </thead>
         <tbody>
@@ -54,7 +54,7 @@
                 <td>{{$order->paid_until_at->format('d M Y')}}</td>
                 <td class="text-right">{{number_format($order->total)}}</td>
                 <td class="text-right">{{number_format(abs($order->payment->total))}}</td>
-                <td>{{$order->payment->total >= $order->total ? 'paid' : 'unpaid'}}</td>
+                <td>{{$order->paid_status ? 'paid' : 'unpaid'}}</td>
                 <td>{{$order->created_at->format('d M Y')}}</td>
             </tr>
             <?php $no++ ?>
@@ -62,7 +62,7 @@
         </tbody>
     </table>
     <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}} | created : {{$order->employee->name}}</h5>
+        <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}}</h5>
     </div>
 </div>
 <script>
