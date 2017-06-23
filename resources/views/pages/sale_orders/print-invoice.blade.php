@@ -77,7 +77,7 @@
             <td class="text-right">{{$transaction->disc}}</td>
             <td>{{$transaction->units}}</td>
             <td class="text-right">{{abs($transaction->qty)}}</td>
-            <td class="text-right">{{number_format(abs($transaction->qty)*($transaction->selling_price - $transaction->disc))}}</td>
+            <td class="text-right">{{number_format(abs($transaction->qty) * ($transaction->selling_price - $transaction->disc) * $transaction->attribute)}}</td>
         </tr>
         <?php $no++ ?>
         @endforeach
