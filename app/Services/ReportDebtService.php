@@ -22,9 +22,13 @@ class ReportDebtService extends Service {
     }
 
     public function getData($supplier = 0, $status = 0, $date = '') {
-        $result = $this->model->where(function ($query) use ($supplier, $date) {
+        $result = $this->model->where(function ($query) use ($supplier, $date, $status) {
             if ($supplier) {
                 $query->where('supplier_id', $supplier);
+            }
+            if ($status) {
+                $qstatus = $status == 1 ? 1 : 0;
+                $query->where('paid_status', $qstatus);
             }
             if ($date) {
                 $dates = explode(' - ', $date);
@@ -35,27 +39,16 @@ class ReportDebtService extends Service {
             $query->where('payment_method_id', 2);
         })->get();
 
-        return $result->filter(function($value) use ($status) {
-            if ($status == 1) {
-                return $value->payment->total >= $value->total;
-            }
-
-            if ($status == 2) {
-                return $value->payment->total < $value->total;
-            }
-
-            return true;
-        });
+        return $result;
     }
 
     public function getDataDashboard($date = '') {
         $result = $this->model
-            ->whereNotNull('paid_until_at')
+            ->where('payment_method_id', 2)
+            ->where('paid_status',0)
             ->where('paid_until_at','<=', $date)
             ->get();
 
-        return $result->filter(function($value) {
-            return $value->payment->total < $value->total;
-        });
+        return $result;
     }
 }

@@ -24,8 +24,11 @@
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
-        <tr >
-            <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
+        <tr>
+            <th class="text-left border-bottom">
+                DATE {{request('date')}}
+            </th>
+            <th class="text-left border-bottom" style="text-transform: uppercase">
                 <div style="float: right">REPORT DEBTS</div>
             </th>
         </tr>
@@ -35,7 +38,7 @@
         <thead>
             <tr>
                 <th class="border-bottom text-left">NO</th>
-                <th class="border-bottom text-left" style="width: 30%;">ORDER NO</th>
+                <th class="border-bottom text-left" style="width: 25%;">ORDER NO</th>
                 <th class="border-bottom text-left">SUPPLIER</th>
                 <th class="border-bottom text-left">PAID UNTIL</th>
                 <th class="border-bottom text-right">TOTAL</th>
@@ -45,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-        <?php $no = 1 ?>
+        <?php $no = 1; $total = 0; $payment = 0;?>
         @foreach($orders as $order)
             <tr valign="top">
                 <td>{{$no}}</td>
@@ -57,13 +60,28 @@
                 <td>{{$order->paid_status ? 'paid' : 'unpaid'}}</td>
                 <td>{{$order->created_at->format('d M Y')}}</td>
             </tr>
-            <?php $no++ ?>
+            <?php
+            $no++;
+            $total += $order->total;
+            $payment += abs($order->payment->total);
+            ?>
         @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">TOTAL</td>
+                <td class="text-right">{{number_format($total)}}</td>
+                <td class="text-right">{{number_format($payment)}}</td>
+                <td class="text-right">{{number_format($total-$payment)}}</td>
+                <td class="text-right"></td>
+            </tr>
+            <tr>
+                <td colspan="8" style="padding-top: 20px">
+                    Print at {{ date('d-m-Y') }} : {{auth()->user()->username}}
+                </td>
+            </tr>
+        </tfoot>
     </table>
-    <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}}</h5>
-    </div>
 </div>
 <script>
     window.print();

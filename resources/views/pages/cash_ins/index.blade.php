@@ -21,6 +21,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <button type="button" name="type" value="filter" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
+                            <button type="button" name="type" value="print" class="btn btn-info btn-print" style="margin-top: 20px">Print</button>
                             @permission(('create.'.$path))
                                 <a href="{{url($path.'/create')}}" class="btn btn-success" style="margin-top: 20px"><span class="glyphicon glyphicon-plus"></span> New</a>
                             @endpermission

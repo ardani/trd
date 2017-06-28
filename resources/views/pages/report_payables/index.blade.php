@@ -66,6 +66,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <?php $total = 0; $payment = 0 ?>
                         @foreach($payables as $row)
                             <tr>
                                 <td>{{$row->no}}</td>
@@ -73,11 +74,24 @@
                                 <td>{{$row->paid_until_at->format('d M Y')}}</td>
                                 <td>{{number_format($row->total)}}</td>
                                 <td>{{number_format($row->payment->total)}}</td>
-                                <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
+                                <td>{{$row->paid_status ? 'paid' : 'unpaid'}}</td>
                                 <td>{{$row->created_at->format('d M Y')}}</td>
                             </tr>
+                            <?php
+                                $total += $row->total;
+                                $payment += $row->payment->total;
+                            ?>
                         @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">TOTAL</td>
+                                <td class="text-right">{{number_format($total)}}</td>
+                                <td class="text-right">{{number_format($payment)}}</td>
+                                <td class="text-right">{{number_format($total-$payment)}}</td>
+                                <td class="text-right"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </section>

@@ -7,6 +7,9 @@
             <span>toggle menu</span>
         </button>
         <div class="site-header-content">
+            <div class="title-app">
+                <h3 class="truncate">{{setting('company.name')}}</h3>
+            </div>
             <div class="site-header-content-in">
                 <div class="site-header-shown">
                     <div class="dropdown user-menu">
@@ -19,11 +22,7 @@
                             <a class="dropdown-item" href="{{url('logout')}}"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
                         </div>
                     </div>
-                    <button type="button" class="burger-right">
-                        <i class="font-icon-menu-addl"></i>
-                    </button>
                 </div>
-                <div class="mobile-menu-right-overlay"></div>
             </div>
         </div>
     </div>

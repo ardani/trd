@@ -14,13 +14,20 @@
             </header>
             <section class="card">
                 <div class="card-block">
+                    <form method="GET">
                     <div class="form-group col-md-3">
                         <label for="">Customer</label>
                         <select name="customer_id" id="customer_id" class="form-control select-customer"></select>
                     </div>
                     <div class="form-group col-md-3">
-                        <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
+                        <label for="">Date</label>
+                        <input type="text" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
                     </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
+                        <button type="submit" name="type" value="print" class="btn btn-info btn-print" style="margin-top: 20px">Print</button>
+                    </div>
+                    </form>
                 </div>
             </section>
             <section class="card">

@@ -21,9 +21,13 @@ class ReportPayableService extends Service {
     }
 
     public function getData($customer = 0, $status = 0, $date = '') {
-        $result = $this->model->where(function ($query) use ($customer, $date) {
+        $result = $this->model->where(function ($query) use ($customer, $date, $status) {
             if ($customer) {
                 $query->where('customer_id', $customer);
+            }
+            if ($status) {
+                $qstatus = $status == 1 ? 1 : 0;
+                $query->where('paid_status', $qstatus);
             }
             if ($date) {
                 $dates = explode(' - ', $date);
@@ -34,27 +38,16 @@ class ReportPayableService extends Service {
             $query->where('payment_method_id', 2);
         })->get();
 
-        return $result->filter(function($value) use ($status) {
-            if ($status == 1) {
-                return $value->payment->total >= $value->total;
-            }
-
-            if ($status == 2) {
-                return $value->payment->total < $value->total;
-            }
-
-            return true;
-        });
+        return $result;
     }
 
     public function getDataDashboard($date = '') {
         $result = $this->model
-            ->whereNotNull('paid_until_at')
+            ->where('payment_method_id', 2)
+            ->where('paid_status',0)
             ->where('paid_until_at','<=', $date)
             ->get();
 
-        return $result->filter(function($value) {
-            return $value->payment->total < $value->total;
-        });
+        return $result;
     }
 }

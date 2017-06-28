@@ -60,3 +60,19 @@ h2 {
 tr.parent td {
     font-weight: bold;
 }
+
+.title-app h3 {
+    color: white;
+    font-weight: bold;
+    margin-left: 50px;
+    float: left;
+}
+
+@media (max-width: 480px) {
+    .truncate {
+        width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
