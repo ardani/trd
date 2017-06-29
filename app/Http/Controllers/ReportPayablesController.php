@@ -24,6 +24,7 @@ class ReportPayablesController extends Controller
     public function doPrint(Request $request) {
         $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
         $data['sales'] = $this->service->getData($request->customer_id, $request->status, $date);
+        $data['now'] = Carbon::create(date('Y'), date('m'), date('d'), 0);
         switch ($request->type) {
             case 'normal':
                 return view('pages.'.$this->page.'.print', $data);

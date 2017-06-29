@@ -12,7 +12,10 @@
 */
 
 Route::get('debug', function(){
-    echo auto_number_product('Design 1231');
+    return collect([20,10])->reduce(function ($carry, $item) {
+        $carry = is_null($carry) ? 1 : $carry;
+        return $carry *= $item;
+    });
 });
 
 Route::group(['namespace' => 'Auth'], function () {

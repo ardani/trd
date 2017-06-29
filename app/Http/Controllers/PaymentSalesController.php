@@ -50,7 +50,7 @@ class PaymentSalesController extends Controller
             'note' => 'installment sale ' . $sale->no,
             'created_at' => $created_at
         ]);
-
+        $data['note'] .= 'installment sale '. $sale->no .' '.$data['note'];
         $data['created_at'] = $created_at;
         $data['payment_id'] = $sale->payment->id;
         $data['from_to_id'] = $cash->id;

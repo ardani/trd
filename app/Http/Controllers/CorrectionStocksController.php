@@ -32,6 +32,11 @@ class CorrectionStocksController extends Controller
 
     public function store(Request $request) {
         $data = $request->all();
+        $data['units'] = implode('x', $request->units);
+        $data['attribute'] = collect($request->units)->reduce(function ($carry, $item) {
+            $carry = is_null($carry) ? 1 : $carry;
+            return $carry *= $item;
+        });
         $this->service->store($data);
         return redirect()->back()->with('message','Save Success');
     }

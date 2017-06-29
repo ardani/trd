@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ReportDebtService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 class ReportDebtsController extends Controller
 {
@@ -24,6 +25,7 @@ class ReportDebtsController extends Controller
     public function doPrint(Request $request) {
         $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
         $data['orders'] = $this->service->getData($request->supplier_id, $request->status, $date);
+        $data['now'] = Carbon::create(date('Y'), date('m'), date('d'), 0);
         switch ($request->type) {
             case 'normal':
                 return view('pages.'.$this->page.'.print', $data);

@@ -19,11 +19,11 @@
                             <label for="">Date</label>
                             <input type="text" id="date" name="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-9">
                             <button type="button" name="type" value="filter" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
                             <button type="button" name="type" value="print" class="btn btn-info btn-print" style="margin-top: 20px">Print</button>
                             @permission(('create.'.$path))
-                            <a href="{{url($path.'/create')}}" class="btn btn-success" style="margin-top: 20px"><span class="glyphicon glyphicon-plus"></span> New</a>
+                            <a href="{{url($path.'/create')}}" class="btn btn-success pull-right" style="margin-top: 20px"><span class="glyphicon glyphicon-plus"></span> New</a>
                             @endpermission
                         </div>
                     </form>

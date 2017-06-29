@@ -15,12 +15,12 @@
                 <form id="formValid" method="post" action="{{ url($path.'/create') }}">
                     @include('pages.'.$path.'.form',['model' => ''])
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <a class="pull-right btn btn-default" href="{{url($path)}}">Back</a>
+                    <a class="btn btn-default" href="{{url($path)}}">Back</a>
                 </form>
             </div>
         </div>
     </div>
 @endsection
 @section('scripts')
-    <script type="text/javascript" src="{{asset('js/correction-stocks.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/correction-stock.js')}}"></script>
 @endsection

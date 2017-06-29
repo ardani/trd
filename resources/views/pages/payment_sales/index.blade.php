@@ -26,6 +26,7 @@
                     <div class="form-group col-md-3">
                         <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
                         <button type="submit" name="type" value="print" class="btn btn-info btn-print" style="margin-top: 20px">Print</button>
+                        <button type="submit" name="type" value="excel" class="btn btn-success btn-excel" style="margin-top: 20px">Excel</button>
                     </div>
                     </form>
                 </div>

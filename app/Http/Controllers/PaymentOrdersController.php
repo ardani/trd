@@ -50,7 +50,7 @@ class PaymentOrdersController extends Controller
             'note' => 'installment order ' . $order->no,
             'created_at' => $created_at
         ]);
-
+        $data['note'] .= 'installment order '. $order->no .' '.$data['note'];
         $data['created_at'] = $created_at;
         $data['from_to_id'] = $cash->id;
         $data['payment_id'] = $order->payment->id;

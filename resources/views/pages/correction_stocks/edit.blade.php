@@ -21,3 +21,6 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script type="text/javascript" src="{{asset('js/corection-stock.js')}}"></script>
+@endsection

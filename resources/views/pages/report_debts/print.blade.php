@@ -41,6 +41,7 @@
                 <th class="border-bottom text-left" style="width: 25%;">ORDER NO</th>
                 <th class="border-bottom text-left">SUPPLIER</th>
                 <th class="border-bottom text-left">PAID UNTIL</th>
+                <th class="border-bottom text-right">DAYS</th>
                 <th class="border-bottom text-right">TOTAL</th>
                 <th class="border-bottom text-right">PAYMENT</th>
                 <th class="border-bottom text-left">STATUS</th>
@@ -55,6 +56,7 @@
                 <td>{{$order->no}}</td>
                 <td>{{$order->supplier->name}}</td>
                 <td>{{$order->paid_until_at->format('d M Y')}}</td>
+                <td class="text-right">{{$order->paid_until_at->diffInDays($now, false)}}</td>
                 <td class="text-right">{{number_format($order->total)}}</td>
                 <td class="text-right">{{number_format(abs($order->payment->total))}}</td>
                 <td>{{$order->paid_status ? 'paid' : 'unpaid'}}</td>
@@ -69,14 +71,14 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4">TOTAL</td>
+                <td colspan="5">TOTAL</td>
                 <td class="text-right">{{number_format($total)}}</td>
                 <td class="text-right">{{number_format($payment)}}</td>
                 <td class="text-right">{{number_format($total-$payment)}}</td>
                 <td class="text-right"></td>
             </tr>
             <tr>
-                <td colspan="8" style="padding-top: 20px">
+                <td colspan="9" style="padding-top: 20px">
                     Print at {{ date('d-m-Y') }} : {{auth()->user()->username}}
                 </td>
             </tr>

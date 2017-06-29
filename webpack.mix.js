@@ -45,7 +45,6 @@ mix.combine([
 
     .js('resources/assets/js/index.js', 'public/js/index.js')
     .copy('resources/assets/js/sale-orders.js', 'public/js/sale-orders.js')
-    .copy('resources/assets/js/correction-stocks.js', 'public/js/correction-stocks.js')
     .copy('resources/assets/js/payment-order.js', 'public/js/payment-order.js')
     .copy('resources/assets/js/payment-sale.js', 'public/js/payment-sale.js')
     .copy('resources/assets/js/orders.js', 'public/js/orders.js')
@@ -56,4 +55,5 @@ mix.combine([
     .copy('resources/assets/js/report-payables.js', 'public/js/report-payables.js')
     .copy('resources/assets/js/cashins.js', 'public/js/cashins.js')
     .copy('resources/assets/js/cashouts.js', 'public/js/cashouts.js')
-    .copy('resources/assets/js/request-products.js', 'public/js/request-products.js');
+    .copy('resources/assets/js/request-products.js', 'public/js/request-products.js')
+    .copy('resources/assets/js/correction-stock.js', 'public/js/correction-stock.js');
