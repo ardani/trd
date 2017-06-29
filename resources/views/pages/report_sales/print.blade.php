@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Report Debts</title>
+    <title>Report Sales</title>
     <style>
         .text-right {
             text-align: right;
@@ -24,10 +24,10 @@
     </div>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
-        <tr >
-            <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
-                <div style="float: right">REPORT DEBTS</div>
-            </th>
+        <tr>
+            <th class="text-left border-bottom">DATE : {{request('date')}}</th>
+            <th class="text-left border-bottom">CUSTOMER : {{$customer}}</th>
+            <th class="text-right border-bottom" style="text-transform: uppercase">REPORT SALES</th>
         </tr>
         </tbody>
     </table>
@@ -35,35 +35,48 @@
         <thead>
             <tr>
                 <th class="border-bottom text-left">NO</th>
-                <th class="border-bottom text-left" style="width: 30%;">ORDER NO</th>
-                <th class="border-bottom text-left">SUPPLIER</th>
-                <th class="border-bottom text-left">PAID UNTIL</th>
+                <th class="border-bottom text-left" style="width: 30%;">SALE</th>
+                <th class="border-bottom text-left">PAYMENT INFO</th>
+                <th class="border-bottom text-left">CASH</th>
+                <th class="border-bottom text-right">DISC</th>
                 <th class="border-bottom text-right">TOTAL</th>
-                <th class="border-bottom text-right">PAYMENT</th>
-                <th class="border-bottom text-left">STATUS</th>
                 <th class="border-bottom text-left">DATE</th>
             </tr>
         </thead>
         <tbody>
-        <?php $no = 1 ?>
-        @foreach($orders as $order)
+        <?php $no = 1;$total = 0; ?>
+        @foreach($sales as $sale)
             <tr valign="top">
                 <td>{{$no}}</td>
-                <td>{{$order->no}}</td>
-                <td>{{$order->supplier->name}}</td>
-                <td>{{$order->paid_until_at->format('d M Y')}}</td>
-                <td class="text-right">{{number_format($order->total)}}</td>
-                <td class="text-right">{{number_format(abs($order->payment->total))}}</td>
-                <td>{{$order->paid_status ? 'paid' : 'unpaid'}}</td>
-                <td>{{$order->created_at->format('d M Y')}}</td>
+                <td>{{$sale->no}}<br/>{{$sale->customer->name}}</td>
+                <td>
+                    {{$sale->payment_method->name}}<br/>
+                    {!!$sale->paid_status ? 'paid <br/>' : ''!!}
+                    @if ($sale->payment_method_id == 2 && $sale->paid_status != 1)
+                        {{ is_null($sale->paid_until_at) ? '' : 'expire : '.$sale->paid_until_at->format('d/m/Y')}}
+                    @endif
+                </td>
+                <td class="text-right">{{number_format($sale->cash)}}</td>
+                <td class="text-right">{{number_format($sale->disc)}}</td>
+                <td class="text-right">{{number_format($sale->total)}}</td>
+                <td>{{$sale->created_at->format('d M Y')}}</td>
             </tr>
-            <?php $no++ ?>
+            <?php $no++; $total += $sale->total; ?>
         @endforeach
         </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5">TOTAL</td>
+            <td class="text-right">{{number_format($total)}}</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td colspan="9" style="padding-top: 20px">
+                Print at {{ date('d-m-Y') }} : {{auth()->user()->username}}
+            </td>
+        </tr>
+        </tfoot>
     </table>
-    <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}}</h5>
-    </div>
 </div>
 <script>
     window.print();

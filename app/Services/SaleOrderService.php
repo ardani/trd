@@ -169,8 +169,21 @@ class SaleOrderService extends Service {
                 'note' => 'dp sale no ' . $model->no,
                 'from_to_id' => $cash->id
             ]);
-
-
         }
+    }
+
+    public function getData($customer_id, $date) {
+        $result = $this->model->where(function ($model) use ($customer_id, $date) {
+            if ($customer_id) {
+                $model->where('customer_id', $customer_id);
+            }
+
+            if ($date_untils = date_until($date)) {
+                $model->where('created_at','>=',$date_untils[0])
+                    ->where('created_at','<=',$date_untils[1]);
+            }
+        })->get();
+
+        return $result;
     }
 }

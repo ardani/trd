@@ -14,29 +14,19 @@
             </header>
             <section class="card">
                 <div class="card-block">
-                    <form action="" method="get" id="freport-debts" class="form-horizontal">
+                    <form action="{{url('report_sales/print')}}" method="get" id="freport-sales" class="form-horizontal">
                         <div class="row">
                             <div class="col-md-3">
                                 <fieldset class="form-group">
-                                    <label class="form-label semibold" for="exampleInput">Supplier</label>
-                                    <select name="supplier_id" class="form-control select-supplier" data-live-search="true">
-                                    </select>
-                                </fieldset>
-                            </div>
-                            <div class="col-md-3">
-                                <fieldset class="form-group">
-                                    <label class="form-label semibold" for="exampleInput">Status</label>
-                                    <select name="status" class="form-control">
-                                        <option value="0">-</option>
-                                        <option value="1">PAID</option>
-                                        <option value="2">UNPAID</option>
+                                    <label class="form-label semibold" for="exampleInput">Customer</label>
+                                    <select name="customer_id" class="form-control select-customer" data-live-search="true">
                                     </select>
                                 </fieldset>
                             </div>
                             <div class="col-md-3">
                                 <fieldset class="form-group">
                                     <label class="form-label semibold" for="exampleInput">Date</label>
-                                    <input type="text" name="date" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
+                                    <input type="text" name="date" id="date" class="form-control dateuntil" value="{{date('01/m/Y') .' - '.date('t/m/Y')}}">
                                     <input type="hidden" name="type" value="normal" id="type-print"/>
                                 </fieldset>
                             </div>
@@ -53,31 +43,53 @@
             </section>
             <section class="card">
                 <div class="card-block">
-                    <table id="table-debts" class="display table table-bordered" cellspacing="0" width="100%">
+                    <table class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>Supplier</th>
-                            <th>Paid Until At</th>
+                            <th>Sale</th>
+                            <th>Payment Info</th>
+                            <th>Cash</th>
+                            <th>Disc</th>
                             <th>Total</th>
-                            <th>Payment</th>
-                            <th>Status</th>
                             <th>Created At</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($debts as $row)
+                        <?php $no = 1; $total = 0;?>
+                        @foreach($sales as $row)
                             <tr>
-                                <td>{{$row->no}}</td>
-                                <td>{{$row->supplier->name}}</td>
-                                <td>{{$row->paid_until_at->format('d M Y')}}</td>
-                                <td>{{number_format($row->total)}}</td>
-                                <td>{{number_format(abs($row->payment->total))}}</td>
-                                <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
+                                <td>{{$no}}</td>
+                                <td>{{$row->no}} <br/> {{$row->customer->name}}</td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <span class="label label-{{$row->payment_method->name == 'credit' ? 'danger' : 'success'}}">
+                                                {{$row->payment_method->name}}</span>
+                                            @if ($row->paid_status)
+                                                <span class="label label-success">paid</span>
+                                            @endif
+                                        </li>
+                                        @if ($row->payment_method_id == 2 && $row->paid_status != 1)
+                                            <li>expire :{{ is_null($row->paid_until_at) ? '-' : $row->paid_until_at->format('d/m/Y')}}</li>
+                                        @endif
+                                    </ul>
+                                </td>
+                                <td class="text-right">{{number_format($row->cash)}}</td>
+                                <td class="text-right">{{number_format($row->disc)}}</td>
+                                <td class="text-right">{{number_format($row->total)}}</td>
                                 <td>{{$row->created_at->format('d M Y')}}</td>
                             </tr>
+                            <?php $no++; $total += $row->total?>
                         @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">TOTAL</td>
+                                <td class="text-right">{{number_format($total)}}</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </section>
@@ -85,5 +97,5 @@
     </div>
 @endsection
 @section('scripts')
-    <script type="text/javascript" src="{{asset('js/report-debt.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/report-sales.js')}}"></script>
 @endsection
