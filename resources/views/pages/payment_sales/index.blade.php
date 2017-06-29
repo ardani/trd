@@ -14,14 +14,14 @@
             </header>
             <section class="card">
                 <div class="card-block">
-                    <form method="GET">
+                    <form action="{{url('payment_sales/print')}}" method="get">
                     <div class="form-group col-md-3">
                         <label for="">Customer</label>
                         <select name="customer_id" id="customer_id" class="form-control select-customer"></select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="">Date</label>
-                        <input type="text" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
+                        <input type="text" name="date" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
                     </div>
                     <div class="form-group col-md-3">
                         <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>

@@ -12,6 +12,9 @@
         .border-bottom {
             border-bottom: 1px dotted #000
         }
+        .border-top {
+            border-top: 1px dotted #000
+        }
     </style>
 </head>
 <body>
@@ -25,7 +28,10 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
+            <th class="text-left border-bottom">
+                DATE {{request('date')}}
+            </th>
+            <th class="text-left border-bottom" style="text-transform: uppercase">
                 <div style="float: right">CASH OUT</div>
             </th>
         </tr>
@@ -34,44 +40,46 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="border-bottom text-left" style="width: 25%;">NO</th>
-            <th class="border-bottom text-left" style="width: 25%;">CASH ACCOUNT</th>
-            <th class="border-bottom text-left" style="width: 25%;">TOTAL</th>
-            <th class="border-bottom text-left" style="width: 25%;">CREATED AT</th>
-        </tr>
-        <tr valign="top">
-            <td>{{$cashes->no}}</td>
-            <td>{{$cashes->account_cash->name}}</td>
-            <td>{{number_format($cashes->total)}}</td>
-            <td>{{$cashes->created_at->format('d M Y')}}</td>
-        </tr>
-        </tbody>
-    </table>
-    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
-        <tbody>
-        <tr>
             <th class="text-left border-bottom">No</th>
             <th class="text-left border-bottom">Account</th>
-            <th class="border-bottom">Debit</th>
             <th class="border-bottom">Credit</th>
             <th class="border-bottom">Note</th>
+            <th class="border-bottom">Created At</th>
         </tr>
-        <?php $no = 1 ?>
-        @foreach($cashes->details as $detail)
+        <?php $no = 1; $total = 0;?>
+        @foreach($cashes as $cash)
             <tr valign="top">
-                <td>{{$no}}</td>
-                <td>{{$detail->id .' '.$detail->account_code->name}}</td>
-                <td>{{number_format($detail->debit)}}</td>
-                <td>{{number_format($detail->credit)}}</td>
-                <td>{{$detail->note}}</td>
+                <td class="border-bottom">{{$no}}</td>
+                <td class="border-bottom">{{$cash->no}}</td>
+                <td class="text-right border-bottom">{{number_format($cash->total)}}</td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom">{{$cash->created_at->format('d M Y')}}</td>
             </tr>
-            <?php $no++ ?>
+            <?php $no++; $total += $cash->total ?>
+            @foreach($cash->details as $detail)
+                <tr valign="top">
+                    <td>-</td>
+                    <td>{{$detail->account_code->name}}</td>
+                    <td class="text-right">{{number_format($detail->credit)}}</td>
+                    <td>{{$detail->note}}</td>
+                    <td></td>
+                </tr>
+            @endforeach
         @endforeach
         </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="2" class="border-top"><strong>Total</strong></td>
+            <td class="text-right border-top">{{number_format($total)}}</td>
+            <td colspan="2" class="border-top"></td>
+        </tr>
+        <tr>
+            <td colspan="9" style="padding-top: 20px">
+                Print at {{ date('d-m-Y') }} : {{auth()->user()->username}}
+            </td>
+        </tr>
+        </tfoot>
     </table>
-    <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>created by {{$cashes->employee->name}} print by {{auth()->user()->username}} at {{ date('d-m-Y') }} </h5>
-    </div>
 </div>
 <script>
     window.print();

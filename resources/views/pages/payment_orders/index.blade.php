@@ -14,19 +14,21 @@
             </header>
             <section class="card">
                 <div class="card-block">
+                    <form action="{{url('payment_orders/print')}}" method="get">
                     <div class="form-group col-md-3">
                         <label for="">Supplier</label>
                         <select name="supplier_id" id="supplier_id" class="form-control select-supplier"></select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="">Date</label>
-                        <input type="text" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
+                        <input type="text" name="date" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
                     </div>
                     <div class="form-group col-md-3">
                         <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
                         <button type="submit" name="type" value="print" class="btn btn-info btn-print" style="margin-top: 20px">Print</button>
                         <button type="submit" name="type" value="excel" class="btn btn-success btn-excel" style="margin-top: 20px">Excel</button>
                     </div>
+                    </form>
                 </div>
             </section>
             <section class="card">

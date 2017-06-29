@@ -103,4 +103,9 @@ class PaymentOrdersController extends Controller
         $data['order'] = $order = $this->service->find($id);
         return view('pages.'.$this->page.'.print-payment', $data);
     }
+
+    public function doPrint(Request $request) {
+        $data['orders'] = $this->service->getData($request->date, $request->supplier_id);
+        return view('pages.payment_orders.print', $data);
+    }
 }

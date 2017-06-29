@@ -43,7 +43,7 @@ class PaymentOrderService extends Service {
                 return number_format($model->payment->total);
             })
             ->addColumn('status',function($model){
-                return $model->payment->total >= $model->total ? '<label class="label label-success">paid</label>'
+                return $model->paid_status ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';
             })
             ->editColumn('created_at', function ($model){
@@ -55,6 +55,11 @@ class PaymentOrderService extends Service {
                 $model->where('payment_method_id', 2);
                 if ($supplier_id = request()->input('supplier_id')) {
                     $model->where('supplier_id', $supplier_id);
+                }
+
+                if ($date_untils = date_until(request()->input('date_until'))) {
+                    $model->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
                 }
             })
             ->make(true);
@@ -90,5 +95,20 @@ class PaymentOrderService extends Service {
             ->whereIn('account_code_id',$this->listAccount())
             ->orderBy('id')
             ->make(true);
+    }
+
+    public function getData($date, $supplier_id) {
+        $result = $this->model->where(function ($query) use ($date, $supplier_id) {
+            $query->where('payment_method_id', 2);
+            if ($supplier_id) {
+                $query->where('supplier_id', $supplier_id);
+            }
+
+            if ($date_untils = date_until($date)) {
+                $query->where('created_at','>=',$date_untils[0])
+                    ->where('created_at','<=',$date_untils[1]);
+            }
+        })->get();
+        return $result;
     }
 }

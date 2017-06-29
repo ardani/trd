@@ -72,8 +72,8 @@ class CashInsController extends Controller
     }
 
     public function doPrint(Request $request) {
-        $data['cashes'] = $this->service->find($request->id);
-        return view('pages.'.$this->page.'.print', $data);
+        $data['cashes'] = $this->service->getData($request->date);
+        return view('pages.cash_ins.print', $data);
     }
 
     public function viewTempPODetail($no) {

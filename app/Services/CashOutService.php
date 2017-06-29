@@ -92,4 +92,17 @@ class CashOutService extends Service {
         ]);
         return $model;
     }
+
+    public function getData($date) {
+        $result = $this->model->where('type', 0)
+            ->where(function ($query) use ($date) {
+                if ($date_untils = date_until($date)) {
+                    $query->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
+                }
+            })
+            ->orderBy('id')
+            ->get();
+        return $result;
+    }
 }

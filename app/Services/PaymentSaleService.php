@@ -60,6 +60,11 @@ class PaymentSaleService extends Service {
                 if ($customer_id = request()->input('customer_id')) {
                     $query->where('customer_id', $customer_id);
                 }
+
+                if ($date_untils = date_until(request()->input('date_until'))) {
+                    $query->where('created_at','>=',$date_untils[0])
+                        ->where('created_at','<=',$date_untils[1]);
+                }
             })
             ->make(true);
     }
@@ -94,5 +99,20 @@ class PaymentSaleService extends Service {
             ->whereIN('account_code_id', $this->listAccount())
             ->orderBy('id')
             ->make(true);
+    }
+
+    public function getData($date, $customer_id) {
+        $result = $this->model->where(function ($query) use ($date, $customer_id) {
+            $query->where('payment_method_id', 2);
+            if ($customer_id) {
+                $query->where('customer_id', $customer_id);
+            }
+
+            if ($date_untils = date_until($date)) {
+                $query->where('created_at','>=',$date_untils[0])
+                    ->where('created_at','<=',$date_untils[1]);
+            }
+        })->get();
+        return $result;
     }
 }

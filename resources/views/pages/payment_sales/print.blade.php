@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Cash Ins</title>
+    <title>Payment Sale</title>
     <style>
         .text-right {
             text-align: right;
@@ -32,7 +32,7 @@
                 DATE {{request('date')}}
             </th>
             <th class="text-left border-bottom" style="text-transform: uppercase">
-                <div style="float: right">CASH IN</div>
+                <div style="float: right">PAYMENT SALE</div>
             </th>
         </tr>
         </tbody>
@@ -42,36 +42,39 @@
         <tr>
             <th class="text-left border-bottom">No</th>
             <th class="text-left border-bottom">Account</th>
-            <th class="border-bottom">Debit</th>
-            <th class="border-bottom">Note</th>
+            <th class="border-bottom">Total</th>
+            <th class="border-bottom">Payment</th>
+            <th class="border-bottom">Status</th>
             <th class="border-bottom">Created At</th>
         </tr>
         <?php $no = 1; $total = 0;?>
-        @foreach($cashes as $cash)
+        @foreach($sales as $sale)
             <tr valign="top">
                 <td class="border-bottom">{{$no}}</td>
-                <td class="border-bottom">{{$cash->no}}</td>
-                <td class="text-right border-bottom">{{number_format($cash->total)}}</td>
-                <td class="border-bottom"></td>
-                <td class="border-bottom">{{$cash->created_at->format('d M Y')}}</td>
+                <td class="border-bottom">{!!$sale->no.'<br/>'.$sale->customer->name!!}</td>
+                <td class="text-right border-bottom">{{number_format($sale->total)}}</td>
+                <td class="border-bottom text-right">{{number_format($sale->payment->total)}}</td>
+                <td class="border-bottom">{{$sale->paid_status ? 'paid' : 'unpaid'}}</td>
+                <td class="border-bottom">{{$sale->created_at->format('d M Y')}}</td>
             </tr>
-            <?php $no++; $total += $cash->total ?>
-            @foreach($cash->details as $detail)
-                <tr valign="top">
+            @foreach($sale->payment->detail as $detail)
+                <tr>
                     <td>-</td>
                     <td>{{$detail->account_code->name}}</td>
-                    <td class="text-right">{{number_format($detail->debit)}}</td>
-                    <td>{{$detail->note}}</td>
                     <td></td>
+                    <td class="text-right">{{number_format(abs($detail->debit-$detail->credit))}}</td>
+                    <td></td>
+                    <td>{{$detail->created_at->format('d M Y')}}</td>
                 </tr>
             @endforeach
+            <?php $no++; $total += $sale->payment->total ?>
         @endforeach
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="2" class="border-top"><strong>Total</strong></td>
+            <td colspan="3" class="border-top"><strong>Total</strong></td>
             <td class="text-right border-top">{{number_format($total)}}</td>
-            <td colspan="2" class="border-top"></td>
+            <td colspan="3" class="border-top"></td>
         </tr>
         <tr>
             <td colspan="9" style="padding-top: 20px">

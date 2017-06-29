@@ -103,4 +103,9 @@ class PaymentSalesController extends Controller
         $data['sale'] = $this->service->find($id);
         return view('pages.'.$this->page.'.print-payment', $data);
     }
+
+    public function doPrint(Request $request) {
+        $data['sales'] = $this->service->getData($request->date, $request->supplier_id);
+        return view('pages.payment_sales.print', $data);
+    }
 }

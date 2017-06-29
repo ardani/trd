@@ -25,24 +25,16 @@
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
         <tbody>
         <tr>
-            <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
+            <th class="text-left border-bottom">
+                DATE {{request('date')}}
+            </th>
+            <th class="text-left border-bottom" style="text-transform: uppercase">
                 <div style="float: right">CASH FLOW</div>
             </th>
         </tr>
         </tbody>
     </table>
-    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
-        <tbody>
-        <tr>
-            <th class="border-bottom text-left" style="width: 25%;">ACCOUNT</th>
-            <th class="border-bottom text-left" style="width: 25%;">DATE</th>
-        </tr>
-        <tr valign="top">
-            <td>{{request('account_code_id', 'all')}}</td>
-            <td>{{request('date')}}</td>
-        </tr>
-        </tbody>
-    </table>
+
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <thead>
             <tr>
@@ -86,11 +78,13 @@
             <td colspan="8"><strong>Last Saldo</strong></td>
             <td class="text-right">{{number_format($saldo)}}</td>
         </tr>
+        <tr>
+            <td colspan="9" style="padding-top: 20px">
+                Print at {{ date('d-m-Y') }} : {{auth()->user()->username}}
+            </td>
+        </tr>
         </tfoot>
     </table>
-    <div class="text-left" style="width: 20cm;padding-left: 40px;">
-        <h5>print by {{auth()->user()->username}} at {{ date('d-m-Y') }} </h5>
-    </div>
 </div>
 <script>
     window.print();
