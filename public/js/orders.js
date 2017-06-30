@@ -33,6 +33,8 @@ $(document).ready(function () {
 
     $('#save-btn').click(function (e) {
         var suppId = sSupplier.val();
+        var unitsItem = $('.units-item');
+
         if (!suppId) {
             alert('supplier belum dipilih');
             return false;
@@ -57,23 +59,11 @@ $(document).ready(function () {
         }
 
         var units = [];
-        var vP = 1;
-        var vL = 1;
-        var vT = 1;
-        if ($('#p').length) {
-            vP = $('#p').val();
-            units.push(vP + $('#p').data('unit'));
-        }
-
-        if ($('#l').length) {
-            vL = $('#l').val();
-            units.push(vL + $('#l').data('unit'));
-        }
-
-        if ($('#t').length) {
-            vT = $('#t').val();
-            units.push(vT + $('#t').data('unit'));
-        }
+        var attribute = 1;
+        unitsItem.each(function (index, el) {
+            units.push($(el).val() + $(el).data('unit'));
+            attribute = attribute * $(el).val();
+        });
 
         $.ajax({
             type: 'POST',
@@ -81,7 +71,7 @@ $(document).ready(function () {
             data: {
                 product_id: sProductRaw.val(),
                 qty: qty.val(),
-                attribute: vT*vL*vP,
+                attribute: attribute,
                 units: units.join('x'),
                 purchase_price: purchase_price.val(),
                 selling_price: selling_price.val(),
@@ -185,10 +175,6 @@ $(document).ready(function () {
     sProductRaw.on('changed.bs.select', function (e) {
         var units = $(this).find(':selected').data();
         var html = '';
-        if (Object.keys(units).length == 2) {
-            unitsWrapper.html(html);
-            return;
-        }
 
         Object.keys(units).forEach(function (key) {
             if (key == 'sellingprice') {
@@ -197,10 +183,10 @@ $(document).ready(function () {
 
             html += '<div class="col-md-4"> ' +
                 '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
-                '<input data-unit="'+units[key]+'" type="number" id="'+key+'" class="form-control " value="1" required></div>';
+                '<input data-unit="'+units[key]+'" type="number" id="'+key+'" class="form-control units-item" value="1" required></div>';
         })
-        unitsWrapper.html(html);
 
+        unitsWrapper.html(html);
         // set selling price
         var sellingPrice = $(this).find(':selected').data('sellingprice');
         $('#selling_price').val(sellingPrice);

@@ -13,12 +13,6 @@
         <input type="text" name="qty" class="form-control"
                data-validation="[NOTEMPTY]"
                placeholder="qty">
-    </fieldset>
-    <fieldset class="form-group col-md-2">
-        <label class="form-control-label">Purchase Price <span class="text-danger">*</span></label>
-        <input type="text" name="purchase_price" class="form-control"
-               data-validation="[NOTEMPTY]"
-               placeholder="purchase price">
         {{ csrf_field() }}
     </fieldset>
 </div>

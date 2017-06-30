@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductsRequest;
 use App\Services\CategoryService;
 use App\Services\ComponentUnitService;
+use App\Services\CustomerService;
 use App\Services\ProductService;
 use App\Services\SupplierService;
 use App\Services\UnitService;
@@ -19,13 +20,15 @@ class ProductsController extends Controller
     private $supplier;
     private $unit;
     private $componentUnit;
+    private $customer;
 
     public function __construct(
         ProductService $service,
         CategoryService $category,
         SupplierService $supplier,
         UnitService $unit,
-        ComponentUnitService $componentUnit
+        ComponentUnitService $componentUnit,
+        CustomerService $customer
     )
     {
         $this->service = $service;
@@ -33,6 +36,7 @@ class ProductsController extends Controller
         $this->supplier = $supplier;
         $this->unit = $unit;
         $this->componentUnit = $componentUnit;
+        $this->customer = $customer;
     }
 
     public function index()
@@ -118,16 +122,24 @@ class ProductsController extends Controller
     public function load()
     {
         $q = request()->input('q');
+        $customer_type_id = $this->customer->find(request()->input('customer_id'))->customer_type_id;
         if ($q) {
             $where = function ($query) use ($q) {
                 $query->whereRaw('can_sale=1 AND (name like "%' . $q . '%" OR code like "%' . $q . '%")');
             };
             $product = $this->service->filter($where, 20);
-            return $product->map(function ($val) {
-                $units = [];
+            return $product->map(function ($val) use ($customer_type_id) {
+                $selling_price_customer = $val->product_price()->where('customer_type_id', $customer_type_id)->first();
+                $selling_price  = $selling_price_customer ? $selling_price_customer->selling_price : $val->selling_price_default;
+
+                $units['data'] = [
+                    'sellingprice' => $selling_price
+                ];
+
                 foreach ($val->product_unit as $unit) {
                     $units['data'][$unit->component_unit_code] = $unit->value;
                 }
+
                 return array_merge([
                     'value' => $val->id,
                     'text' => $val->code . ' - ' . $val->name

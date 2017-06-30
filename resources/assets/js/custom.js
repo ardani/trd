@@ -142,6 +142,10 @@ $(document).ready(function () {
         ajax: {
             type: 'GET',
             url: '/products/ajaxs/load',
+            data: {
+              q: '{{{q}}}',
+              customer_id: $('select[name=customer_id]').val()
+            }
         },
         locale: {
             emptyTitle: '-'
@@ -451,7 +455,6 @@ $(document).ready(function () {
         {data: 'product_name',searchable: false, orderable: false},
         {data: 'qty', searchable: false, orderable: false},
         {data: 'units', searchable: false, orderable: false},
-        {data: 'purchase_price', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false}
     ];

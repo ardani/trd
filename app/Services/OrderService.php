@@ -158,12 +158,8 @@ class OrderService extends Service {
     }
 
     private function updateSellingPrice($product_id, $selling_price, $purchase_price) {
-        // using average
         $product = $this->product->find($product_id);
-        $avg_selling_price = $selling_price;
-        $avg_purchase_price = ($product->purchase_price_default + $purchase_price) / 2;
-        $product->selling_price_default = round($avg_selling_price);
-        $product->purchase_price_default = round($avg_purchase_price);
+        $product->selling_price_default = $selling_price;
         $product->save();
     }
 }

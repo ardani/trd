@@ -79,23 +79,17 @@ class SaleOrdersController extends Controller {
     public function addTempPODetail(Request $request) {
         $sessions       = session()->has($request->no) ? session($request->no) : [];
         $product        = $this->product->find($request->product_id);
-        $selling_price  = $product->selling_price_default;
+        $selling_price  = $request->selling_price;
         $purchase_price = $product->purchase_price_default;
         $disc           = $product->product_discount ? $product->product_discount->amount : 0;
-
-        if ($selling_price_customer = $product->product_price()
-            ->where('customer_type_id', $request->customer_type_id)->first()
-        ) {
-            $selling_price  = $selling_price_customer->selling_price;
-            $purchase_price = $selling_price_customer->purchase_price;
-        }
+        $desc           = $request->desc ? ' - '. $request->desc : '';
 
         $id = md5(time());
         $sessions[ $id ] = [
             'id'             => $id,
             'product_id'     => $product->id,
             'code'           => $product->code,
-            'name'           => $product->name.' - '.$request->desc,
+            'name'           => $product->name.$desc,
             'attribute'      => $request->attribute,
             'units'          => $request->units,
             'qty'            => $request->qty,
@@ -123,11 +117,12 @@ class SaleOrdersController extends Controller {
         $transactions = $PO->transactions->map(function ($val, $key) {
             $disc = $val->disc ?: 0;
             $qty  = abs($val->qty);
+            $desc = $val->desc ? ' - '. $val->desc : '';
             return [
                 'id'             => $val->id,
                 'product_id'     => $val->product->id,
                 'code'           => $val->product->code,
-                'name'           => $val->product->name.' - '.$val->desc,
+                'name'           => $val->product->name.$desc,
                 'attribute'      => $val->attribute,
                 'units'          => $val->units,
                 'qty'            => $qty,
@@ -146,22 +141,15 @@ class SaleOrdersController extends Controller {
         $no             = $request->no;
         $transactions   = $this->viewPODetail($no);
         $product        = $this->product->find($request->product_id);
-        $selling_price  = $product->selling_price_default;
+        $selling_price  = $request->selling_price;
         $purchase_price = $product->purchase_price_default;
         $disc           = $product->product_discount ? $product->product_discount->amount : 0;
-
-        if ($selling_price_customer = $product->product_price()
-            ->where('customer_type_id', $request->customer_type_id)->first()
-        ) {
-            $selling_price  = $selling_price_customer->selling_price;
-            $purchase_price = $selling_price_customer->purchase_price;
-        }
-
+        $desc           = $request->desc ? ' - '. $request->desc : '';
         $key = md5(time());
         $transactions[ $key ] = [
             'product_id'     => $product->id,
             'code'           => $product->code,
-            'name'           => $product->name.' - '.$request->desc,
+            'name'           => $product->name.$desc,
             'attribute'      => $request->attribute,
             'units'          => $request->units,
             'qty'            => $request->qty,

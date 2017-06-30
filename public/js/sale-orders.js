@@ -7,6 +7,8 @@ $(document).ready(function () {
     $('#save-btn').click(function (e) {
         var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
         var qty = $('#qty');
+        var unitsItem = $('.units-item');
+        var sellingPrice = $('#selling_price');
         if (!custTypeId) {
             alert('customer belum dipilih');
             return false;
@@ -19,24 +21,19 @@ $(document).ready(function () {
             alert('Qty masih kosong');
             return false;
         }
+
+        if (!sellingPrice.val()) {
+            alert('Price masih kosong');
+            return false;
+        }
+
         var units = [];
-        var vP = 1;
-        var vL = 1;
-        var vT = 1;
-        if ($('#p').length) {
-            vP = $('#p').val();
-            units.push(vP + $('#p').data('unit'));
-        }
+        var attribute = 1;
 
-        if ($('#l').length) {
-            vL = $('#l').val();
-            units.push(vL + $('#l').data('unit'));
-        }
-
-        if ($('#t').length) {
-            vT = $('#t').val();
-            units.push(vT + $('#t').data('unit'));
-        }
+        unitsItem.each(function (index, el) {
+            units.push($(el).val() + $(el).data('unit'));
+            attribute = attribute * $(el).val();
+        });
 
         $.ajax({
             type: 'POST',
@@ -44,8 +41,9 @@ $(document).ready(function () {
             data: {
                 product_id: sProduct.val(),
                 qty: qty.val(),
+                selling_price: sellingPrice.val(),
                 desc:  $('#desc').val(),
-                attribute: vP * vL * vT,
+                attribute: attribute,
                 units: units.join('x'),
                 customer_type_id: custTypeId,
                 _token: Laravel.csrfToken,
@@ -123,16 +121,18 @@ $(document).ready(function () {
     sProduct.on('changed.bs.select', function (e) {
         var units = $(this).find(':selected').data();
         var html = '';
-        if (Object.keys(units).length == 1) {
-            unitsWrapper.html(html);
-            return;
-        }
-
         Object.keys(units).forEach(function (key) {
+            if (key == 'sellingprice') {
+                return true;
+            }
+
             html += '<div class="col-md-4"> ' +
                 '<label class="form-control-label">' + key.toUpperCase() + '(' + units[key] + ')</label> ' +
-                '<input data-unit="' + units[key] + '" type="number" id="' + key + '" class="form-control " value="1" required></div>';
-        })
+                '<input data-unit="' + units[key] + '" type="number" id="' + key + '" class="form-control units-item" value="1" required></div>';
+        });
+
         unitsWrapper.html(html);
+        var sellingPrice = $(this).find(':selected').data('sellingprice');
+        $('#selling_price').val(sellingPrice);
     });
 });

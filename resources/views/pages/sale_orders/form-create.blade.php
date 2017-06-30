@@ -32,6 +32,10 @@
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
+<fieldset class="form-group col-md-3">
+    <label class="form-control-label">Price</label>
+    <input type="number" id="selling_price" class="form-control" name="selling_price"/>
+</fieldset>
 <fieldset class="form-group col-md-4" id="units">
 </fieldset>
 <fieldset class="form-group col-md-10">
@@ -68,18 +72,15 @@
             @foreach($transactions as $transaction)
                 <tr>
                     <td>{{$transaction['code']}}</td>
-                    <td>{{$transaction['name'] .' - '.$transaction['desc']}}</td>
+                    <td>{{$transaction['name']}}</td>
                     <td>{{number_format($transaction['selling_price'])}}</td>
                     <td>{{number_format($transaction['disc'])}}</td>
                     <td>{{ $transaction['units'] }}</td>
-                    <td><input data-id="{{$transaction['product_id']}}"
-                               data-selling_price="{{$transaction['selling_price']}}"
-                               type="number" data-url="{{url('sale_orders/actions/addTemp')}}"
-                               value="{{$transaction['qty']}}" class="form-control col-md-1 qty-input"/></td>
+                    <td>{{$transaction['qty']}}</td>
                     <td>{{number_format($transaction['subtotal'])}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('sale_orders/actions/deleteTemp')}}"
-                           data-id="{{$transaction['product_id']}}" data-key="{{$transaction['id']}}" href="javascript:void(0)"><span
+                           data-id="{{$transaction['id']}}" data-key="{{$transaction['id']}}" href="javascript:void(0)"><span
                                     class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>

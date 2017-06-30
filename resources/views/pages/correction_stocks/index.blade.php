@@ -28,7 +28,6 @@
                             <th>Name</th>
                             <th>Qty</th>
                             <th>Units</th>
-                            <th>Purchase Price</th>
                             <th>Created</th>
                             <th>Action</th>
                         </tr>

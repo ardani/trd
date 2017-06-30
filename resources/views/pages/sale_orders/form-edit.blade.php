@@ -32,6 +32,10 @@
     <label class="form-control-label">Product <span class="text-danger">*</span></label>
     <select id="product_id" class="form-control select-product" data-live-search="true"></select>
 </fieldset>
+<fieldset class="form-group col-md-3">
+    <label class="form-control-label">Price</label>
+    <input type="number" id="selling_price" class="form-control" name="selling_price"/>
+</fieldset>
 <fieldset class="form-group col-md-4" id="units">
 </fieldset>
 <fieldset class="form-group col-md-10">
