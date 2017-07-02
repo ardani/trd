@@ -2,7 +2,7 @@
 <div class="row">
     <fieldset class="form-group col-md-3">
         <label class="form-control-label">Product <span class="text-danger">*</span></label>
-        <select name="product_id" class="form-control select-product" data-live-search="true">
+        <select name="product_id" class="form-control select-product-raw" data-live-search="true">
         </select>
     </fieldset>
     <fieldset class="form-group col-md-2">

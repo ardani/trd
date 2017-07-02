@@ -58,4 +58,5 @@ mix.combine([
     .copy('resources/assets/js/cashins.js', 'public/js/cashins.js')
     .copy('resources/assets/js/cashouts.js', 'public/js/cashouts.js')
     .copy('resources/assets/js/request-products.js', 'public/js/request-products.js')
+    .copy('resources/assets/js/take-product.js', 'public/js/take-product.js')
     .copy('resources/assets/js/correction-stock.js', 'public/js/correction-stock.js');

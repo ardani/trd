@@ -15,7 +15,7 @@
                 <form id="formValid" method="post" action="{{ url($path.'/create') }}">
                     @include('pages.'.$path.'.form',['model' => ''])
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <a class="btn btn-default" href="{{url($path)}}">Back</a>
+                    <a class="btn btn-default pull-right" href="{{url($path)}}">Back</a>
                 </form>
             </div>
         </div>

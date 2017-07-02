@@ -32,11 +32,16 @@ class CorrectionStocksController extends Controller
 
     public function store(Request $request) {
         $data = $request->all();
-        $data['units'] = implode('x', $request->units);
-        $data['attribute'] = collect($request->units)->reduce(function ($carry, $item) {
-            $carry = is_null($carry) ? 1 : $carry;
-            return $carry *= $item;
-        });
+        $units = [];
+        $attribute = 1;
+        $data['cashier_id'] = auth()->user()->id;
+        foreach ($request->attribute as $key => $attribute) {
+            $units[] = $attribute.$request->units[$key];
+            $attribute *= $attribute;
+        }
+
+        $data['attribute'] = $attribute;
+        $data['units'] = implode('x', $units);
         $this->service->store($data);
         return redirect()->back()->with('message','Save Success');
     }

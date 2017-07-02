@@ -45,10 +45,8 @@
                 <tr>
                     <td>{{$transaction['code']}}</td>
                     <td>{{$transaction['name']}}</td>
-                    <td>{{ $transaction['units'] }}</td>
-                    <td><input data-id="{{$transaction['product_id']}}"
-                               type="number" data-url="{{url('request_products/actions/addTemp')}}"
-                               value="{{$transaction['qty']}}" class="form-control col-md-1 qty-input"/></td>
+                    <td>{{ $transaction['units']}}</td>
+                    <td>{{ $transaction['qty']}}</td>
                     <td><a class="act-delete" data-url="{{url('request_products/actions/deleteTemp')}}"
                            data-id="{{$transaction['product_id']}}" href="javascript:void(0)">
                             <span class="glyphicon glyphicon-remove"></span></a>
@@ -73,9 +71,7 @@
         <td data-content="code"></td>
         <td data-content="name"></td>
         <td data-content="units"></td>
-        <td><input type="number" data-url="{{url('request_products/actions/addTemp')}}" data-template-bind='[
-            {"attribute": "data-id", "value": "product_id"}
-        ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
+        <td data-content="qty"></td>
         <td>
             <a class="act-delete" data-url="{{url('request_products/actions/deleteTemp')}}"
                data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span

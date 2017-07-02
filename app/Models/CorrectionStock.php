@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CorrectionStock extends Model {
     protected $fillable = [
-        'product_id','qty','purchase_price','attribute','units'
+        'product_id','qty','purchase_price','attribute','units','cashier_id'
     ];
 
     public function product() {

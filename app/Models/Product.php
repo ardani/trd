@@ -42,16 +42,19 @@ class Product extends Model {
         }
 
         $trans = Transaction::where('product_id', $this->attributes['id'])
-            ->whereNotIn('transactionable_type',['App\Models\SaleOrder','App\Models\RequestProduct'])
+            ->whereNotIn('transactionable_type',['App\Models\RequestProduct'])
             ->select(\DB::raw('sum(qty*attribute) as stock'))
             ->where('return_complete',0)
             ->first();
+
         $correction = CorrectionStock::where('product_id', $this->attributes['id'])
             ->select(\DB::raw('sum(qty*attribute) as stock'))
             ->first();
+
         $takeProduct = TakeProduct::where('product_id', $this->attributes['id'])
-            ->select(\DB::raw('sum(qty) as stock'))
+            ->select(\DB::raw('sum(qty*attribute) as stock'))
             ->first();
+
         return $this->attributes['stock'] = round($this->attributes['start_stock'] +
             $trans->stock - $correction->stock - $takeProduct->stock,2);
     }

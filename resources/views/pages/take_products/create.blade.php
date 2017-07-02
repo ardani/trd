@@ -21,3 +21,6 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script type="text/javascript" src="{{asset('js/take-product.js')}}"></script>
+@endsection

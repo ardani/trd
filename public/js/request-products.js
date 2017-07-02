@@ -5,8 +5,8 @@ $(document).ready(function () {
     var tRequestDetails = $('#table-request-details');
     var unitsWrapper = $('#units');
     $('#save-btn').click(function (e) {
-        var custTypeId = sCustomer.find('option:selected').data('customer_type_id');
         var qty = $('#qty');
+        var unitsItem = $('.units-item');
 
         if (!sProductRaw.val()) {
             alert('product belum dipilih');
@@ -17,23 +17,12 @@ $(document).ready(function () {
             return false;
         }
         var units = [];
-        var vP = 1;
-        var vL = 1;
-        var vT = 1;
-        if ($('#p').length) {
-            vP = $('#p').val();
-            units.push(vP + $('#p').data('unit'));
-        }
+        var attribute = 1;
 
-        if ($('#l').length) {
-            vL = $('#l').val();
-            units.push(vL + $('#l').data('unit'));
-        }
-
-        if ($('#t').length) {
-            vT = $('#t').val();
-            units.push(vT + $('#t').data('unit'));
-        }
+        unitsItem.each(function (index, el) {
+          units.push($(el).val() + $(el).data('unit'));
+          attribute = attribute * $(el).val();
+        });
 
         $.ajax({
             type: 'POST',
@@ -42,9 +31,8 @@ $(document).ready(function () {
                 product_id: sProductRaw.val(),
                 qty: qty.val(),
                 desc:  $('#desc').val(),
-                attribute: vP * vL * vT,
+                attribute: attribute,
                 units: units.join('x'),
-                customer_type_id: custTypeId,
                 _token: Laravel.csrfToken,
                 no: $('#no-po').val()
             },
@@ -115,10 +103,6 @@ $(document).ready(function () {
     sProductRaw.on('changed.bs.select', function (e) {
         var units = $(this).find(':selected').data();
         var html = '';
-        if (Object.keys(units).length == 2) {
-            unitsWrapper.html(html);
-            return;
-        }
 
         Object.keys(units).forEach(function (key) {
             if (key == 'sellingprice') {
@@ -126,9 +110,8 @@ $(document).ready(function () {
             }
             html += '<div class="col-md-4"> ' +
                 '<label class="form-control-label">' + key.toUpperCase() + '(' + units[key] + ')</label> ' +
-                '<input data-unit="' + units[key] + '" type="number" id="' + key + '" class="form-control " value="1" required></div>';
+                '<input data-unit="' + units[key] + '" type="number" name="units[]" id="' + key + '" class="form-control units-item" value="1" required></div>';
         })
-
         unitsWrapper.html(html);
     });
 });

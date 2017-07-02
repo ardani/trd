@@ -122,7 +122,7 @@ class ProductsController extends Controller
     public function load()
     {
         $q = request()->input('q');
-        $customer_type_id = $this->customer->find(request()->input('customer_id'))->customer_type_id;
+        $customer_type_id = $this->customer->find(request()->input('customer_id',1))->customer_type_id;
         if ($q) {
             $where = function ($query) use ($q) {
                 $query->whereRaw('can_sale=1 AND (name like "%' . $q . '%" OR code like "%' . $q . '%")');

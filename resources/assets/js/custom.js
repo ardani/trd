@@ -491,6 +491,7 @@ $(document).ready(function () {
         {data: 'product_code',searchable: false, orderable: false},
         {data: 'product_name',searchable: false, orderable: false},
         {data: 'qty', searchable: false, orderable: false},
+        {data: 'units', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false}
     ];

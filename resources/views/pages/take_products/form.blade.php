@@ -1,19 +1,16 @@
 @include('includes.alert')
-<div class="col-md-12">
-    <fieldset class="form-group">
+<div class="row">
+    <fieldset class="form-group col-md-3">
         <label class="form-control-label">Product <span class="text-danger">*</span></label>
-        <select name="product_id" class="form-control select-product" data-live-search="true">
-            @if($model)
-                <option value="{{$model->product_id}}">{{$model->product->code.' - '.$model->product->name}}</option>
-            @endif
+        <select name="product_id" class="form-control select-product-raw" data-live-search="true">
         </select>
     </fieldset>
-    <fieldset class="form-group">
+    <fieldset class="form-group col-md-2">
         <label class="form-control-label">Qty <span class="text-danger">*</span></label>
         <input type="text" name="qty" class="form-control"
-               value="{{ $model ? $model['qty'] : old('qty') }}"
                data-validation="[NOTEMPTY]"
-               placeholder="aty">
+               placeholder="qty">
         {{ csrf_field() }}
     </fieldset>
+    <fieldset class="form-group col-md-4" id="units"></fieldset>
 </div>

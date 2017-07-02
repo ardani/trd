@@ -27,6 +27,7 @@
                             <th>Code</th>
                             <th>Name</th>
                             <th>Qty</th>
+                            <th>Units</th>
                             <th>Created</th>
                             <th>Action</th>
                         </tr>

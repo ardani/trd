@@ -76,28 +76,37 @@ class ReportProfitService extends Service {
 
     public function getTotalLastStock($date) {
         $date = Carbon::createFromFormat('d/m/Y', $date);
-        $raw_correction_stock = "(SELECT product_id, (qty * attribute * -1) AS qty FROM 
-            correction_stocks WHERE month(created_at) <= '$date->month' AND year(created_at) <= '$date->year') cs";
+        $raw_correction_stock = "(SELECT (qty * attribute * -1) AS qty, product_id FROM 
+            correction_stocks WHERE month(created_at) <= '$date->month' 
+            AND year(created_at) <= '$date->year') cs";
 
         $raw_transaction = "(SELECT (qty * attribute) AS qty, product_id FROM 
-            transactions WHERE month(created_at) <= '$date->month' AND year(created_at) <= '$date->year') t";
+            transactions WHERE transactionable_type != 'App\\Models\\RequestProduct' 
+            AND month(created_at) <= '$date->month' 
+            AND year(created_at) <= '$date->year') t";
 
         $raw_product_history = "(SELECT product_id, purchase_price FROM 
-            product_histories WHERE month(created_at) <= '$date->month' AND year(created_at) <= '$date->year' 
+            product_histories WHERE month(created_at) <= '$date->month' 
+            AND year(created_at) <= '$date->year' 
             ORDER BY id DESC LIMIT 1) ph";
 
+        $raw_take_product = "(SELECT (qty * attribute * -1) AS qty, product_id FROM 
+            take_products WHERE month(created_at) <= '$date->month' 
+            AND year(created_at) <= '$date->year') tp";
+
+
         $last_stock = \DB::table('products')
-            ->selectRaw('sum((ifnull(start_stock, 0) + ifnull(cs.qty, 0) + ifnull(t.qty, 0)) *
+            ->selectRaw('sum((ifnull(start_stock, 0) + ifnull(cs.qty, 0) + ifnull(t.qty, 0) + ifnull(tp.qty, 0)) *
                 ifnull(ph.purchase_price, products.purchase_price_default)) AS total')
             ->leftJoin(\DB::raw($raw_correction_stock),'cs.product_id', '=', 'products.id')
             ->leftJoin(\DB::raw($raw_transaction),'t.product_id', '=', 'products.id')
             ->leftJoin(\DB::raw($raw_product_history),'ph.product_id', '=', 'products.id')
+            ->leftJoin(\DB::raw($raw_take_product),'tp.product_id', '=', 'products.id')
             ->whereIN('category_id', [1,3])
             ->first();
 
         return ($last_stock) ? $last_stock->total : 0;
     }
-
 
     public function getTotalFirstStock($date) {
         $date = Carbon::createFromFormat('d/m/Y', $date);
