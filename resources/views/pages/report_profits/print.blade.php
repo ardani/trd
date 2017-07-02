@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Report Sales</title>
+    <title>Report Profit</title>
     <style>
         .text-right {
             text-align: right;
@@ -26,52 +26,111 @@
         <tbody>
         <tr>
             <th class="text-left border-bottom">DATE : {{request('date')}}</th>
-            <th class="text-left border-bottom">CUSTOMER : {{$customer}}</th>
-            <th class="text-right border-bottom" style="text-transform: uppercase">REPORT SALES</th>
+            <th class="text-right border-bottom" style="text-transform: uppercase">REPORT PROFIT</th>
         </tr>
         </tbody>
     </table>
     <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
         <thead>
             <tr>
-                <th class="border-bottom text-left">NO</th>
-                <th class="border-bottom text-left" style="width: 30%;">SALE</th>
-                <th class="border-bottom text-left">PAYMENT INFO</th>
-                <th class="border-bottom text-left">CASH</th>
-                <th class="border-bottom text-right">DISC</th>
-                <th class="border-bottom text-right">TOTAL</th>
-                <th class="border-bottom text-left">DATE</th>
+                <th class="border-bottom text-left">Description</th>
+
+                <th class="border-bottom text-left">Debit</th>
+                <th class="border-bottom text-left">Credit</th>
+                <th class="border-bottom text-left">Saldo</th>
             </tr>
         </thead>
         <tbody>
-        <?php $no = 1;$total = 0; ?>
-        @foreach($sales as $sale)
-            <tr valign="top">
-                <td>{{$no}}</td>
-                <td>{{$sale->no}}<br/>{{$sale->customer->name}}</td>
-                <td>
-                    {{$sale->payment_method->name}}<br/>
-                    {!!$sale->paid_status ? 'paid <br/>' : ''!!}
-                    @if ($sale->payment_method_id == 2 && $sale->paid_status != 1)
-                        {{ is_null($sale->paid_until_at) ? '' : 'expire : '.$sale->paid_until_at->format('d/m/Y')}}
-                    @endif
-                </td>
-                <td class="text-right">{{number_format($sale->cash)}}</td>
-                <td class="text-right">{{number_format($sale->disc)}}</td>
-                <td class="text-right">{{number_format($sale->total)}}</td>
-                <td>{{$sale->created_at->format('d M Y')}}</td>
+        <tr>
+            <td style="font-weight: bold">Income</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="padding-left: 25px">Sale</td>
+            <td class="text-right" style="padding-left: 25px">{{number_format($sales_total)}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Total Income</td>
+            <td></td>
+            <td></td>
+            <td class="text-right">{{number_format($sales_total)}}</td>
+            <?php $profit += $sales_total ?>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">HPP</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="padding-left: 25px">Persedian Awal</td>
+            <td></td>
+            <td class="text-right">{{number_format($first_stock)}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="padding-left: 25px">Order</td>
+            <td></td>
+            <td class="text-right">{{number_format($order_total)}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="padding-left: 25px">Persediaan Akhir</td>
+            <td></td>
+            <td class="text-right">{{number_format($last_stock)}}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Total HPP</td>
+            <td></td>
+            <td></td>
+            <td class="text-right">{{number_format($first_stock+$order_total-$last_stock)}}</td>
+            <?php $profit += ($first_stock+$order_total-$last_stock) ?>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Biaya Production</td>
+            <td></td>
+            <td></td>
+            <td class="text-right">{{number_format($production_total)}}</td>
+            <?php $profit += $production_total ?>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Outcome</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <?php $total_cost = 0 ?>
+        @foreach($costs as $cost)
+            <tr>
+                <td style="padding-left: 25px;">{{$cost->name}}</td>
+                <td></td>
+                <td class="text-right">{{number_format($cost->saldo)}}</td>
+                <td></td>
             </tr>
-            <?php $no++; $total += $sale->total; ?>
+            <?php $total_cost += $cost->saldo ?>
         @endforeach
+        <tr>
+            <td style="font-weight: bold">Total Cost</td>
+            <td></td>
+            <td></td>
+            <td class="text-right">{{number_format($total_cost)}}</td>
+            <?php $profit += $total_cost ?>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Profit</td>
+            <td></td>
+            <td></td>
+            <td class="text-right">{{number_format($profit)}}</td>
+        </tr>
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="5">TOTAL</td>
-            <td class="text-right">{{number_format($total)}}</td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <td colspan="9" style="padding-top: 20px">
+            <td colspan="3" style="padding-top: 20px">
                 Print at {{ date('d-m-Y') }} : {{auth()->user()->username}}
             </td>
         </tr>

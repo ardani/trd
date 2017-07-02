@@ -18,8 +18,8 @@ class ReportProfitsController extends Controller
     }
 
     public function index(Request $request) {
-        $date = $request->date ?: date('t/m/Y');
         $meta = $this->service->meta();
+        $date = $request->date ?: date('t/m/Y');
         $data = [
             'date' => $date,
             'sales_total' => $this->service->getTotalSale($date),
@@ -36,9 +36,17 @@ class ReportProfitsController extends Controller
     }
 
     public function doPrint(Request $request) {
-        $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
-        $data['sales'] = $this->service->getData($request->customer_id, $date);
-        $data['customer'] = $request->customer_id ? $this->customer->find($request->customer_id)->name : 'ALL';
+        $date = $request->date ?: date('t/m/Y');
+        $data = [
+            'date' => $date,
+            'sales_total' => $this->service->getTotalSale($date),
+            'last_stock' => $this->service->getTotalLastStock($date),
+            'order_total' => $this->service->getTotalOrder($date),
+            'production_total' => $this->service->getTotalProduction($date),
+            'costs' => $this->service->getCost($date),
+            'first_stock' => $this->service->getTotalFirstStock($date),
+            'profit' => 0
+        ];
         switch ($request->type) {
             case 'normal':
                 return view('pages.'.$this->page.'.print', $data);
