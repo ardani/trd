@@ -5,9 +5,6 @@
         <select name="product_id" class="form-control select-product" data-live-search="true">
         </select>
     </fieldset>
-    <fieldset class="form-group col-md-4" id="units">
-
-    </fieldset>
     <fieldset class="form-group col-md-2">
         <label class="form-control-label">Qty <span class="text-danger">*</span></label>
         <input type="text" name="qty" class="form-control"
@@ -15,4 +12,5 @@
                placeholder="qty">
         {{ csrf_field() }}
     </fieldset>
+    <fieldset class="form-group col-md-4" id="units"></fieldset>
 </div>

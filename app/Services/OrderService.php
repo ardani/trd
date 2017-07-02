@@ -21,11 +21,13 @@ class OrderService extends Service {
     protected $name = 'orders';
     private $payment;
     private $product;
+    private $product_history;
 
-    public function __construct(Order $model, Payment $payment, Product $product) {
+    public function __construct(Order $model, Payment $payment, Product $product, ProductHistory $productHistory) {
         $this->model = $model;
         $this->payment = $payment;
         $this->product = $product;
+        $this->product_history = $productHistory;
     }
 
     public function datatables($param = array()) {
@@ -81,6 +83,8 @@ class OrderService extends Service {
         $total = 0;
         foreach ($sessions as $session) {
             $total += $session['purchase_price'] * $session['qty'] * $session['attribute'];
+            $this->updatePrice($session);
+
             $model->transactions()->create([
                 'purchase_price' => $session['purchase_price'],
                 'selling_price' => $session['selling_price'],
@@ -90,7 +94,7 @@ class OrderService extends Service {
                 'qty' => $session['qty'],
                 'attribute' => $session['attribute']
             ]);
-            $this->updateSellingPrice($session['product_id'], $session['selling_price'], $session['purchase_price']);
+
         }
 
         $this->savePayment($model, $total);
@@ -157,9 +161,27 @@ class OrderService extends Service {
         return parent::delete($id);
     }
 
-    private function updateSellingPrice($product_id, $selling_price, $purchase_price) {
-        $product = $this->product->find($product_id);
-        $product->selling_price_default = $selling_price;
+    private function updatePrice(array $order) {
+        $product = $this->product->find($order['product_id']);
+        $product->selling_price_default = $order['selling_price'];
         $product->save();
+
+        $last_price = $this->product_history
+            ->orderBy('id', 'Desc')
+            ->find($order['product_id']);
+
+        if ($last_price) {
+            $qty = $order['qty'] * $order['attribute'];
+            $avg_price = (($product->stock * $last_price->purchase_price) + ($qty * $order['purchase_price'])) / ($product->stock + $qty);
+            $this->product_history->create([
+                'product_id' => $order['product_id'],
+                'purchase_price' => $avg_price
+            ]);
+        } else {
+            $this->product_history->create([
+                'product_id' => $order['product_id'],
+                'purchase_price' => $product->purchase_price_default
+            ]);
+        }
     }
 }

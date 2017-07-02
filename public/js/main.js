@@ -2996,6 +2996,14 @@ $(document).ready(function () {
         }
     });
 
+  $('.datesingle').daterangepicker({
+    showDropdowns: true,
+    singleDatePicker: true,
+    locale: {
+      format: 'DD/MM/YYYY'
+    }
+  });
+
     sProduct.selectpicker({liveSearch: true})
     .ajaxSelectPicker({
         ajax: {

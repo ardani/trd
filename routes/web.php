@@ -11,11 +11,11 @@
 |
 */
 
+
+
 Route::get('debug', function(){
-    return collect([20,10])->reduce(function ($carry, $item) {
-        $carry = is_null($carry) ? 1 : $carry;
-        return $carry *= $item;
-    });
+    $sql = App\Models\SaleOrder::find(25)->transactions()->toSql();
+    print_r($sql);
 });
 
 Route::group(['namespace' => 'Auth'], function () {
