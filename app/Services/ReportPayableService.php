@@ -26,8 +26,7 @@ class ReportPayableService extends Service {
                 $query->where('customer_id', $customer);
             }
             if ($status) {
-                $qstatus = $status == 1 ? 1 : 0;
-                $query->where('paid_status', $qstatus);
+                $query->where('paid_status', $status);
             }
             if ($date) {
                 $dates = explode(' - ', $date);

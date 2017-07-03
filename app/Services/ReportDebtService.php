@@ -27,8 +27,7 @@ class ReportDebtService extends Service {
                 $query->where('supplier_id', $supplier);
             }
             if ($status) {
-                $qstatus = $status == 1 ? 1 : 0;
-                $query->where('paid_status', $qstatus);
+                $query->where('paid_status', $status);
             }
             if ($date) {
                 $dates = explode(' - ', $date);

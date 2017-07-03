@@ -21,16 +21,23 @@ class ReportDebtsController extends Controller
         $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
         $meta = $this->service->meta();
         $orders = $this->service->getData($request->supplier_id, $request->status, $date);
-        $data =  array_merge($meta, ['debts' => $orders]);
+        $status = [
+            'UNPAID', 'PAID'
+        ];
+        $data =  array_merge($meta, [
+            'debts' => $orders,
+            'date' => $date,
+            'statuses' => $status,
+            'status' => $request->status,
+            'supplier' => $request->supplier_id ? $this->supplier->find($request->supplier_id) : ''
+        ]);
         return view('pages.'.$this->page.'.index', $data);
     }
 
     public function doPrint(Request $request) {
         $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
         $status = [
-            'ALL',
-            'PAID',
-            'UNPAID'
+            'UNPAID', 'PAID'
         ];
         $data['orders'] = $this->service->getData($request->supplier_id, $request->status, $date);
         $data['supplier'] = $request->supplier_id ? $this->supplier->find($request->supplier_id)->name : 'ALL';

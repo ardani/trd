@@ -52,17 +52,17 @@ class CashFlowService extends Service {
             ->whereIn('account_code_id', $this->listAccount())
             ->orderBy('id')
             ->get();
-        return ['present' => $result, 'last' => $this->getDataLast($date)];
+        return ['present' => $result, 'last' => $this->getDataLast($account, $date)];
     }
 
-    private function getDataLast($date) {
+    private function getDataLast($account, $date) {
         $dates = explode(' - ', $date);
         $dates = Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d').' 00:00';
-
+        $account = $account ? array($account) : $this->listAccount();
         $results = $this->model->where('created_at', '<', $dates)
             ->selectRaw('sum(debit) as debit, sum(credit) as credit, sum(debit-credit) as saldo, account_code_id')
             ->groupBy('account_code_id')
-            ->whereIn('account_code_id', $this->listAccount())
+            ->whereIn('account_code_id', $account)
             ->orderBy('account_code_id')
             ->get();
 

@@ -20,6 +20,9 @@
                                 <fieldset class="form-group">
                                     <label class="form-label semibold" for="exampleInput">Customer</label>
                                     <select name="customer_id" class="form-control select-customer" data-live-search="true">
+                                        @if($customer)
+                                            <option selected value="{{$customer->id}}">{{$customer->name}}</option>
+                                        @endif
                                     </select>
                                 </fieldset>
                             </div>
@@ -27,16 +30,16 @@
                                 <fieldset class="form-group">
                                     <label class="form-label semibold" for="exampleInput">Status</label>
                                     <select name="status" class="form-control">
-                                        <option value="0">-</option>
-                                        <option value="1">PAID</option>
-                                        <option value="2">UNPAID</option>
+                                        @foreach($statuses as $key => $row)
+                                            <option {{$key == $status ? 'selected' : ''}} value="{{$key}}">{{$row}}</option>
+                                        @endforeach
                                     </select>
                                 </fieldset>
                             </div>
                             <div class="col-md-3">
                                 <fieldset class="form-group">
                                     <label class="form-label semibold" for="exampleInput">Date</label>
-                                    <input type="text" name="date" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
+                                    <input type="text" name="date" id="date" class="form-control dateuntil" value="{{$date}}">
                                     <input type="hidden" name="type" value="normal" id="type-print"/>
                                 </fieldset>
                             </div>

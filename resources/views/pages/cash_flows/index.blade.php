@@ -20,12 +20,7 @@
                             <select name="account_code_id" class="form-control">
                                     <option value="">All</option>
                                 @foreach($accounts as $account)
-                                    @if($account->id == $account_code_id)
-                                        <option selected value="{{$account->id}}">{{$account->name}}</option>
-                                        @else
-                                        <option value="{{$account->id}}">{{$account->name}}</option>
-                                    @endif
-
+                                    <option {{$account->id == $account_code_id ? 'selected' : ''}} value="{{$account->id}}">{{$account->name}}</option>
                                 @endforeach
                             </select>
                         </div>

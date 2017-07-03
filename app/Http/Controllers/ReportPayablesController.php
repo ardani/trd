@@ -21,7 +21,16 @@ class ReportPayablesController extends Controller
         $meta = $this->service->meta();
         $date = $request->date ?: date('01/m/Y') .' - '.date('t/m/Y');
         $orders = $this->service->getData($request->customer_id, $request->status, $date);
-        $data =  array_merge($meta, ['payables' => $orders]);
+        $status = [
+            'UNPAID', 'PAID'
+        ];
+        $data =  array_merge($meta, [
+            'payables' => $orders,
+            'date' => $date,
+            'statuses' => $status,
+            'status' => $request->status,
+            'customer' => $request->customer_id ? $this->customer->find($request->customer_id) : ''
+        ]);
         return view('pages.'.$this->page.'.index', $data);
     }
 
@@ -30,7 +39,7 @@ class ReportPayablesController extends Controller
         $data['sales'] = $this->service->getData($request->customer_id, $request->status, $date);
         $data['now'] = Carbon::create(date('Y'), date('m'), date('d'), 0);
         $data['customer'] = $request->customer_id ? $this->customer->find($request->customer_id)->name : 'ALL';
-        $status = ['ALL', 'PAID', 'UNPAID'];
+        $status = ['UNPAID', 'PAID'];
         $data['status'] = $status[$request->status];
         switch ($request->type) {
             case 'normal':
