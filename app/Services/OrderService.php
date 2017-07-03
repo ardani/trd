@@ -11,6 +11,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\ProductHistory;
 use Carbon\Carbon;
 use Entrust;
 use Datatables;
