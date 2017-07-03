@@ -50,7 +50,7 @@ class PaymentSalesController extends Controller
             'note' => 'installment sale ' . $sale->no,
             'created_at' => $created_at
         ]);
-        $data['note'] .= 'installment sale '. $sale->no .' '.$data['note'];
+        $data['note'] = 'installment sale '. $sale->no .' '.$data['note'];
         $data['created_at'] = $created_at;
         $data['payment_id'] = $sale->payment->id;
         $data['from_to_id'] = $cash->id;
@@ -70,10 +70,13 @@ class PaymentSalesController extends Controller
 
     public function update($sale_id, $id) {
         $data = request()->all();
+        $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
+        $data['created_at'] = $created_at;
         $this->service_detail->update($data, $id);
         $payment = $this->service_detail->find($id);
         $cash = $this->service_detail->find($payment->from_to_id);
         $cash->credit = $data['debit'];
+        $cash->created_at = $created_at;
         $cash->save();
         return redirect('payment_sales/detail/'. $sale_id)->with('message','Update Success');
     }

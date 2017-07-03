@@ -7,7 +7,7 @@ class CashFlow extends Model {
     protected $fillable = [
         'account_code_id','account_code_ref_id','credit',
         'debit','note','giro','is_direct','payment_id',
-        'cash_id', 'from_to_id'
+        'cash_id', 'from_to_id', 'created_at'
     ];
 
     public function account_code() {

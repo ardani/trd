@@ -50,7 +50,7 @@ class PaymentOrdersController extends Controller
             'note' => 'installment order ' . $order->no,
             'created_at' => $created_at
         ]);
-        $data['note'] .= 'installment order '. $order->no .' '.$data['note'];
+        $data['note'] = 'installment order '. $order->no .' '.$data['note'];
         $data['created_at'] = $created_at;
         $data['from_to_id'] = $cash->id;
         $data['payment_id'] = $order->payment->id;
@@ -70,10 +70,13 @@ class PaymentOrdersController extends Controller
 
     public function update($order_id, $id) {
         $data = request()->all();
+        $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
+        $data['created_at'] = $created_at;
         $this->service_detail->update($data, $id);
         $payment = $this->service_detail->find($id);
         $cash = $this->service_detail->find($payment->from_to_id);
         $cash->debit = $data['credit'];
+        $cash->created_at = $created_at;
         $cash->save();
         return redirect('payment_orders/detail/'. $order_id)->with('message','Update Success');
     }

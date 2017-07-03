@@ -5,11 +5,7 @@
         <select name="account_code_id" class="form-control">
             @foreach($accounts as $account)
                 <?php $account_code_id = $model ? $model['account_code_id'] : '' ?>
-                @if($account->id == $account_code_id)
-                    <option selected value="{{$account->id}}">{{$account->name}}</option>
-                @else
-                    <option value="{{$account->id}}">{{$account->name}}</option>
-                @endif
+                <option {{$account->id == $account_code_id ? 'selected' : ''}} value="{{$account->id}}">{{$account->name}}</option>
             @endforeach
         </select>
         {{ csrf_field() }}
@@ -27,6 +23,7 @@
     <fieldset class="form-group col-md-3">
         <label class="form-control-label">Date <span class="text-danger">*</span></label>
         <input type="text" class="form-control daterange" name="created_at"
+               value="{{ $model ? $model->created_at->format('d/m/Y') : old('created_at') }}"
                data-validation="[NOTEMPTY]">
     </fieldset>
     <fieldset class="form-group col-md-12">
