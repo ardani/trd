@@ -61,7 +61,13 @@ class UsersController extends Controller
 
     public function update(Request $request, $id) {
         $data = $request->all();
+        if(empty($data['password'])) {
+            unset($data['password']);
+        }
+
         $this->service->update($data,$id);
+        $user = $this->service->find($request->id);
+        $user->roles()->sync([$request->role_id]);
         return redirect()->back()->with('message','Update Success');
     }
 
