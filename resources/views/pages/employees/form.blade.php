@@ -23,7 +23,7 @@
 </fieldset>
 <fieldset class="form-group ">
     <label class="form-control-label">Type</label>
-    <select name="customer_type_id" class="form-control bootstrap-select">
+    <select name="employee_type_id" class="form-control bootstrap-select">
         @foreach($types as $type)
             @if($type->id == safe_array($model,'employee_type_id'))
                 <option selected value="{{$type->id}}">{{$type->name}}</option>
