@@ -131,14 +131,14 @@ $(document).ready(function () {
     });
 
     tOrderDetails.on('click', 'a.act-delete', function (e) {
-        var product_id = $(this).data('id');
+        var id = $(this).data('id');
         if (!confirm('Are you sure delete this data?')) {
             return;
         }
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
-            data: {no: $('#no-order').val(), product_id: product_id, _token: Laravel.csrfToken},
+            data: {no: $('#no-order').val(), id: id, _token: Laravel.csrfToken},
             success: function (data) {
                 tOrderDetails.find('tbody').loadTemplate("#row-order", data);
                 calculateTotal(tOrderDetails);
