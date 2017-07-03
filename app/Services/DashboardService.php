@@ -27,6 +27,7 @@ class DashboardService extends Service {
     public function orderDueDate() {
         $due_date = Carbon::now()->addDays($this->day);
         return $this->order->where('payment_method_id',2)
+            ->where('paid_status', 0)
             ->where('paid_until_at','<=',$due_date)
             ->get();
 
@@ -35,7 +36,8 @@ class DashboardService extends Service {
     public function saleDueDate() {
         $due_date = Carbon::now()->addDays($this->day);
         return $this->sale->where('payment_method_id',2)
-            ->where('paid_until_at','<=',$due_date)
+            ->where('paid_status', 0)
+            ->where('paid_until_at','<=', $due_date)
             ->get();
     }
 }

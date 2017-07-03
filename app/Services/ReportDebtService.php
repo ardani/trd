@@ -45,8 +45,8 @@ class ReportDebtService extends Service {
     public function getDataDashboard($date = '') {
         $result = $this->model
             ->where('payment_method_id', 2)
-            ->where('paid_status',0)
-            ->where('paid_until_at','<=', $date)
+            ->where('paid_status', 0)
+            ->where('paid_until_at','<=', $date->format('Y-m-d'))
             ->get();
 
         return $result;

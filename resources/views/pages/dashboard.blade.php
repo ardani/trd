@@ -31,7 +31,7 @@
                                 <tbody>
                                 @foreach($payables as $row)
                                     <tr>
-                                        <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
+                                        <td>{{$row->paid_status ? 'paid' : 'unpaid'}}</td>
                                         <td>{{$row->customer->name}}</td>
                                         <td>{{$row->no}}</td>
                                         <td>{{$row->paid_until_at->format('d M Y')}}</td>
@@ -72,7 +72,7 @@
                                 <tbody>
                                     @foreach($debts as $row)
                                         <tr>
-                                            <td>{{$row->payment->total >= $row->total ? 'paid' : 'unpaid'}}</td>
+                                            <td>{{$row->paid_status ? 'paid' : 'unpaid'}}</td>
                                             <td>{{$row->supplier->name}}</td>
                                             <td>{{$row->no}}</td>
                                             <td>{{$row->paid_until_at->format('d M Y')}}</td>
