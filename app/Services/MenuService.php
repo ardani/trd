@@ -23,8 +23,8 @@ class MenuService extends Service {
     }
 
     public function buildSideMenu() {
-        if (Cache::has('menu_role_' . \Auth::id())) {
-            return Cache::get('menu_role_' . \Auth::id());
+        if (Cache::has('menu_role_' . Auth::user()->role_id)) {
+            return Cache::get('menu_role_' . Auth::user()->role_id);
         }
 
         $side_menus = [];
@@ -39,7 +39,7 @@ class MenuService extends Service {
             }
         }
 
-        Cache::put('menu_role_' . Auth::id(), $side_menus, 60 * 3);
+        Cache::put('menu_role_' . Auth::user()->role_id, $side_menus, 60 * 3);
 
         return $side_menus;
     }
