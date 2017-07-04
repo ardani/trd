@@ -84,26 +84,19 @@ class ProductionsController extends Controller
         $no = $request->no;
         $transactions = $this->viewPRDetail($no, $request->production_product_id);
         $product = $this->product->find($request->product_id);
+        $priceHpp = $this->service->priceHPP($request->product_id, $request->date);
 
-        if (array_key_exists($request->product_id . $request->production_product_id, $transactions)) {
-            if (request()->has('is_edit')) {
-                $transactions[$request->product_id . $request->production_product_id]['qty'] = $request->qty;
-            } else {
-                $transactions[$request->product_id . $request->production_product_id]['qty'] += $request->qty;
-            }
-        } else {
-            $transactions[ $product->id . $request->production_product_id ] = [
-                'product_id'     => $product->id,
-                'selling_price'  => $product->selling_price_default,
-                'purchase_price' => $product->purchase_price_default,
-                'code'           => $product->code,
-                'name'           => $product->name,
-                'attribute'      => $request->attribute,
-                'units'          => $request->units,
-                'qty'            => $request->qty,
-                'production_product_id' => $request->production_product_id
-            ];
-        }
+        $transactions[ $product->id . $request->production_product_id ] = [
+            'product_id'     => $product->id,
+            'selling_price'  => $product->selling_price_default,
+            'purchase_price' => $priceHpp ? $priceHpp->purchase_price : $product->purchase_price_default,
+            'code'           => $product->code,
+            'name'           => $product->name,
+            'attribute'      => $request->attribute,
+            'units'          => $request->units,
+            'qty'            => $request->qty,
+            'production_product_id' => $request->production_product_id
+        ];
 
         $pr = $this->service->where(function($query) use ($no){
             $query->where('no',$no);
@@ -116,6 +109,7 @@ class ProductionsController extends Controller
             'product_id' => $product->id,
             'production_product_id' => $request->production_product_id
         ], $param);
+
         return array_values($transactions);
     }
 

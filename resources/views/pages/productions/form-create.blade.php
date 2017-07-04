@@ -18,7 +18,7 @@
 <div class="clearfix"></div>
 <hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
-    <select id="product_id" class="form-control select-product" data-live-search="true"></select>
+    <select id="product_id" class="form-control select-product-raw" data-live-search="true"></select>
 </fieldset>
 <fieldset class="form-group col-md-3" id="units">
 
@@ -48,9 +48,7 @@
                 <tr>
                     <td>{{$transaction['code']}}</td>
                     <td>{{$transaction['name']}}</td>
-                    <td><input data-id="{{$transaction['product_id']}}"
-                               type="number" data-url="{{url('productions/actions/addTemp')}}"
-                               value="{{$transaction['qty']}}" class="form-control col-md-1 qty-input"/></td>
+                    <td>{{$transaction['qty']}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('productions/actions/deleteTemp')}}"
                            data-id="{{$transaction['product_id']}}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
@@ -70,9 +68,7 @@
         <td data-content="code"></td>
         <td data-content="name"></td>
         <td class="text-right" data-content="purchase_price" data-format="currency"></td>
-        <td><input type="number" data-url="{{url('productions/actions/addTemp')}}" data-template-bind='[
-            {"attribute": "data-id", "value": "product_id"}
-        ]' data-value="qty" class="form-control col-md-1 qty-input"/></td>
+        <td data-content="qty"></td>
         <td>
             <a class="act-delete" data-url="{{url('productions/actions/deleteTemp')}}" data-template-bind='[{"attribute": "data-id", "value": "product_id"}]' href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
         </td>

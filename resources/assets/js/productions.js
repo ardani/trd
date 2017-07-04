@@ -7,46 +7,34 @@ $(document).ready(function () {
 
     $('#save-btn').click(function (e) {
         var qty = $('#qty');
-        var length = $('#length');
-        var height = $('#height');
-        var width = $('#width');
-        if (!sProduct.val()) {
+        var unitsItem = $('.units-item');
+
+        if (!sProductRaw.val()) {
             alert('product belum dipilih');
             return false;
         }
+
         if (!qty.val()) {
             alert('Qty masih kosong');
             return false;
         }
 
         var units = [];
-        var vP = 1;
-        var vL = 1;
-        var vT = 1;
-
-        if ($('#p').length) {
-            vP = $('#p').val();
-            units.push(vP + $('#p').data('unit'));
-        }
-
-        if ($('#l').length) {
-            vL = $('#l').val();
-            units.push(vL + $('#l').data('unit'));
-        }
-
-        if ($('#t').length) {
-            vT = $('#t').val();
-            units.push(vT + $('#t').data('unit'));
-        }
+        var attribute = 1;
+        unitsItem.each(function (index, el) {
+          units.push($(el).val() + $(el).data('unit'));
+          attribute = attribute * $(el).val();
+        });
 
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
             data: {
-                product_id: sProduct.val(),
+                product_id: sProductRaw.val(),
                 production_product_id: $('[name=product_selected]').val(),
                 qty: qty.val(),
-                attribute: vP * vL * vT,
+                date: $('input[name=created_at]').val(),
+                attribute: attribute,
                 units: units.join('x'),
                 _token: Laravel.csrfToken,
                 no: $('#no-production').val()
@@ -118,18 +106,18 @@ $(document).ready(function () {
         }
     });
 
-    sProduct.on('changed.bs.select', function (e) {
+    sProductRaw.on('changed.bs.select', function (e) {
         var units = $(this).find(':selected').data();
         var html = '';
-        if (Object.keys(units).length == 1) {
-            unitsWrapper.html(html);
-            return;
-        }
 
         Object.keys(units).forEach(function (key) {
+            if (key == 'sellingprice') {
+              return true;
+            }
+
             html += '<div class="col-md-4"> ' +
                 '<label class="form-control-label">'+key.toUpperCase()+'('+units[key]+')</label> ' +
-                '<input type="number" data-unit="'+units[key]+'" id="'+key+'" class="form-control " value="1" required></div>';
+                '<input type="number" data-unit="'+units[key]+'" id="'+key+'" class="form-control units-item" value="1" required></div>';
         })
         unitsWrapper.html(html);
     });

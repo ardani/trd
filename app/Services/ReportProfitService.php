@@ -44,9 +44,15 @@ class ReportProfitService extends Service {
 
     public function getTotalProduction($date) {
         $date = Carbon::createFromFormat('d/m/Y', $date);
+        $raw_product_history = "(SELECT product_id, purchase_price FROM 
+            product_histories WHERE month(created_at) <= '$date->month' 
+            AND year(created_at) <= '$date->year' 
+            ORDER BY id DESC LIMIT 1) ph";
+
         $result =\DB::table('transactions')
-            ->selectRaw('sum(qty * attribute * purchase_price) as total')
+            ->selectRaw('sum(qty * attribute * ifnull(ph.purchase_price, transactions.purchase_price)) as total')
             ->where('transactionable_type',  'App\Models\Production')
+            ->leftJoin(\DB::raw($raw_product_history),'ph.product_id', '=', 'transactions.id')
             ->whereMonth('created_at', '=', $date->month)
             ->whereYear('created_at', '=', $date->year)
             ->first();

@@ -8,8 +8,10 @@
 
 namespace App\Services;
 
+use App\Models\ProductHistory;
 use App\Models\Production;
 use App\Models\SaleOrder;
+use Carbon\Carbon;
 use Entrust;
 use Datatables;
 
@@ -18,10 +20,12 @@ class ProductionService extends Service {
     protected $model;
     protected $name = 'productions';
     private $sale;
+    private $history;
 
-    public function __construct(Production $model, SaleOrder $sale) {
+    public function __construct(Production $model, SaleOrder $sale, ProductHistory $history) {
         $this->model = $model;
         $this->sale = $sale;
+        $this->history = $history;
     }
 
     public function datatables($param = array()) {
@@ -67,5 +71,16 @@ class ProductionService extends Service {
         $purchase = $this->sale->find($model->sale_order_id);
         $purchase->update(['state_id' => $data['state_id']]);
         return $model->save();
+    }
+
+    public function priceHPP($product_id, $date) {
+        $date = Carbon::createFromFormat('d/m/Y', $date);
+        $price = $this->history->where('product_id', $product_id)
+            ->whereMonth('created_at', '=', $date->month)
+            ->whereYear('created_at', '=', $date->year)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        return $price;
     }
 }
