@@ -199,6 +199,7 @@ class SaleOrdersController extends Controller {
 
         //return view('pages.sale_orders.print-invoice', $data);
         $pdf = PDF::loadView('pages.sale_orders.print-invoice', $data);
+        $pdf->setPaper(array(0, 0, 684.00, 792.00));
         return @$pdf->stream('invoice.pdf');
     }
 
@@ -208,6 +209,7 @@ class SaleOrdersController extends Controller {
         ];
 
         $pdf = PDF::loadView('pages.sale_orders.print-do', $data);
+        $pdf->setPaper(array(0, 0, 684.00, 792.00));
         return @$pdf->stream('do.pdf');
     }
 

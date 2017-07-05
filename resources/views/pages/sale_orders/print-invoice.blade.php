@@ -106,12 +106,28 @@
             <td class="text-right border-bottom ">{{number_format($sale->cash)}}</td>
         </tr>
         </tbody>
+    </table>
+    <table class="table table-bordered table-striped" style="margin-top:35px;" width="100%">
+        <thead>
+        <tr>
+            <th>Diterima</th>
+            <th>Dikirim</th>
+            <th>Diperiksa</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="border-bottom" style="width: 33%;height: 3cm;padding: 2px"></td>
+            <td class="border-bottom" style="width: 33%;height: 3cm"></td>
+            <td class="border-bottom" style="width: 33%;height: 3cm"></td>
+        </tr>
+        </tbody>
         <tfoot>
-            <tr>
-                <td class="text-left" colspan="2">
-                    <h5>Print at {{ date('d-m-Y') }} By : {{auth()->user()->username}} | Created By : {{$sale->employee->name}}</h5>
-                </td>
-            </tr>
+        <tr>
+            <td class="text-left" colspan="2">
+                <h5>Print at {{ date('d-m-Y') }} By : {{auth()->user()->username}} | Created By : {{$sale->employee->name}}</h5>
+            </td>
+        </tr>
         </tfoot>
     </table>
 </div>
