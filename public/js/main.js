@@ -2896,6 +2896,7 @@ function buildDatatables(el, columns) {
             data: function (d) {
                 d.date_until = $('.dateuntil').val();
                 d.state_id = $('#state_id').val();
+                d.shop_id = $('[name=shop_id]').val();
                 d.supplier_id = $('[name=supplier_id]').val();
                 d.customer_id = $('[name=customer_id]').val();
             }
@@ -3280,6 +3281,7 @@ $(document).ready(function () {
 
     var po = [
         {data: 'no'},
+        {data: 'shop', searchable: false, orderable: false},
         {data: 'customer', searchable: false, orderable: false},
         {data: 'state', searchable: false, orderable: false},
         {data: 'payment_info', searchable: false, orderable: false},

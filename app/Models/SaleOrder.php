@@ -3,9 +3,16 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class SaleOrder extends Model {
     use SoftDeletes;
+    use RevisionableTrait;
+
+    protected $revisionEnabled = true;
+    protected $revisionCleanup = true;
+    protected $historyLimit = 1000;
+
     protected $dates = ['paid_until_at'];
     protected $appends = ['total'];
     protected $fillable = [

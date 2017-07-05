@@ -150,8 +150,14 @@ $(document).ready(function () {
 
     $('#save-order-btn').click(function (e) {
         var suppId = sSupplier.val();
+        var cash = $('[name=cash]').val();
         if (!suppId) {
             alert('supplier belum dipilih');
+            return false;
+        }
+
+        if (!cash) {
+            alert('cash masih kosong');
             return false;
         }
 
