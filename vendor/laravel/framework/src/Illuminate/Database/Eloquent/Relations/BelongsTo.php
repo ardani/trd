@@ -5,9 +5,12 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
 class BelongsTo extends Relation
 {
+    use SupportsDefaultModels;
+
     /**
      * The child model instance of the relation.
      */
@@ -72,7 +75,7 @@ class BelongsTo extends Relation
      */
     public function getResults()
     {
-        return $this->query->first();
+        return $this->query->first() ?: $this->getDefaultFor($this->parent);
     }
 
     /**
@@ -116,19 +119,25 @@ class BelongsTo extends Relation
      */
     protected function getEagerModelKeys(array $models)
     {
+        $keys = [];
+
         // First we need to gather all of the keys from the parent models so we know what
         // to query for via the eager loading query. We will add them to an array then
         // execute a "where in" statement to gather up all of those related records.
-        $keys = collect($models)->map(function ($model) {
-            return $model->{$this->foreignKey};
-        })->filter()->all();
-
-        // If there are no keys that were not null we will just return an array with either
-        // null or 0 in (depending on if incrementing keys are in use) so the query wont
-        // fail plus returns zero results, which should be what the developer expects.
-        if (count($keys) === 0) {
-            return [$this->relationHasIncrementingId() ? 0 : null];
+        foreach ($models as $model) {
+            if (! is_null($value = $model->{$this->foreignKey})) {
+                $keys[] = $value;
+            }
         }
+
+        // If there are no keys that were not null we will just return an array with null
+        // so this query wont fail plus returns zero results, which should be what the
+        // developer expects to happen in this situation. Otherwise we'll sort them.
+        if (count($keys) === 0) {
+            return [null];
+        }
+
+        sort($keys);
 
         return array_values(array_unique($keys));
     }
@@ -143,7 +152,7 @@ class BelongsTo extends Relation
     public function initRelation(array $models, $relation)
     {
         foreach ($models as $model) {
-            $model->setRelation($relation, null);
+            $model->setRelation($relation, $this->getDefaultFor($model));
         }
 
         return $models;
@@ -198,7 +207,7 @@ class BelongsTo extends Relation
     /**
      * Associate the model instance to the given parent.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|int  $model
+     * @param  \Illuminate\Database\Eloquent\Model|int|string  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function associate($model)
@@ -285,6 +294,17 @@ class BelongsTo extends Relation
     {
         return $this->related->getIncrementing() &&
                                 $this->related->getKeyType() === 'int';
+    }
+
+    /**
+     * Make a new related instance for the given model.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $parent
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function newRelatedInstanceFor(Model $parent)
+    {
+        return $this->related->newInstance();
     }
 
     /**

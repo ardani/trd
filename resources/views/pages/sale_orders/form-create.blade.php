@@ -11,7 +11,7 @@
         <option value="1" data-customer_type_id="1">umum</option>
     </select>
 </fieldset>
-<fieldset class="form-group col-md-3">
+<fieldset class="form-group col-md-2">
     <label class="form-control-label">Credit</label>
     <div class="input-group">
         <div class="input-group-addon">
@@ -20,6 +20,14 @@
         <input disabled type="text" id="paid-until-at" name="paid_until_at" class="form-control daterange"
                placeholder="credit date">
     </div>
+</fieldset>
+<fieldset class="form-group col-md-2">
+    <label class="form-control-label">Shop <span class="text-danger">*</span></label>
+    <select name="shop_id" class="form-control">
+        @foreach($shops as $shop)
+            <option value="{{$shop->id}}">{{$shop->name}}</option>
+        @endforeach
+    </select>
 </fieldset>
 <fieldset class="form-group col-md-2 pull-md-right">
     <label class="form-control-label">Date <span class="text-danger">*</span></label>

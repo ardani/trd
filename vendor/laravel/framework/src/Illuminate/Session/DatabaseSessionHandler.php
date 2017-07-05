@@ -103,7 +103,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
     /**
      * Determine if the session is expired.
      *
-     * @param  \StdClass  $session
+     * @param  \stdClass  $session
      * @return bool
      */
     protected function expired($session)
@@ -177,7 +177,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
             return $payload;
         }
 
-        return tap($payload, function ($payload) {
+        return tap($payload, function (&$payload) {
             $this->addUserInformation($payload)
                  ->addRequestInformation($payload);
         });

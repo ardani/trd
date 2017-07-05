@@ -21,11 +21,20 @@
             @endpermission
             <section class="card">
                 <div class="card-block">
+                    <div class="form-group col-md-2">
+                        <label for="">Shop</label>
+                        <select name="shop_id" id="shop_id" class="form-control">
+                            <option value="">ALL</option>
+                            @foreach($shops as $shop)
+                                <option value="{{$shop->id}}">{{$shop->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group col-md-3">
                         <label for="">Customer</label>
                         <select name="customer_id" id="customer_id" class="form-control select-customer"></select>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label for="">Status</label>
                         <select name="state_id" id="state_id" class="form-control">
                             <option value="">-</option>
@@ -38,7 +47,7 @@
                         <label for="">Date</label>
                         <input type="text" id="date" class="form-control dateuntil" value="{{ date('01/m/Y') .' - '.date('t/m/Y')}}">
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <button type="button" class="btn btn-primary btn-filter" style="margin-top: 20px">Filter</button>
                     </div>
                 </div>
@@ -49,6 +58,7 @@
                         <thead>
                         <tr>
                             <th>No</th>
+                            <th>Shop</th>
                             <th>Customer</th>
                             <th>Status</th>
                             <th>Payment Info</th>

@@ -35,13 +35,17 @@ trait CompilesLoops
     }
 
     /**
-     * Compile the for-else-empty statements into valid PHP.
+     * Compile the for-else-empty and empty statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
     protected function compileEmpty($expression)
     {
+        if ($expression) {
+            return "<?php if(empty{$expression}): ?>";
+        }
+
         $empty = '$__empty_'.$this->forElseCounter--;
 
         return "<?php endforeach; \$__env->popLoop(); \$loop = \$__env->getLastLoop(); if ({$empty}): ?>";
@@ -50,10 +54,19 @@ trait CompilesLoops
     /**
      * Compile the end-for-else statements into valid PHP.
      *
-     * @param  string  $expression
      * @return string
      */
-    protected function compileEndforelse($expression)
+    protected function compileEndforelse()
+    {
+        return '<?php endif; ?>';
+    }
+
+    /**
+     * Compile the end-empty statements into valid PHP.
+     *
+     * @return string
+     */
+    protected function compileEndEmpty()
     {
         return '<?php endif; ?>';
     }
@@ -98,7 +111,13 @@ trait CompilesLoops
      */
     protected function compileBreak($expression)
     {
-        return $expression ? "<?php if{$expression} break; ?>" : '<?php break; ?>';
+        if ($expression) {
+            preg_match('/\(\s*(-?\d+)\s*\)$/', $expression, $matches);
+
+            return $matches ? '<?php break '.max(1, $matches[1]).'; ?>' : "<?php if{$expression} break; ?>";
+        }
+
+        return '<?php break; ?>';
     }
 
     /**
@@ -109,16 +128,21 @@ trait CompilesLoops
      */
     protected function compileContinue($expression)
     {
-        return $expression ? "<?php if{$expression} continue; ?>" : '<?php continue; ?>';
+        if ($expression) {
+            preg_match('/\(\s*(-?\d+)\s*\)$/', $expression, $matches);
+
+            return $matches ? '<?php continue '.max(1, $matches[1]).'; ?>' : "<?php if{$expression} continue; ?>";
+        }
+
+        return '<?php continue; ?>';
     }
 
     /**
      * Compile the end-for statements into valid PHP.
      *
-     * @param  string  $expression
      * @return string
      */
-    protected function compileEndfor($expression)
+    protected function compileEndfor()
     {
         return '<?php endfor; ?>';
     }
@@ -126,10 +150,9 @@ trait CompilesLoops
     /**
      * Compile the end-for-each statements into valid PHP.
      *
-     * @param  string  $expression
      * @return string
      */
-    protected function compileEndforeach($expression)
+    protected function compileEndforeach()
     {
         return '<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>';
     }
@@ -148,10 +171,9 @@ trait CompilesLoops
     /**
      * Compile the end-while statements into valid PHP.
      *
-     * @param  string  $expression
      * @return string
      */
-    protected function compileEndwhile($expression)
+    protected function compileEndwhile()
     {
         return '<?php endwhile; ?>';
     }

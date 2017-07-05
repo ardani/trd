@@ -3171,6 +3171,13 @@ $(document).ready(function () {
     ];
     buildDatatables($('#table-users'), users);
 
+    var shops = [
+      {data: 'name'},
+      {data: 'address'},
+      {data: 'action', searchable: false, orderable: false},
+    ];
+    buildDatatables($('#table-shops'), shops);
+
     // customer types
     var customerTypes = [
         {data: 'name'},

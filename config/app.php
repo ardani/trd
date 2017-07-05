@@ -179,6 +179,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -230,7 +231,6 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
-
 ];

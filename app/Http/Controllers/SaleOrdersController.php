@@ -6,25 +6,36 @@ use App\Services\CustomerService;
 use App\Services\ProductService;
 use App\Services\SaleOrderService;
 use App\Services\SaleService;
+use App\Services\ShopService;
 use Illuminate\Http\Request;
+use PDF;
 
 class SaleOrdersController extends Controller {
     private $page = 'sale_orders';
     private $service;
     private $customer;
     private $product;
+    private $shop;
 
-    public function __construct(SaleOrderService $service, CustomerService $customer, ProductService $product) {
+    public function __construct(
+        SaleOrderService $service,
+        CustomerService $customer,
+        ProductService $product,
+        ShopService $shop) {
+
         $this->service  = $service;
         $this->customer = $customer;
         $this->product  = $product;
+        $this->shop = $shop;
     }
 
     public function index() {
         if (request()->ajax()) {
             return $this->service->datatables();
         }
-        return view('pages.' . $this->page . '.index', $this->service->meta());
+        $data           = $this->service->meta();
+        $data['shops']  = $this->shop->all();
+        return view('pages.' . $this->page . '.index', $data);
     }
 
     public function show($id) {
@@ -37,6 +48,7 @@ class SaleOrdersController extends Controller {
         $data['auto_number_sales'] = $auto_number;
         $data['transactions']      = session($auto_number);
         $data['total']             = number_format(collect($data['transactions'])->sum('subtotal'));
+        $data['shops']             = $this->shop->all();
         return view('pages.' . $this->page . '.create', $data);
     }
 
@@ -55,8 +67,9 @@ class SaleOrdersController extends Controller {
         $data['id']     = $id;
         $data['model']  = $model;
         $data['total']  = $total;
-        $data['disc']  = $model->disc ?: 0;
+        $data['disc']   = $model->disc ?: 0;
         $data['charge'] = $model->cash - $total;
+        $data['shops']  = $this->shop->all();
         return view('pages.' . $this->page . '.edit', $data);
     }
 
@@ -183,14 +196,19 @@ class SaleOrdersController extends Controller {
         $data = [
             'sale' => $this->service->find($no)
         ];
-        return view('pages.sale_orders.print-invoice', $data);
+
+        //return view('pages.sale_orders.print-invoice', $data);
+        $pdf = PDF::loadView('pages.sale_orders.print-invoice', $data);
+        return @$pdf->stream('invoice.pdf');
     }
 
     public function printDo($no) {
         $data = [
             'sale' => $this->service->find($no)
         ];
-        return view('pages.sale_orders.print-do', $data);
+
+        $pdf = PDF::loadView('pages.sale_orders.print-do', $data);
+        return @$pdf->stream('do.pdf');
     }
 
     public function load() {

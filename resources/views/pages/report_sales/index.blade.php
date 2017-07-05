@@ -18,6 +18,17 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <fieldset class="form-group">
+                                    <label class="form-label semibold" for="exampleInput">Shop</label>
+                                    <select name="shop_id" class="form-control">
+                                        <option value="">All</option>
+                                        @foreach($shops as $shop)
+                                            <option value="{{$shop->id}}">{{$shop->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3">
+                                <fieldset class="form-group">
                                     <label class="form-label semibold" for="exampleInput">Customer</label>
                                     <select name="customer_id" class="form-control select-customer" data-live-search="true">
                                     </select>
@@ -47,6 +58,7 @@
                         <thead>
                         <tr>
                             <th>No</th>
+                            <th>Shop</th>
                             <th>Sale</th>
                             <th>Payment Info</th>
                             <th>Cash</th>
@@ -60,6 +72,7 @@
                         @foreach($sales as $row)
                             <tr>
                                 <td>{{$no}}</td>
+                                <td>{{$row->shop->name}}</td>
                                 <td>{{$row->no}} <br/> {{$row->customer->name}}</td>
                                 <td>
                                     <ul>

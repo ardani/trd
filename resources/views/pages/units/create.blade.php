@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="page-content">
+    <div class="page-content" style="border: so">
         <div class="container-fluid">
             <header class="section-header">
                 <div class="tbl">

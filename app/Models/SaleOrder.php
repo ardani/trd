@@ -11,7 +11,7 @@ class SaleOrder extends Model {
     protected $fillable = [
         'customer_id','cashier_id','payment_method_id','cash',
         'disc','paid_until_at','cash_flows_id','note','state_id',
-        'paid_status'
+        'paid_status','shop_id'
     ];
 
     public function payment_method() {
@@ -44,5 +44,9 @@ class SaleOrder extends Model {
     public function payment() {
         return $this->hasOne(Payment::class,'ref_id')
             ->where('type','sale');
+    }
+
+    public function shop() {
+        return $this->belongsTo(Shop::class);
     }
 }

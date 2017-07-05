@@ -39,6 +39,9 @@ class SaleOrderService extends Service {
             ->addColumn('state',function ($model) {
                 return $model->state->name;
             })
+            ->addColumn('shop',function ($model) {
+                return $model->shop_id ? $model->shop->name : '';
+            })
             ->editColumn('cash',function ($model) {
                 return number_format($model->cash);
             })
@@ -62,6 +65,10 @@ class SaleOrderService extends Service {
             ->where(function ($model) {
                 if ($customer_id = request()->input('customer_id')) {
                     $model->where('customer_id', $customer_id);
+                }
+
+                if ($shop_id = request()->input('shop_id')) {
+                    $model->where('shop_id', $shop_id);
                 }
 
                 if ($date_untils = date_until(request()->input('date_until'))) {
@@ -172,10 +179,14 @@ class SaleOrderService extends Service {
         }
     }
 
-    public function getData($customer_id, $date) {
-        $result = $this->model->where(function ($model) use ($customer_id, $date) {
+    public function getData($shop_id, $customer_id, $date) {
+        $result = $this->model->where(function ($model) use ($shop_id, $customer_id, $date) {
             if ($customer_id) {
                 $model->where('customer_id', $customer_id);
+            }
+
+            if ($shop_id) {
+                $model->where('shop_id', $shop_id);
             }
 
             if ($date_untils = date_until($date)) {

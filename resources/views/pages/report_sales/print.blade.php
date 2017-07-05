@@ -26,6 +26,7 @@
         <tbody>
         <tr>
             <th class="text-left border-bottom">DATE : {{request('date')}}</th>
+            <th class="text-left border-bottom">SHOP : {{$shop}}</th>
             <th class="text-left border-bottom">CUSTOMER : {{$customer}}</th>
             <th class="text-right border-bottom" style="text-transform: uppercase">REPORT SALES</th>
         </tr>

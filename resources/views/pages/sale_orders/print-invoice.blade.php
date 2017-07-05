@@ -13,35 +13,34 @@
             border-bottom: 1px dotted #000
         }
     </style>
-    <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
 </head>
 <body>
 <div class="box box-info" style="font-family: 'monospace';">
     <div class="box-header with-border">
     </div>
-    <div style="width: 20cm;text-align: center;padding-left: 40px;">
+    <div style="text-align: center;">
         <h4 style="margin-bottom: 5px">{{ setting('company.name') }}</h4>
         <div>{!!setting('company.address')!!}</div>
     </div>
-    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:10px;padding-left: 40px;">
+    <table class="table table-bordered table-striped" style="margin-top:10px;" width="100%">
         <tbody>
-        <tr >
-            <th class="text-left border-bottom" colspan="2" style="width: 50%;text-transform: uppercase">
+        <tr>
+            <th class="text-left border-bottom" colspan="2" style="text-transform: uppercase">
                 {{$sale->customer->name}}
-                <div style="float: right">INVOICE</div>
             </th>
+            <th class="text-right border-bottom">INVOICE</th>
         </tr>
         <tr valign="top">
             <td style="width: 5%;">Address</td>
-            <td style="width: 40%;">: {{$sale->customer->address}}</td>
+            <td colspan="2" style="width: 40%;">: {{$sale->customer->address}}</td>
         </tr>
         <tr valign="top">
             <td style="width: 5%;">Phone</td>
-            <td style="width: 40%;">: {{$sale->customer->phone}}</td>
+            <td colspan="2" style="width: 40%;">: {{$sale->customer->phone}}</td>
         </tr>
         </tbody>
     </table>
-    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
+    <table class="table table-bordered table-striped" style=";margin-top:15px;" width="100%">
         <tbody>
         <tr>
             <th class="border-bottom text-left" style="width: 30%;">PO NUMBER</th>
@@ -57,7 +56,7 @@
         </tr>
         </tbody>
     </table>
-    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:15px;padding-left: 40px;">
+    <table class="table table-bordered table-striped" style="margin-top:15px;" width="100%">
         <tbody>
         <tr>
             <th class="text-left border-bottom">No</th>
@@ -83,7 +82,7 @@
         @endforeach
         </tbody>
     </table>
-    <table class="table table-bordered table-striped" style="width: 20cm;margin-top:35px;padding-left: 40px;">
+    <table class="table table-bordered table-striped" style="margin-top:35px;" width="100%">
         <tbody>
         <tr valign="top">
             <td class="border-bottom" colspan="3"></td>
@@ -110,7 +109,7 @@
         <tfoot>
             <tr>
                 <td class="text-left" colspan="2">
-                    <h5>print at {{ date('d-m-Y') }} : {{auth()->user()->username}} | created : {{$sale->employee->name}}</h5>
+                    <h5>Print at {{ date('d-m-Y') }} By : {{auth()->user()->username}} | Created By : {{$sale->employee->name}}</h5>
                 </td>
             </tr>
         </tfoot>
