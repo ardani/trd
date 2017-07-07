@@ -98,8 +98,8 @@
         </tfoot>
     </table>
 </div>
-<script>
-    window.print();
+<script type="text/javascript">
+  this.print();
 </script>
 </body>
 </html>
