@@ -3,6 +3,7 @@
     <div class="page-content">
         <div class="container-fluid">
             <div class="row">
+                @include('includes.alert')
                 <div class="col-xl-12 dahsboard-column">
                     <section class="box-typical box-typical-dashboard lobipanel panel panel-default scrollable">
                         <header class="box-typical-header panel-heading">

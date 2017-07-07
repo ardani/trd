@@ -26,16 +26,14 @@ class ReportDebtService extends Service {
             if ($supplier) {
                 $query->where('supplier_id', $supplier);
             }
-            if ($status) {
-                $query->where('paid_status', $status);
-            }
+
             if ($date) {
                 $dates = explode(' - ', $date);
                 $start_at = Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d');
                 $finish_at = Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d');
                 $query->whereBetween('created_at', [$start_at, $finish_at]);
             }
-            $query->where('payment_method_id', 2);
+            $query->where('payment_method_id', 2)->where('paid_status', $status);
         })->get();
 
         return $result;

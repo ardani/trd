@@ -28,7 +28,8 @@ class AccountCodeService extends Service {
         if (cache($key)) {
             return cache($key);
         }
-        return cache([$key => $this->model->get()], 60);
+        cache([$key => $this->model->get()], 60 * 24);
+        return $this->model->get();
     }
 
     public function getCash() {

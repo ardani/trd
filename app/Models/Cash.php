@@ -7,6 +7,7 @@ class Cash extends Model {
     protected $fillable = [
         'no','type','cashier_id','note'
     ];
+
     protected $appends = ['total'];
 
     public function details() {

@@ -64,7 +64,7 @@
                                     <?php $saldo += ($cash->debit - $cash->credit) ?>
                                     <tr>
                                         <td>{{$cash->created_at->format('d/M/Y')}}</td>
-                                        <td>{{$cash->cash_id ? $cash->cash->no : '-'}}</td>
+                                        <td>{{$cash->cash_id ? $cash->cash['no'] : '-'}}</td>
                                         <td>{{$cash->account_code->name}}</td>
                                         <td>{{$cash->note}}</td>
                                         <td>{{$cash->giro}}</td>

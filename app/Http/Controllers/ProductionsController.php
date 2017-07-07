@@ -30,7 +30,10 @@ class ProductionsController extends Controller
     }
 
     public function show($id) {
-        return view('pages.'.$this->page.'.show',$this->service->find($id));
+        $data = [
+          'model' => $this->service->find($id)
+        ];
+        return view('pages.'.$this->page.'.show', $data);
     }
 
     public function edit($id) {

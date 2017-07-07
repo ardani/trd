@@ -23,7 +23,7 @@ class CashFlow extends Model {
     }
 
     public function cash() {
-        return $this->belongsTo(Cash::class);
+        return $this->belongsTo(Cash::class, 'cash_id', 'id');
     }
 
     protected static function boot() {

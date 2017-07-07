@@ -8,6 +8,7 @@ use App\Services\ReportPayableService;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Cache;
 
 class DashboardController extends Controller
 {
@@ -44,5 +45,10 @@ class DashboardController extends Controller
         }
 
         return redirect('profile')->with('error', 'password lama tidak cocok');
+    }
+
+    public function cacheClear() {
+        Cache::flush();
+        return redirect('/')->with('message', 'Cache Refresh Success');
     }
 }

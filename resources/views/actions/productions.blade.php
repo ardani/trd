@@ -13,4 +13,9 @@
            class="btn btn-sm btn-success">
             <span class="glyphicon glyphicon-ok"></span> Complete</a>
     </div>
+    @else
+    <div class="btn-group btn-group-sm">
+        <a title="view" href="{{url('productions/show/'.$id)}}" class="btn btn-sm btn-primary"><span
+                    class="glyphicon glyphicon-eye-open"></span> View</a>
+    </div>
 @endif

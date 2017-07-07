@@ -380,7 +380,6 @@ Route::group(['middleware' => 'auth'], function () {
         'middleware' => ['permission:create.cash_ins'],
         'uses' => 'CashInsController@viewPODetail'
     ]);
-
     Route::post('cash_outs/actions/addTemp', [
         'middleware' => ['permission:create.cash_outs'],
         'uses' => 'CashOutsController@addTempPODetail'
@@ -404,5 +403,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('cash_outs/actions/view/{no}', [
         'middleware' => ['permission:create.cash_outs'],
         'uses' => 'CashOutsController@viewPODetail'
+    ]);
+    Route::get('clear_cache', [
+        'uses' => 'DashboardController@cacheClear'
     ]);
 });

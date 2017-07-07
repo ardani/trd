@@ -17,8 +17,10 @@
                             <img src="{{ asset('img/avatar-2-64.png') }}">
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
-                            <a class="dropdown-item" href="{{url('profile')}}"><span class="font-icon glyphicon glyphicon-user"></span>{{ Auth::user()->username }}</a>
+                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>{{ Auth::user()->username }}</a>
+                            <a class="dropdown-item" href="{{url('profile')}}"><span class="font-icon glyphicon glyphicon-signal"></span>Change Password</a>
                             <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{url('clear_cache')}}"><span class="font-icon glyphicon glyphicon-refresh"></span>Refresh Cache</a>
                             <a class="dropdown-item" href="{{url('logout')}}"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
                         </div>
                     </div>

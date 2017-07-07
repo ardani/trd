@@ -12,6 +12,7 @@
                     </div>
                 </div>
             </header>
+            @include('includes.alert')
             <section class="card">
                 <div class="card-block">
                     <div class="form-group col-md-3">
@@ -33,7 +34,6 @@
                 </div>
             </section>
             <section class="card">
-                @include('includes.alert')
                 <div class="card-block">
                     <table id="table-productions" data-url="{!! url(request()->path()) !!}" class="display table table-bordered" cellspacing="0" width="100%">
                         <thead>

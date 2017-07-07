@@ -105,4 +105,10 @@ class CashOutService extends Service {
             ->get();
         return $result;
     }
+
+    public function delete($id) {
+        $data = $this->model->find($id);
+        $this->cash_flow->where('cash_id', $id)->delete();
+        return $data->delete();
+    }
 }
