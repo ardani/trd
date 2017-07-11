@@ -72,7 +72,7 @@
                         @foreach($sales as $row)
                             <tr>
                                 <td>{{$no}}</td>
-                                <td>{{$row->shop->name}}</td>
+                                <td>{{$row->shop_id ? $row->shop->name : ''}}</td>
                                 <td>{{$row->no}} <br/> {{$row->customer->name}}</td>
                                 <td>
                                     <ul>

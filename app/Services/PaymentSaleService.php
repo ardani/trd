@@ -30,7 +30,8 @@ class PaymentSaleService extends Service {
     public function datatables($param = array()) {
         return Datatables::eloquent($this->model->query())
             ->addColumn('sale_no',function($model){
-                return $model->no;
+                $shop = $model->shop_id ? '<br>'.'('.$model->shop->name.')' : '';
+                return $model->no . $shop;
             })
             ->addColumn('total',function($model){
                 return number_format($model->total);
@@ -59,6 +60,10 @@ class PaymentSaleService extends Service {
                 $query->where('payment_method_id', 2);
                 if ($customer_id = request()->input('customer_id')) {
                     $query->where('customer_id', $customer_id);
+                }
+
+                if ($shop_id = request()->input('shop_id')) {
+                    $query->where('shop_id', $shop_id);
                 }
 
                 if ($date_untils = date_until(request()->input('date_until'))) {

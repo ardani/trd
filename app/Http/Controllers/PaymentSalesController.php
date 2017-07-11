@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AccountCodeService;
 use App\Services\CashFlowService;
 use App\Services\PaymentSaleService;
+use App\Services\ShopService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 class PaymentSalesController extends Controller
@@ -13,19 +14,26 @@ class PaymentSalesController extends Controller
     private $service;
     private $service_detail;
     private $account;
+    private $shop;
 
-    public function __construct(PaymentSaleService $service, CashFlowService $detail, AccountCodeService $account) {
+    public function __construct(
+        PaymentSaleService $service,
+        CashFlowService $detail,
+        AccountCodeService $account,
+        ShopService $shop) {
         $this->service = $service;
         $this->service_detail = $detail;
         $this->account = $account;
+        $this->shop = $shop;
     }
 
     public function index() {
         if (request()->ajax()) {
             return $this->service->datatables();
         }
-
-        return view('pages.'.$this->page.'.index',$this->service->meta());
+        $data = $this->service->meta();
+        $data['shops'] = $this->shop->all();
+        return view('pages.'.$this->page.'.index',$data);
     }
 
     public function show($id) {

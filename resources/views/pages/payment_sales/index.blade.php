@@ -16,6 +16,15 @@
                 <div class="card-block">
                     <form action="{{url('payment_sales/print')}}" method="get">
                     <div class="form-group col-md-3">
+                        <label for="">Toko</label>
+                        <select name="shop_id" class="form-control">
+                            <option value="">-</option>
+                            @foreach($shops as $shop)
+                                <option value="{{$shop->id}}">{{$shop->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
                         <label for="">Customer</label>
                         <select name="customer_id" id="customer_id" class="form-control select-customer"></select>
                     </div>
