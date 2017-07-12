@@ -84,8 +84,9 @@ class SaleOrderService extends Service {
     }
 
     public function store($data) {
-        $model = $this->model->firstOrNew(['no' => $data['no']]);
-        $model->no = $data['no'];
+        $no = auto_number_sales();
+        $model = $this->model->firstOrNew(['no' => $no]);
+        $model->no = $no;
         $model->customer_id = $data['customer_id'];
         $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
         $model->created_at = $created_at;
@@ -93,10 +94,12 @@ class SaleOrderService extends Service {
         $model->cash = $data['cash'];
         $model->shop_id = $data['shop_id'];
         $model->cashier_id = auth()->id();
+
         if (request()->has('payment_method_id')) {
             $model->payment_method_id = 2;
             $model->paid_until_at = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
         }
+
         $model->disc = request('disc',0);
         $model->save();
 
@@ -116,8 +119,7 @@ class SaleOrderService extends Service {
                 'qty' => $session['qty'] * -1
             ]);
         }
-        $this->savePayment($model, $total);
-        return clear_nota($data['no']);
+        return $this->savePayment($model, $total);
     }
 
     public function delete($id) {

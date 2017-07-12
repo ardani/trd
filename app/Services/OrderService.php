@@ -64,8 +64,9 @@ class OrderService extends Service {
     }
 
     public function store($data) {
-        $model = $this->model->firstOrNew(['no' => $data['no']]);
-        $model->no = $data['no'];
+        $no = auto_number_orders();
+        $model = $this->model->firstOrNew(['no' => $no]);
+        $model->no = $no;
         $model->supplier_id = $data['supplier_id'];
         $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
         $model->created_at = $created_at;
@@ -78,6 +79,7 @@ class OrderService extends Service {
             $model->payment_method_id = 2;
             $model->paid_until_at = Carbon::createFromFormat('d/m/Y',$data['paid_until_at'])->format('Y-m-d');
         }
+
         $model->save();
         $sessions = session($data['no']);
         $model->transactions()->delete();
@@ -98,8 +100,7 @@ class OrderService extends Service {
 
         }
 
-        $this->savePayment($model, $total);
-        return clear_nota($data['no']);
+        return $this->savePayment($model, $total);
     }
 
     public function update($data, $id) {

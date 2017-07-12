@@ -196,7 +196,6 @@ class SaleOrdersController extends Controller {
         $data = [
             'sale' => $this->service->find($no)
         ];
-
         //return view('pages.sale_orders.print-invoice', $data);
         $pdf = PDF::loadView('pages.sale_orders.print-invoice', $data);
         $pdf->setPaper(array(0, 0, 684.00, 792.00),'landscape');
