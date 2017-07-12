@@ -91,6 +91,7 @@ class SaleOrderService extends Service {
         $model->created_at = $created_at;
         $model->note = $data['note'];
         $model->cash = $data['cash'];
+        $model->shop_id = $data['shop_id'];
         $model->cashier_id = auth()->id();
         if (request()->has('payment_method_id')) {
             $model->payment_method_id = 2;
