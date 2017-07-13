@@ -196,10 +196,8 @@ class SaleOrdersController extends Controller {
         $data = [
             'sale' => $this->service->find($no)
         ];
-        //return view('pages.sale_orders.print-invoice', $data);
-        $pdf = PDF::loadView('pages.sale_orders.print-invoice', $data);
-        $pdf->setPaper(array(0, 0, 684.00, 792.00),'landscape');
-        return @$pdf->stream('invoice.pdf');
+
+        return view('pages.sale_orders.print-invoice', $data);
     }
 
     public function printDo($no) {
@@ -207,9 +205,7 @@ class SaleOrdersController extends Controller {
             'sale' => $this->service->find($no)
         ];
 
-        $pdf = PDF::loadView('pages.sale_orders.print-do', $data);
-        $pdf->setPaper(array(0, 0, 684.00, 792.00),'landscape');
-        return @$pdf->stream('do.pdf');
+        return view('pages.sale_orders.print-do', $data);
     }
 
     public function load() {
