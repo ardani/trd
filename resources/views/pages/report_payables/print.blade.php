@@ -51,9 +51,10 @@
         <tbody>
         <?php $no = 1; $total = 0; $payment = 0;?>
         @foreach($sales as $sale)
+            <?php $shop = $sale->shop_id ? $sale->shop->name : '-' ?>
             <tr valign="top">
                 <td class="border-top">{{$no}}</td>
-                <td class="border-top">{{$sale->no}} <br/> {{$sale->customer->name}}</td>
+                <td class="border-top">{{$sale->no}} - {{$shop}}<br/> {{$sale->customer->name}}</td>
                 <td class="border-top">{{$sale->paid_until_at->format('d M Y')}}</td>
                 <td class="text-right border-top">{{$sale->paid_until_at->diffInDays($now, false)}}</td>
                 <td class="text-right border-top">{{number_format($sale->total)}}</td>

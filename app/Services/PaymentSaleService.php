@@ -42,6 +42,9 @@ class PaymentSaleService extends Service {
             ->addColumn('payment',function($model){
                 return number_format(abs($model->payment->total));
             })
+            ->addColumn('remain',function($model){
+                return number_format($model->total - abs($model->payment->total));
+            })
             ->addColumn('status',function($model){
                 return $model->paid_status ? '<label class="label label-success">paid</label>'
                     : '<label class="label label-warning">unpaid</label>';

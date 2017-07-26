@@ -60,6 +60,7 @@
                         <thead>
                         <tr>
                             <th>No</th>
+                            <th>Shop</th>
                             <th>Supplier</th>
                             <th>Paid Until At</th>
                             <th>Total</th>
@@ -72,7 +73,9 @@
                         <?php $total = 0; $payment = 0 ?>
                         @foreach($payables as $row)
                             <tr>
-                                <td>{{$row->no}}</td>
+                                <td>{{$row->no}} <br/>
+                                    {{$row->shop_id ? $row->shop->name : '-'}}
+                                </td>
                                 <td>{{$row->customer->name}}</td>
                                 <td>{{$row->paid_until_at->format('d M Y')}}</td>
                                 <td>{{number_format($row->total)}}</td>

@@ -49,6 +49,7 @@
                             <th>Customer</th>
                             <th>Total</th>
                             <th>Payment</th>
+                            <th>Remain</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Action</th>

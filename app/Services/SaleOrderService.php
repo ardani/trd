@@ -51,6 +51,9 @@ class SaleOrderService extends Service {
             ->editColumn('total',function ($model) {
                 return number_format($model->total);
             })
+            ->addColumn('afterdisc',function ($model) {
+                return number_format($model->total - $model->disc);
+            })
             ->editColumn('created_at',function ($model) {
                 return $model->created_at->format('d/m/Y');
             })

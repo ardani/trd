@@ -30,7 +30,7 @@ class ReportProfitService extends Service {
                 ) T";
 
         $result = \DB::table('sale_orders')
-            ->selectRaw('sum(T.total) as total')
+            ->selectRaw('sum(T.total) - sum(sale_orders.disc) as total')
             ->join(\DB::raw($raw), function($join){
                 $join->on('T.transactionable_id', '=', 'sale_orders.id')
                     ->where('T.transactionable_type', 'App\Models\SaleOrder');
