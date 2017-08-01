@@ -54,8 +54,9 @@ class RequestProductService extends Service {
     }
 
     public function store($data) {
-        $model = $this->model->firstOrNew(['no' => $data['no']]);
-        $model->no = $data['no'];
+        $no = auto_number_request_product();
+        $model = $this->model->firstOrNew(['no' => $no]);
+        $model->no = $no;
         $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
         $model->created_at = $created_at;
         $model->note = $data['note'];

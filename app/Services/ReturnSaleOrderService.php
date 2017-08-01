@@ -35,8 +35,9 @@ class ReturnSaleOrderService extends Service {
     }
 
     public function store($data) {
-        $model = $this->model->firstOrNew(['no' => $data['no']]);
-        $model->no = $data['no'];
+        $no = auto_number_return_sales();
+        $model = $this->model->firstOrNew(['no' => $no]);
+        $model->no = $no;
         $model->sale_order_id = $data['no_sale'];
         $created_at = Carbon::createFromFormat('d/m/Y',$data['created_at'])->format('Y-m-d');
         $model->note = $data['note'];
