@@ -60,8 +60,7 @@
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>Shop</th>
-                            <th>Supplier</th>
+                            <th>Customer</th>
                             <th>Paid Until At</th>
                             <th>Total</th>
                             <th>Payment</th>

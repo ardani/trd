@@ -33,7 +33,7 @@ class CashFlow extends Model {
                 switch ($model->payment->type) {
                     case 'sale':
                         $sale = SaleOrder::find($model->payment->ref_id);
-                        $sale->paid_status = ($model->payment->total < $model->payment->sale->total) ? 0 : 1;
+                        $sale->paid_status = ($model->payment->total < $sale->total - $sale->disc) ? 0 : 1;
                         $sale->save();
                         break;
                     case 'order':

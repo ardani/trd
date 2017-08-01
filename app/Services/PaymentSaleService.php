@@ -34,7 +34,7 @@ class PaymentSaleService extends Service {
                 return $model->no . $shop;
             })
             ->addColumn('total',function($model){
-                return number_format($model->total);
+                return number_format($model->total - $model->disc);
             })
             ->addColumn('customer',function($model){
                 return $model->customer->name;
@@ -43,7 +43,8 @@ class PaymentSaleService extends Service {
                 return number_format(abs($model->payment->total));
             })
             ->addColumn('remain',function($model){
-                return number_format($model->total - abs($model->payment->total));
+                $remain = abs($model->total - $model->disc - abs($model->payment->total));
+                return number_format(floor($remain));
             })
             ->addColumn('status',function($model){
                 return $model->paid_status ? '<label class="label label-success">paid</label>'
