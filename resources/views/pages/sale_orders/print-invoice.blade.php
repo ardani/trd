@@ -93,7 +93,7 @@
             <td class="text-right">{{number_format($sale->total)}}</td>
         </tr>
         <tr valign="top">
-            <td class="text-left border-bottom" rowspan="3">{{$sale->note}}</td>
+            <td class="text-left border-bottom" rowspan="4">{{$sale->note}}</td>
             <td class="text-right">Disc :</td>
             <td class="text-right">{{number_format($sale->disc)}}</td>
         </tr>
@@ -102,9 +102,16 @@
             <td class="text-right">{{number_format($sale->total - $sale->disc )}}</td>
         </tr>
         <tr valign="top">
-            <td class="text-right border-bottom ">Pay :</td>
-            <td class="text-right border-bottom ">{{number_format($sale->cash)}}</td>
+            <td class="text-right {{$sale->payment_method_id != 1 ? :'border-bottom'}}">Pay :</td>
+            <td class="text-right {{$sale->payment_method_id != 1 ? :'border-bottom'}} ">{{number_format($sale->cash)}}</td>
         </tr>
+        @if($sale->payment_method_id == 2)
+            <?php $remain = abs($sale->total - $sale->disc - abs($sale->payment->total)); ?>
+            <tr valign="top">
+                <td class="text-right border-bottom">Remain :</td>
+                <td class="text-right border-bottom">{{number_format($remain)}}</td>
+            </tr>
+        @endif
         </tbody>
     </table>
     <table class="table table-bordered table-striped" style="margin-top:35px;" width="100%">

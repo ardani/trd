@@ -430,6 +430,7 @@ $(document).ready(function () {
         {data: 'disc', searchable: false, orderable: false},
         {data: 'total', searchable: false, orderable: false},
         {data: 'afterdisc', searchable: false, orderable: false},
+        {data: 'remain', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},
         {data: 'action', searchable: false, orderable: false},
     ];

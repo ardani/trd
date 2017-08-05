@@ -54,6 +54,13 @@ class SaleOrderService extends Service {
             ->addColumn('afterdisc',function ($model) {
                 return number_format($model->total - $model->disc);
             })
+            ->addColumn('remain',function($model){
+                if ($model->payment_method_id == 2) {
+                    $remain = abs($model->total - $model->disc - abs($model->payment->total));
+                    return number_format(floor($remain));
+                }
+                return '-';
+            })
             ->editColumn('created_at',function ($model) {
                 return $model->created_at->format('d/m/Y');
             })

@@ -66,6 +66,7 @@
                             <th>Disc</th>
                             <th>Total</th>
                             <th>After Disc</th>
+                            <th>Remain</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
