@@ -204,6 +204,8 @@ class SaleOrdersController extends Controller {
 //        /* Do some printing */
         $connector = new FilePrintConnector($file);
         $printer = new Printer($connector);
+        $printer->setFont(Printer::FONT_B);
+        $printer->setTextSize(1, 1);
         $items = array(
             new item("Example item #1", "4.00"),
             new item("Another thing", "3.50"),
@@ -239,7 +241,6 @@ class SaleOrdersController extends Controller {
         $printer -> feed(2);
         $printer -> text($date . ".\n");
 
-        $printer -> pulse();
         $printer -> close();
         $content = file_get_contents($file);
         $data['content'] = $content;
