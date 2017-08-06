@@ -216,21 +216,14 @@ class SaleOrdersController extends Controller {
         /* Date is kept the same for testing */
         $date = "Monday 6th of April 2015 02:56:25 PM";
         /* Name of shop */
-        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> setTextSize(1,1);
         $printer -> text("ExampleMart Ltd.\n");
-        $printer -> selectPrintMode();
         $printer -> text("Shop No. 42.\n");
         $printer -> feed();
-        /* Title of receipt */
-        $printer -> setEmphasis(true);
         $printer -> text("SALES INVOICE\n");
-        $printer -> setEmphasis(false);
-
         /* Items */
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
-        $printer -> setEmphasis(true);
         $printer -> text(new item('', '$'));
-        $printer -> setEmphasis(false);
         foreach ($items as $item) {
             $printer -> text($item);
         }
@@ -238,13 +231,9 @@ class SaleOrdersController extends Controller {
         $printer -> text($subtotal);
         $printer -> setEmphasis(false);
         $printer -> feed();
-
         /* Tax and total */
         $printer -> text($tax);
-        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
         $printer -> text($total);
-        $printer -> selectPrintMode();
-
         /* Footer */
         $printer -> feed(2);
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
@@ -256,7 +245,6 @@ class SaleOrdersController extends Controller {
         /* Cut the receipt and open the cash drawer */
         $printer -> cut();
         $printer -> pulse();
-
         $printer -> close();
         $content = file_get_contents($file);
         $data['content'] = $content;
