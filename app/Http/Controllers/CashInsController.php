@@ -36,7 +36,7 @@ class CashInsController extends Controller
         $data['cashes'] = $this->account->getCash();
         $total = 0;
         if (session($auto_number)) {
-            $total = collect(session($auto_number))->sum(function($val){
+            $total = collect(session($auto_number))->sum(function($val) {
                 return $val['debit'];
             });
         }
@@ -88,6 +88,7 @@ class CashInsController extends Controller
             'id'             => $id,
             'account_code_id'=> $request->account_code_id,
             'name'           => $code->name,
+            'mutation'       => $request->mutation ? 'yes' : 'no',
             'debit'          => $request->debit,
             'note'           => $request->note
         ];
@@ -111,6 +112,7 @@ class CashInsController extends Controller
                 'id'             => $val->id,
                 'account_code_id'=> $val->account_code_id,
                 'name'           => $val->account_code->name,
+                'mutation'       => $val->mutation ? 'yes' : 'no',
                 'debit'          => $val->debit,
                 'note'           => $val->note
             ];
@@ -121,11 +123,11 @@ class CashInsController extends Controller
 
     public function addPODetail(Request $request) {
         $no = $request->no;
-        $transactions = $this->viewPODetail($no);
         $key = md5(time());
         $transactions[ $key ] = [
             'account_code_id'=> $request->account_code_id,
             'debit'          => $request->debit,
+            'mutation'       => $request->mutation,
             'note'           => $request->note
         ];
 
@@ -134,6 +136,7 @@ class CashInsController extends Controller
         });
 
         $PO->details()->create($transactions[ $key ]);
+        $transactions = $this->viewPODetail($no);
         return array_values($transactions);
     }
 

@@ -5,6 +5,7 @@ $(document).ready(function () {
     var tCashoutsDetails = $('#table-cashouts-details');
     var credit = $('#credit');
     var note = $('#note');
+    var mutation = $('#mutation');
     var accountCode = $('#account_code_id');
 
     function resetForm() {
@@ -40,6 +41,7 @@ $(document).ready(function () {
                 account_code_id: accountCode.val(),
                 credit: credit.val(),
                 note: note.val(),
+                mutation: mutation.val(),
                 _token: Laravel.csrfToken,
                 no: $('#no').val()
             },

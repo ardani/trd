@@ -64,6 +64,7 @@ class CashInService extends Service {
             $model->details()->create([
                 'account_code_id' => $session['account_code_id'],
                 'debit' => $session['debit'],
+                'mutation' => $session['mutation'],
                 'note' => $session['note']
             ]);
             $total += $session['debit'];

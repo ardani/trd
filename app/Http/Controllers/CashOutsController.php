@@ -62,7 +62,6 @@ class CashOutsController extends Controller
 
     public function update(Request $request, $id) {
         $data = $request->all();
-        $data['value'] = $data['value'] * -1;
         $this->service->update($data, $id);
         return redirect()->back()->with('message','Update Success');
     }
@@ -89,7 +88,8 @@ class CashOutsController extends Controller
             'id'             => $id,
             'account_code_id'=> $request->account_code_id,
             'name'           => $code->name,
-            'credit'          => $request->credit,
+            'mutation'       => $request->mutation ? 'yes' : 'no',
+            'credit'         => $request->credit,
             'note'           => $request->note
         ];
 
@@ -112,6 +112,7 @@ class CashOutsController extends Controller
                 'id'             => $val->id,
                 'account_code_id'=> $val->account_code_id,
                 'name'           => $val->account_code->name,
+                'mutation'       => $val->mutation ? 'yes' : 'no',
                 'credit'         => $val->credit,
                 'note'           => $val->note
             ];
@@ -122,11 +123,11 @@ class CashOutsController extends Controller
 
     public function addPODetail(Request $request) {
         $no = $request->no;
-        $transactions = $this->viewPODetail($no);
         $key = md5(time());
         $transactions[ $key ] = [
             'account_code_id'=> $request->account_code_id,
             'credit'         => $request->credit,
+            'mutation'       => $request->mutation,
             'note'           => $request->note
         ];
 
@@ -135,6 +136,7 @@ class CashOutsController extends Controller
         });
 
         $PO->details()->create($transactions[ $key ]);
+        $transactions = $this->viewPODetail($no);
         return array_values($transactions);
     }
 

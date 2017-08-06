@@ -17,9 +17,11 @@ class CashOutService extends Service {
 
     protected $model;
     protected $name = 'cash_outs';
+    protected $cash_flow;
 
     public function __construct(Cash $model, CashFlow $cash_flow) {
         $this->model = $model;
+        $this->cash_flow = $cash_flow;
     }
 
     public function datatables($param = array()) {
@@ -62,6 +64,7 @@ class CashOutService extends Service {
         foreach ($sessions as $session) {
             $model->details()->create([
                 'account_code_id' => $session['account_code_id'],
+                'mutation' => $session['mutation'] == 'yes' ? 1 : 0,
                 'credit' => $session['credit'],
                 'note' => $session['note']
             ]);

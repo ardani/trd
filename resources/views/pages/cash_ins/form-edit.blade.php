@@ -10,11 +10,18 @@
     <input type="text" class="form-control daterange" name="created_at"
            data-validation="[NOTEMPTY]" value="{{$model->created_at->format('d/m/Y')}}">
 </fieldset>
-<div class="clearfix"></div>
-<hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Account <span class="text-danger">*</span></label>
     <select id="account_code_id" name="account_code_id" class="form-control select-account-code" data-live-search="true"></select>
+</fieldset>
+<div class="clearfix"></div>
+<hr class="hr-form"/>
+<fieldset class="form-group col-md-2">
+    <label class="form-control-label">Mutation </label>
+    <select name="mutation" id="mutation" class="form-control">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
 </fieldset>
 <fieldset class="form-group col-md-2">
         <label class="form-control-label">Debit <span class="text-danger">*</span></label>
@@ -38,6 +45,7 @@
         <th width="10%">No</th>
         <th width="10%">Account</th>
         <th width="15%">Debit</th>
+        <th width="15%">Mutation</th>
         <th width="15%">Note</th>
         <th width="5%">Action</th>
     </tr>
@@ -49,6 +57,7 @@
                     <td>{{$transaction['account_code_id']}}</td>
                     <td>{{$transaction->account_code->name}}</td>
                     <td class="text-right">{{number_format($transaction['debit'])}}</td>
+                    <td>{{$transaction['mutation'] ? 'yes' : 'no'}}</td>
                     <td>{{$transaction['note']}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('cash_ins/actions/delete')}}"
@@ -87,6 +96,7 @@
         <td data-content="account_code_id"></td>
         <td data-content="name"></td>
         <td class="text-right debit" data-content="debit" data-format="currency"></td>
+        <td data-content="mutation"></td>
         <td data-content="note"></td>
         <td>
             <a class="act-delete" data-url="{{url('cash_ins/actions/delete')}}"

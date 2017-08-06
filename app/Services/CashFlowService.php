@@ -50,6 +50,7 @@ class CashFlowService extends Service {
                 }
             })
             ->whereIn('account_code_id', $this->listAccount())
+            ->where('mutation', 0)
             ->orderBy('id')
             ->get();
         return ['present' => $result, 'last' => $this->getDataLast($account, $date)];
@@ -62,6 +63,7 @@ class CashFlowService extends Service {
         $results = $this->model->where('created_at', '<', $dates)
             ->selectRaw('sum(debit) as debit, sum(credit) as credit, sum(debit-credit) as saldo, account_code_id')
             ->groupBy('account_code_id')
+            ->where('mutation', 0)
             ->whereIn('account_code_id', $account)
             ->orderBy('account_code_id')
             ->get();

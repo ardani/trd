@@ -7,14 +7,20 @@
 </fieldset>
 <fieldset class="form-group col-md-2">
     <label class="form-control-label">Date <span class="text-danger">*</span></label>
-    <input type="text" class="form-control daterange" name="created_at"
-           data-validation="[NOTEMPTY]">
+    <input type="text" class="form-control daterange" name="created_at" data-validation="[NOTEMPTY]">
 </fieldset>
-<div class="clearfix"></div>
-<hr class="hr-form"/>
 <fieldset class="form-group col-md-3">
     <label class="form-control-label">Account <span class="text-danger">*</span></label>
     <select id="account_code_id" name="account_code_id" class="form-control select-account-code" data-live-search="true"></select>
+</fieldset>
+<div class="clearfix"></div>
+<hr class="hr-form"/>
+<fieldset class="form-group col-md-2">
+    <label class="form-control-label">Mutation </label>
+    <select name="mutation" id="mutation" class="form-control">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
 </fieldset>
 <fieldset class="form-group col-md-2">
         <label class="form-control-label">Credit <span class="text-danger">*</span></label>
@@ -38,6 +44,7 @@
         <th width="10%">No</th>
         <th width="10%">Account</th>
         <th width="15%">Credit</th>
+        <th width="15%">Mutation</th>
         <th width="15%">Note</th>
         <th width="5%">Action</th>
     </tr>
@@ -49,6 +56,7 @@
                     <td>{{$transaction['account_code_id']}}</td>
                     <td>{{$transaction['name']}}</td>
                     <td class="text-right">{{number_format($transaction['credit'])}}</td>
+                    <td>{{$transaction['mutation'] ? 'Yes' : 'No'}}</td>
                     <td>{{$transaction['note']}}</td>
                     <td>
                         <a class="act-delete" data-url="{{url('cash_outs/actions/deleteTemp')}}"
@@ -75,7 +83,7 @@
     </div>
     <div class="form-group col-md-6">
         <label class="form-control-label">Total</label>
-        <input type="text" readonly="" id="total" name="total" value="{{number_format($total)}}" class="form-control">
+        <input type="text" readonly id="total" name="total" value="{{number_format($total)}}" class="form-control">
     </div>
 </div>
 <script type="text/html" id="row-cash">
@@ -83,6 +91,7 @@
         <td data-content="account_code_id"></td>
         <td data-content="name"></td>
         <td class="text-right credit" data-content="credit" data-format="currency"></td>
+        <td data-content="mutation"></td>
         <td data-content="note"></td>
         <td>
             <a class="act-delete" data-url="{{url('cash_outs/actions/deleteTemp')}}"
