@@ -21,6 +21,9 @@
 <div class="mobile-menu-left-overlay"></div>
 @yield('content')
 <script src="{{asset('js/main.js')}}"></script>
+<script src="{{asset('js/rsvp.min.js')}}"></script>
+<script src="{{asset('js/sha256.min.js')}}"></script>
+<script src="{{asset('js/qz-tray.js')}}"></script>
 @yield('scripts')
 </body>
 </html>

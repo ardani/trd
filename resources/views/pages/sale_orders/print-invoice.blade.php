@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-<div class="box box-info" style="font-family: 'monospace';">
+<div class="box box-info" style="font-family: 'sans-serif';">
     <div class="box-header with-border">
     </div>
     <div style="text-align: center;">

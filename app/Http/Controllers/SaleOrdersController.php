@@ -8,6 +8,8 @@ use App\Services\SaleOrderService;
 use App\Services\SaleService;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 use PDF;
 
 class SaleOrdersController extends Controller {
@@ -196,6 +198,14 @@ class SaleOrdersController extends Controller {
         $data = [
             'sale' => $this->service->find($no)
         ];
+//        $tmpdir = sys_get_temp_dir();
+//        $file =  tempnam($tmpdir, 'ctk');
+//        /* Do some printing */
+//        $connector = new FilePrintConnector($file);
+//        $printer = new Printer($connector);
+//        $printer->text("Hello World!\n");
+//        $printer->cut();
+//        $printer->close();
 
         return view('pages.sale_orders.print-invoice', $data);
     }
