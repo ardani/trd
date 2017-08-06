@@ -6,13 +6,18 @@
         .text-right {
             text-align: right;
         }
+
         .text-left {
             text-align: left;
         }
+
         .border-bottom {
             border-bottom: 1px dotted #000
         }
     </style>
+    <script src="{{asset('js/rsvp.min.js')}}"></script>
+    <script src="{{asset('js/sha256.min.js')}}"></script>
+    <script src="{{asset('js/qz-tray.js')}}"></script>
 </head>
 <body>
 <div class="box box-info" style="font-family: 'sans-serif';">
@@ -69,16 +74,16 @@
         </tr>
         <?php $no = 1 ?>
         @foreach($sale->transactions as $transaction)
-        <tr valign="top">
-            <td>{{$no}}</td>
-            <td>{{$transaction->product->name.' - '.$transaction->desc}}</td>
-            <td class="text-right">{{number_format($transaction->selling_price)}}</td>
-            <td class="text-right">{{$transaction->disc}}</td>
-            <td>{{$transaction->units}}</td>
-            <td class="text-right">{{abs($transaction->qty)}}</td>
-            <td class="text-right">{{number_format(abs($transaction->qty) * ($transaction->selling_price - $transaction->disc) * $transaction->attribute)}}</td>
-        </tr>
-        <?php $no++ ?>
+            <tr valign="top">
+                <td>{{$no}}</td>
+                <td>{{$transaction->product->name.' - '.$transaction->desc}}</td>
+                <td class="text-right">{{number_format($transaction->selling_price)}}</td>
+                <td class="text-right">{{$transaction->disc}}</td>
+                <td>{{$transaction->units}}</td>
+                <td class="text-right">{{abs($transaction->qty)}}</td>
+                <td class="text-right">{{number_format(abs($transaction->qty) * ($transaction->selling_price - $transaction->disc) * $transaction->attribute)}}</td>
+            </tr>
+            <?php $no++ ?>
         @endforeach
         </tbody>
     </table>
@@ -132,14 +137,27 @@
         <tfoot>
         <tr>
             <td class="text-left" colspan="2">
-                <h5>Print at {{ date('d-m-Y') }} By : {{auth()->user()->username}} | Created By : {{$sale->employee->name}}</h5>
+                <h5>Print at {{ date('d-m-Y') }} By : {{auth()->user()->username}} | Created By
+                    : {{$sale->employee->name}}</h5>
             </td>
         </tr>
         </tfoot>
     </table>
 </div>
 <script type="text/javascript">
-  this.print();
+  //  this.print();
+  qz.websocket.connect().then(function () {
+    return qz.printers.getDefault();
+  }).then(function (printer) {
+    var config = qz.configs.create(printer);
+//    var data = 'hello world';
+    var printData = [
+      { type: 'raw', format: 'plain', data: `{{$content}}`}
+    ];
+    return qz.print(config, printData);
+  }).catch(function (e) {
+    console.error(e);
+  });
 </script>
 </body>
 </html>
