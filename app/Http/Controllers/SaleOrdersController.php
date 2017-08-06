@@ -216,7 +216,6 @@ class SaleOrdersController extends Controller {
         /* Date is kept the same for testing */
         $date = "Monday 6th of April 2015 02:56:25 PM";
         /* Name of shop */
-        $printer -> setTextSize(1,1);
         $printer -> text("ExampleMart Ltd.\n");
         $printer -> text("Shop No. 42.\n");
         $printer -> feed();
@@ -227,9 +226,7 @@ class SaleOrdersController extends Controller {
         foreach ($items as $item) {
             $printer -> text($item);
         }
-        $printer -> setEmphasis(true);
         $printer -> text($subtotal);
-        $printer -> setEmphasis(false);
         $printer -> feed();
         /* Tax and total */
         $printer -> text($tax);
@@ -240,10 +237,8 @@ class SaleOrdersController extends Controller {
         $printer -> text("Thank you for shopping at ExampleMart\n");
         $printer -> text("For trading hours, please visit example.com\n");
         $printer -> feed(2);
-        $printer -> text($date . "\n");
+        $printer -> text($date . ".\n");
 
-        /* Cut the receipt and open the cash drawer */
-        $printer -> cut();
         $printer -> pulse();
         $printer -> close();
         $content = file_get_contents($file);
