@@ -273,9 +273,18 @@ class SaleOrdersController extends Controller {
         $remain = $sale->payment_method_id == 2 ? abs($sale->total - $sale->disc - abs($sale->payment->total)) : $sale->total - $sale->disc - $sale->cash;
         $printer->text(str_pad('Remain', 10));
         $printer->text(str_pad(number_format($remain), 90, ' ', STR_PAD_LEFT) . "\n");
+        $printer->text(str_pad('Note', 10). "\n");
+        $printer->text(wordwrap($sale->note, 90, "\n", true) ?: '-');
         $printer->feed();
-        $printer->text(str_pad('Note', 10).' : ');
-        $printer->text(wordwrap($sale->note, 90, "\n", true));
+        $printer->feed();
+        // Sign
+        $printer->text(str_pad('Dikirim', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('Diterima', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('Diperiksa', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_repeat("\n", 4));
+        $printer->text(str_pad('_______________', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('_______________', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('_______________', 33, ' ', STR_PAD_BOTH) . "\n");
         /* Footer */
         $printer->feed();
         $printer->setJustification(Printer::JUSTIFY_LEFT);
