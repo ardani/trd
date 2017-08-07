@@ -231,10 +231,10 @@ class SaleOrdersController extends Controller {
 
         // column
         $printer->text(str_pad('No', 5));
-        $printer->text(str_pad('Product', 50));
+        $printer->text(str_pad('Product', 40));
         $printer->text(str_pad('Price', 10));
         $printer->text(str_pad('Disc', 10));
-        $printer->text(str_pad('Unit', 10));
+        $printer->text(str_pad('Unit', 20));
         $printer->text(str_pad('Qty', 5));
         $printer->text(str_pad('Subtotal', 10). "\n");
         $printer->text(str_repeat('-', 100). "\n");
@@ -242,23 +242,23 @@ class SaleOrdersController extends Controller {
         $no = 1;
         foreach ($sale->transactions as $transaction) {
             $name_product = $transaction->product->name . ' ' . $transaction->desc;
-            $wrap_product_name = wordwrap($name_product, 50, "\n", true);
+            $wrap_product_name = wordwrap($name_product, 40, "\n", true);
             $product_name_lines = explode("\n", $wrap_product_name);
             $product_name_print = count($product_name_lines) ? $product_name_lines[0] : $name_product;
 
             $subtotal = number_format(abs($transaction->qty) * ($transaction->selling_price - $transaction->disc) * $transaction->attribute);
             $printer->text(str_pad($no, 5));
-            $printer->text(str_pad($product_name_print, 50));
+            $printer->text(str_pad($product_name_print, 40));
             $printer->text(str_pad(number_format($transaction->selling_price), 10, ' ', STR_PAD_LEFT));
             $printer->text(str_pad(number_format($transaction->disc), 10, ' ', STR_PAD_LEFT));
-            $printer->text(str_pad($transaction->units, 10));
+            $printer->text(str_pad($transaction->units, 20));
             $printer->text(str_pad(abs($transaction->qty), 5, ' ', STR_PAD_LEFT));
             $printer->text(str_pad($subtotal, 10, ' ', STR_PAD_LEFT). "\n");
             if (count($product_name_lines) > 1) {
                 foreach ($product_name_lines as $key => $value) {
                     if ($key == 0) continue;
                     $printer->text(str_pad('', 5));
-                    $printer->text(str_pad($product_name_lines[$key], 50). "\n");
+                    $printer->text(str_pad($product_name_lines[$key], 40). "\n");
                 }
             }
             $no++;
@@ -297,11 +297,85 @@ class SaleOrdersController extends Controller {
     }
 
     public function printDo($no) {
-        $data = [
-            'sale' => $this->service->find($no)
-        ];
+        $sale = $this->service->find($no);
+        $tmpdir = sys_get_temp_dir();
+        $file =  tempnam($tmpdir, 'ctk');
+        $connector = new FilePrintConnector($file);
+        $printer = new Printer($connector);
+        $printer->setFont(Printer::FONT_B);
+        $printer->setTextSize(1, 1);
+        // header
+        $address = str_replace('<br/>', "\n", setting('company.address'));
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text(setting('company.name') . "\n");
+        $printer->text($address . "\n");
+        $printer->feed();
 
-        return view('pages.sale_orders.print-do', $data);
+        /* customer */
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $cust_name = strtoupper($sale->customer->name);
+        $printer->text("DELIVERY ORDER TO $cust_name \n");
+        $printer->text(str_pad('Address', 10).' : ');
+        $printer->text($sale->customer->address . "\n");
+        $printer->text(str_pad('Phone', 10).' : ');
+        $printer->text($sale->customer->phone . "\n");
+        $printer->feed();
+        // order
+        $printer->text(str_pad('PO NUMBER', 10).' : ');
+        $printer->text($sale->no . "\n");
+        $printer->text(str_pad('CREATE AT', 10).' : ');
+        $printer->text($sale->created_at->format('d M Y') . "\n");
+        $printer->feed();
+        // column
+        $printer->text(str_pad('No', 5));
+        $printer->text(str_pad('Product', 70));
+        $printer->text(str_pad('Unit', 20));
+        $printer->text(str_pad('Qty', 5).  "\n");
+        $printer->text(str_repeat('-', 100). "\n");
+
+        $no = 1;
+        foreach ($sale->transactions as $transaction) {
+            $name_product = $transaction->product->name . ' ' . $transaction->desc;
+            $wrap_product_name = wordwrap($name_product, 70, "\n", true);
+            $product_name_lines = explode("\n", $wrap_product_name);
+            $product_name_print = count($product_name_lines) ? $product_name_lines[0] : $name_product;
+
+            $printer->text(str_pad($no, 5));
+            $printer->text(str_pad($product_name_print, 70));
+            $printer->text(str_pad($transaction->units, 20));
+            $printer->text(str_pad(abs($transaction->qty), 5, ' ', STR_PAD_LEFT)."\n");
+            if (count($product_name_lines) > 1) {
+                foreach ($product_name_lines as $key => $value) {
+                    if ($key == 0) continue;
+                    $printer->text(str_pad('', 5));
+                    $printer->text(str_pad($product_name_lines[$key], 70). "\n");
+                }
+            }
+            $no++;
+        }
+        $printer->text(str_repeat('-', 100). "\n");
+        $printer->text(str_pad('Note', 10). "\n");
+        $printer->text(wordwrap($sale->note, 90, "\n", true) ?: '-');
+        $printer->feed();
+        $printer->feed();
+        // Sign
+        $printer->text(str_pad('Dikirim', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('Diterima', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('Diperiksa', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_repeat("\n", 4));
+        $printer->text(str_pad('_______________', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('_______________', 33, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('_______________', 33, ' ', STR_PAD_BOTH) . "\n");
+        /* Footer */
+        $printer->feed();
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->text("Print at ".date('d-m-Y')." by ".auth()->user()->username);
+        $printer->text("Create By ".$sale->employee->name);
+        $printer->feed(2);
+        $printer->close();
+
+        $content = file_get_contents($file);
+        return view('pages.sale_orders.print-invoice', ['content' => $content]);
     }
 
     public function load() {
