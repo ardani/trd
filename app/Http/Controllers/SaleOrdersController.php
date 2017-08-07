@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Item;
 use App\Services\CustomerService;
 use App\Services\ProductService;
 use App\Services\SaleOrderService;
@@ -195,56 +196,95 @@ class SaleOrdersController extends Controller {
     }
 
     public function printInvoice($no) {
-        $data = [
-            'sale' => $this->service->find($no)
-        ];
-
+        $sale = $this->service->find($no);
         $tmpdir = sys_get_temp_dir();
         $file =  tempnam($tmpdir, 'ctk');
-//        /* Do some printing */
         $connector = new FilePrintConnector($file);
         $printer = new Printer($connector);
         $printer->setFont(Printer::FONT_B);
         $printer->setTextSize(1, 1);
-        $items = array(
-            new item("Example item #1", "4.00"),
-            new item("Another thing", "3.50"),
-            new item("Something else", "1.00"),
-            new item("A final item", "4.45"),
-        );
-        $subtotal = new item('Subtotal', '12.95');
-        $tax = new item('A local tax', '1.30');
-        $total = new item('Total', '14.25', true);
-        /* Date is kept the same for testing */
-        $date = "Monday 6th of April 2015 02:56:25 PM";
-        /* Name of shop */
-        $printer -> text("ExampleMart Ltd.\n");
-        $printer -> text("Shop No. 42.\n");
-        $printer -> feed();
-        $printer -> text("SALES INVOICE\n");
-        /* Items */
-        $printer -> setJustification(Printer::JUSTIFY_LEFT);
-        $printer -> text(new item('', '$'));
-        foreach ($items as $item) {
-            $printer -> text($item);
-        }
-        $printer -> text($subtotal);
-        $printer -> feed();
-        /* Tax and total */
-        $printer -> text($tax);
-        $printer -> text($total);
-        /* Footer */
-        $printer -> feed(2);
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> text("Thank you for shopping at ExampleMart\n");
-        $printer -> text("For trading hours, please visit example.com\n");
-        $printer -> feed(2);
-        $printer -> text($date . ".\n");
+        // header
+        $address = str_replace('<br/>', "\n", setting('company.address'));
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text(setting('company.name') . "\n");
+        $printer->text($address . "\n");
+        $printer->feed();
 
-        $printer -> close();
+        /* customer */
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $cust_name = strtoupper($sale->customer->name);
+        $printer->text("INVOICE TO $cust_name \n");
+        $printer->text(str_pad('Address', 10).' : ');
+        $printer->text($sale->customer->address . "\n");
+        $printer->text(str_pad('Phone', 10).' : ');
+        $printer->text($sale->customer->phone . "\n");
+        $printer->feed();
+        // order
+        $printer->text(str_pad('PO NUMBER', 10).' : ');
+        $printer->text($sale->no . "\n");
+        $printer->text(str_pad('CREATE AT', 10).' : ');
+        $printer->text($sale->created_at->format('d M Y') . "\n");
+        $printer->text(str_pad('PAYMENT', 10).' : ');
+        $payment_at = $sale->paid_until_at ? $sale->paid_until_at->format('d M Y') : '-';
+        $printer->text($sale->payment_method->name . ' / ' .$payment_at. "\n");
+        $printer->feed();
+
+        // column
+        $printer->text(str_pad('No', 5));
+        $printer->text(str_pad('Product', 50));
+        $printer->text(str_pad('Price', 10));
+        $printer->text(str_pad('Disc', 10));
+        $printer->text(str_pad('Unit', 10));
+        $printer->text(str_pad('Qty', 5));
+        $printer->text(str_pad('Subtotal', 10). "\n");
+        $printer->text(str_repeat('-', 100). "\n");
+
+        $no = 1;
+        foreach ($sale->transactions as $transaction) {
+            $name_product = $transaction->product->name . ' ' . $transaction->desc;
+            $wrap_product_name = wordwrap($name_product, 50, "\n", true);
+            $product_name_lines = explode("\n", $wrap_product_name);
+            $product_name_print = count($product_name_lines) ? $product_name_lines[0] : $name_product;
+
+            $subtotal = number_format(abs($transaction->qty) * ($transaction->selling_price - $transaction->disc) * $transaction->attribute);
+            $printer->text(str_pad($no, 5));
+            $printer->text(str_pad($product_name_print, 50));
+            $printer->text(str_pad(number_format($transaction->selling_price), 10, ' ', STR_PAD_LEFT));
+            $printer->text(str_pad(number_format($transaction->disc), 10, ' ', STR_PAD_LEFT));
+            $printer->text(str_pad($transaction->units, 10));
+            $printer->text(str_pad(abs($transaction->qty), 5, ' ', STR_PAD_LEFT));
+            $printer->text(str_pad($subtotal, 10, ' ', STR_PAD_LEFT). "\n");
+            if (count($product_name_lines) > 1) {
+                foreach ($product_name_lines as $key => $value) {
+                    if ($key == 0) continue;
+                    $printer->text(str_pad('', 5));
+                    $printer->text(str_pad($product_name_lines[$key], 50). "\n");
+                }
+            }
+            $no++;
+        }
+        $printer->text(str_repeat('-', 100). "\n");
+        $printer->text(str_pad('Disc', 10));
+        $printer->text(str_pad(number_format($sale->disc), 90, ' ', STR_PAD_LEFT) . "\n");
+        $printer->text(str_pad('Total', 10));
+        $printer->text(str_pad(number_format($sale->total - $sale->disc), 90, ' ', STR_PAD_LEFT) . "\n");
+        $printer->text(str_pad('Pay', 10));
+        $printer->text(str_pad(number_format($sale->cash), 90, ' ', STR_PAD_LEFT) . "\n");
+        $remain = $sale->payment_method_id == 2 ? abs($sale->total - $sale->disc - abs($sale->payment->total)) : $sale->total - $sale->disc - $sale->cash;
+        $printer->text(str_pad('Remain', 10));
+        $printer->text(str_pad(number_format($remain), 90, ' ', STR_PAD_LEFT) . "\n");
+        $printer->feed();
+        $printer->text(str_pad('Note', 10).' : ');
+        $printer->text(wordwrap($sale->note, 90, "\n", true));
+        /* Footer */
+        $printer->feed();
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->text("Print at ".date('d-m-Y')." by ".auth()->user()->username);
+        $printer->text("Create By ".$sale->employee->name);
+        $printer->feed(2);
+        $printer->close();
         $content = file_get_contents($file);
-        $data['content'] = $content;
-        return view('pages.sale_orders.print-invoice', $data);
+        return view('pages.sale_orders.print-invoice', ['content' => $content]);
     }
 
     public function printDo($no) {
@@ -287,34 +327,5 @@ class SaleOrdersController extends Controller {
             })->toArray();
         }
         return [];
-    }
-}
-
-/* A wrapper to do organise item names & prices into columns */
-class item
-{
-    private $name;
-    private $price;
-    private $dollarSign;
-
-    public function __construct($name = '', $price = '', $dollarSign = false)
-    {
-        $this -> name = $name;
-        $this -> price = $price;
-        $this -> dollarSign = $dollarSign;
-    }
-
-    public function __toString()
-    {
-        $rightCols = 10;
-        $leftCols = 38;
-        if ($this -> dollarSign) {
-            $leftCols = $leftCols / 2 - $rightCols / 2;
-        }
-        $left = str_pad($this -> name, $leftCols) ;
-
-        $sign = ($this -> dollarSign ? '$ ' : '');
-        $right = str_pad($sign . $this -> price, $rightCols, ' ', STR_PAD_LEFT);
-        return "$left$right\n";
     }
 }
