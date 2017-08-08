@@ -7,6 +7,7 @@ $(document).ready(function () {
     var note = $('#note');
     var mutation = $('#mutation');
     var accountCode = $('#account_code_id');
+    var date = $('input[name=created_at]');
 
     function resetForm() {
         credit.val('');
@@ -42,6 +43,7 @@ $(document).ready(function () {
                 credit: credit.val(),
                 note: note.val(),
                 mutation: mutation.val(),
+                created_at: date.val(),
                 _token: Laravel.csrfToken,
                 no: $('#no').val()
             },

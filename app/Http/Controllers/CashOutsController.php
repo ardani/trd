@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AccountCodeService;
 use App\Services\CashOutService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 class CashOutsController extends Controller
 {
@@ -128,7 +129,8 @@ class CashOutsController extends Controller
             'account_code_id'=> $request->account_code_id,
             'credit'         => $request->credit,
             'mutation'       => $request->mutation,
-            'note'           => $request->note
+            'note'           => $request->note,
+            'created_at'     => Carbon::createFromFormat('d/m/Y', $request->created_at)->format('Y-m-d')
         ];
 
         $PO = $this->service->where(function($query) use ($no){

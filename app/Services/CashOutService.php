@@ -66,7 +66,8 @@ class CashOutService extends Service {
                 'account_code_id' => $session['account_code_id'],
                 'mutation' => $session['mutation'] == 'yes' ? 1 : 0,
                 'credit' => $session['credit'],
-                'note' => $session['note']
+                'note' => $session['note'],
+                'create_at' => $created_at
             ]);
             $total += $session['credit'];
         }
@@ -74,7 +75,8 @@ class CashOutService extends Service {
         $model->details()->create([
             'account_code_id' => $data['account_cash_id'],
             'credit' => $total,
-            'note' => 'cash out from '.$data['no']
+            'note' => 'cash out from '.$data['no'],
+            'create_at' => $created_at
         ]);
 
         return $model;
@@ -92,7 +94,8 @@ class CashOutService extends Service {
         $model->details()->create([
             'account_code_id' => $data['account_cash_id'],
             'credit' => $model->total,
-            'note' => 'cash out from '.$data['no']
+            'note' => 'cash out from '.$data['no'],
+            'created_at' => $data['created_at']
         ]);
         return $model;
     }

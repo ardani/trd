@@ -65,7 +65,8 @@ class CashInService extends Service {
                 'account_code_id' => $session['account_code_id'],
                 'debit' => $session['debit'],
                 'mutation' => $session['mutation'],
-                'note' => $session['note']
+                'note' => $session['note'],
+                'created_at' => $created_at
             ]);
             $total += $session['debit'];
         }
@@ -73,7 +74,8 @@ class CashInService extends Service {
         $model->details()->create([
             'account_code_id' => $data['account_cash_id'],
             'debit' => $total,
-            'note' => 'cash in from '.$data['no']
+            'note' => 'cash in from '.$data['no'],
+            'created_at' => $created_at
         ]);
 
         return $model;
@@ -91,7 +93,8 @@ class CashInService extends Service {
         $model->details()->create([
             'account_code_id' => $data['account_cash_id'],
             'debit' => $model->total,
-            'note' => 'cash in from '.$data['no']
+            'note' => 'cash in from '.$data['no'],
+            'created_at' => $data['created_at']
         ]);
         return $model;
     }
