@@ -31,10 +31,12 @@ class Payment extends Model {
     }
 
     public function getTotalAttribute() {
-        return CashFlow::where('payment_id',$this->attributes['id'])
-            ->get()
-            ->sum(function ($value) {
+        $cash = CashFlow::where('payment_id',$this->attributes['id'])->get();
+        if ($cash) {
+            return $cash->sum(function ($value) {
                 return in_array($value['account_code_id'], $this->listAccount()) ? abs($value['debit'] - $value['credit']) : 0;
             });
+        }
+        return 0;
     }
 }
