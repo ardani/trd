@@ -33,26 +33,9 @@
     </tr>
     </thead>
     <tbody>
-        @if($transactions)
-            @foreach($transactions as $transaction)
-                <tr>
-                    <td>{{$transaction['code']}}</td>
-                    <td>{{$transaction['name']}}</td>
-                    <td>{{$transaction['qty']}}</td>
-                    <td><input data-id="{{$transaction['product_id']}}"
-                               type="number" data-url="{{url('return_sale_orders/actions/addTemp')}}"
-                               value="1" class="form-control col-md-1 qty-input"/></td>
-                    <td>
-                        <a class="act-add-return" data-url="{{url('return_sale_orders/actions/addTemp')}}"
-                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span></a>
-                    </td>
-                </tr>
-            @endforeach
-        @else
         <tr class="empty-row">
             <td colspan="7" class="text-center">empty data</td>
         </tr>
-        @endif
     </tbody>
 </table>
 </div>
@@ -98,7 +81,7 @@
         <td data-content="qty"></td>
         <td>
             <a class="act-return-delete" data-url="{{url('return_sale_orders/actions/deleteTemp')}}"
-               data-template-bind='[{"attribute": "data-id", "value": "product_id"}]'
+               data-template-bind='[{"attribute": "data-id", "value": "id"}]'
                href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span>
             </a>
         </td>

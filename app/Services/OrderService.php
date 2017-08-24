@@ -95,7 +95,8 @@ class OrderService extends Service {
                 'units' => $session['units'],
                 'product_id' => $session['product_id'],
                 'qty' => $session['qty'],
-                'attribute' => $session['attribute']
+                'attribute' => $session['attribute'],
+                'created_at' => $created_at
             ]);
 
         }

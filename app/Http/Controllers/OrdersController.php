@@ -7,6 +7,8 @@ use App\Services\ProductService;
 use App\Services\SaleService;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 
 class OrdersController extends Controller
 {
@@ -175,10 +177,85 @@ class OrdersController extends Controller
     }
 
     public function printInvoice($no) {
-        $data = [
-            'order' => $this->service->find($no)
-        ];
-        return view('pages.orders.print-invoice', $data);
+        $order = $this->service->find($no);
+        $tmpdir = sys_get_temp_dir();
+        $file =  tempnam($tmpdir, 'ctk');
+        $connector = new FilePrintConnector($file);
+        $printer = new Printer($connector);
+        $printer->setFont(Printer::FONT_B);
+        // header
+        $address = explode('<br/>', setting('company.address'));
+        $printer->text(str_pad(setting('company.name'), 95, ' ', STR_PAD_BOTH) . "\n");
+        foreach ($address as $row) {
+            $printer->text(str_pad($row, 95, ' ', STR_PAD_BOTH) . "\n");
+        }
+        $printer->text(str_repeat("\n", 1));
+        // supplier
+        $supplier_name = strtoupper($order->supplier->name);
+        $printer->text("INVOICE TO $supplier_name \n");
+        $printer->text(str_pad('Address', 10).' : '.$order->supplier->address . "\n");
+        $printer->text(str_pad('Phone', 10).' : '.$order->supplier->phone . "\n");
+        $printer->text(str_repeat("\n", 1));
+        // order
+        $printer->text(str_pad('PO NO', 10).' : '.$order->no . "\n");
+        $printer->text(str_pad('INVOICE NO', 10).' : '.$order->invoice_no . "\n");
+        $printer->text(str_pad('DO NO', 10).' : '.$order->delivery_order_no . "\n");
+        $printer->text(str_pad('CREATE AT', 10).' : '.$order->created_at->format('d M Y') . "\n");
+        $payment_at = $order->paid_until_at ? $order->paid_until_at->format('d M Y') : '-';
+        $printer->text(str_pad('PAYMENT', 10).' : '.$order->payment_method->name . ' / ' .$payment_at . "\n");
+        $printer->text(str_repeat("\n", 1));
+        // column
+        $printer->text(str_pad('No', 5));
+        $printer->text(str_pad('Product', 50));
+        $printer->text(str_pad('Qty', 20));
+        $printer->text(str_pad('Price', 10, ' ', STR_PAD_LEFT));
+        $printer->text(str_pad('Subtotal', 10, ' ', STR_PAD_LEFT). "\n");
+        $printer->text(str_repeat('-', 95). "\n");
+        $no = 1;
+        foreach ($order->transactions as $transaction) {
+            $name_product = $transaction->product->name . ' ' . $transaction->desc;
+            $wrap_product_name = wordwrap($name_product, 48, "\n", true);
+            $product_name_lines = explode("\n", $wrap_product_name);
+            $product_name_print = count($product_name_lines) ? $product_name_lines[0] : $name_product;
+
+            $subtotal = number_format(abs($transaction->qty) * ($transaction->purchase_price) * $transaction->attribute);
+            $printer->text(str_pad($no, 5));
+            $printer->text(str_pad($product_name_print, 50));
+            $printer->text(str_pad(abs($transaction->qty) .' '. $transaction->units, 20));
+            $printer->text(str_pad(number_format($transaction->purchase_price), 10, ' ', STR_PAD_LEFT));
+            $printer->text(str_pad($subtotal, 10, ' ', STR_PAD_LEFT). "\n");
+            if (count($product_name_lines) > 1) {
+                foreach ($product_name_lines as $key => $value) {
+                    if ($key == 0) continue;
+                    $printer->text(str_pad('', 5));
+                    $printer->text(str_pad($product_name_lines[$key], 50). "\n");
+                }
+            }
+            $no++;
+        }
+        $printer->text(str_repeat('-', 95). "\n");
+        $printer->text(str_pad('Total', 8) . ' : ' . number_format($order->total) . "\n");
+        $printer->text(str_pad('Pay', 8) . ' : ' . number_format($order->cash) . "\n");
+        $remain = $order->payment_method_id == 2 ? abs($order->total - abs($order->payment->total)) : $order->total - $order->cash;
+        $printer->text(str_pad('Remain', 8) . ' : ' . number_format($remain) . "\n");
+        $printer->text(str_pad('Note', 8) . ' : ' . wordwrap($order->note, 90, "\n", true) ?: '-');
+        $printer->text(str_repeat("\n", 2));
+//        // Sign
+        $printer->text(str_pad('Dikirim', 30, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('Diterima', 30, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('Diperiksa', 30, ' ', STR_PAD_BOTH));
+        $printer->text(str_repeat("\n", 4));
+        $printer->text(str_pad('_______________', 30, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('_______________', 30, ' ', STR_PAD_BOTH));
+        $printer->text(str_pad('_______________', 30, ' ', STR_PAD_BOTH));
+        $printer->text(str_repeat("\n", 2));
+//        /* Footer */
+        $printer->text("Print at ".date('d-m-Y')." by ".auth()->user()->username);
+        $printer->text(" Created By ".$order->employee->name);
+        $printer->feed();
+        $printer->close();
+        $content = file_get_contents($file);
+        return view('pages.orders.print-invoice', ['content' => $content]);
     }
 
     public function load() {
@@ -189,8 +266,8 @@ class OrdersController extends Controller
         $where =  function($query) use ($q){
             $query->whereRaw('(no like "%'.$q.'%")');
         };
-        $sale = $this->service->filter($where,20);
-        return $sale->map(function($val,$key) {
+        $order = $this->service->filter($where,20);
+        return $order->map(function($val,$key) {
             return [
                 'value' => $val->id,
                 'text' => $val->no.' - '.$val->supplier->name,

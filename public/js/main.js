@@ -3348,7 +3348,7 @@ $(document).ready(function () {
     buildDatatables($('#table-return-sale-order'), returnSaleOrders);
 
     var returnOrders = [
-        {data: 'product_code',searchable: false, orderable: false},
+        {data: 'no',searchable: false, orderable: false},
         {data: 'order_no',searchable: false, orderable: false},
         {data: 'note', searchable: false, orderable: false},
         {data: 'created_at', searchable: false},

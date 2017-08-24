@@ -215,7 +215,7 @@ class SaleOrdersController extends Controller {
         $printer->text(str_pad('Phone', 10).' : '.$sale->customer->phone . "\n");
         $printer->text(str_repeat("\n", 1));
         // order
-        $printer->text(str_pad('PO NUMBER', 10).' : '.$sale->no . "\n");
+        $printer->text(str_pad('PO NO', 10).' : '.$sale->no . "\n");
         $printer->text(str_pad('CREATE AT', 10).' : '.$sale->created_at->format('d M Y') . "\n");
         $payment_at = $sale->paid_until_at ? $sale->paid_until_at->format('d M Y') : '-';
         $printer->text(str_pad('PAYMENT', 10).' : '.$sale->payment_method->name . ' / ' .$payment_at . "\n");
@@ -338,7 +338,7 @@ class SaleOrdersController extends Controller {
         $printer->text(str_repeat("\n", 2));
 //        /* Footer */
         $printer->text("Print at ".date('d-m-Y')." by ".auth()->user()->username);
-        $printer->text("Created By ".$sale->employee->name);
+        $printer->text(" Created By ".$sale->employee->name);
         $printer->feed();
         $printer->close();
         $content = file_get_contents($file);

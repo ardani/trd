@@ -94,7 +94,9 @@ class ReturnOrdersController extends Controller
     public function addTempDetail(Request $request) {
         $sessions       = session()->has($request->no) ? session($request->no) : [];
         $product        = $this->product->find($request->product_id);
-        $sessions[ $product->id ] = [
+        $id = md5(time());
+        $sessions[ $id ] = [
+            'id'             => $id,
             'product_id'     => $product->id,
             'code'           => $product->code,
             'name'           => $product->name,
@@ -127,8 +129,8 @@ class ReturnOrdersController extends Controller
     }
 
     public function deleteTempDetail(Request $request) {
-        session()->forget($request->no . '.' . $request->product_id);
-        return array_values($this->viewTempPODetail($request->no));
+        session()->forget($request->no . '.' . $request->id);
+        return array_values($this->viewTempDetail($request->no));
     }
 
     public function deleteDetail(Request $request) {
@@ -136,7 +138,7 @@ class ReturnOrdersController extends Controller
         $data = $this->service->where(function ($query) use ($no) {
             $query->where('no', $no);
         });
-        $data->transactions()->where('product_id', $request->product_id)->delete();
+        $data->transactions()->where('id', $request->id)->delete();
         return array_values($this->viewDetail($no));
     }
 

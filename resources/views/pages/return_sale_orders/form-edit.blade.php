@@ -38,7 +38,7 @@
             @foreach($model->sale_order->transactions as $transaction)
                 <tr>
                     <td>{{$transaction->product->code}}</td>
-                    <td>{{$transaction->product->name}}</td>
+                    <td>{{$transaction->product->name}} {{$transaction->desc}}</td>
                     <td>{{abs($transaction['qty'])}}</td>
                     <td><input data-id="{{$transaction['product_id']}}"
                                type="number"
@@ -74,11 +74,11 @@
             @foreach($model->transactions as $transaction)
                 <tr>
                     <td>{{$transaction->product->code}}</td>
-                    <td>{{$transaction->product->name}}</td>
-                    <td>{{$transaction['qty']}}</td>
+                    <td>{{$transaction->product->name}} {{$transaction->desc}}</td>
+                    <td>{{abs($transaction['qty'])}}</td>
                     <td>
                         <a class="act-return-delete" data-url="{{url('return_sale_orders/actions/delete')}}"
-                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)">
+                           data-id="{{$transaction['id']}}" href="javascript:void(0)">
                             <span class="glyphicon glyphicon-remove"></span>
                         </a>
                     </td>
@@ -99,7 +99,7 @@
         <td data-content="qty"></td>
         <td>
             <a class="act-return-delete" data-url="{{url('return_sale_orders/actions/delete')}}"
-               data-template-bind='[{"attribute": "data-id", "value": "product_id"}]'
+               data-template-bind='[{"attribute": "data-id", "value": "id"}]'
                href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span>
             </a>
         </td>

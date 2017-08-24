@@ -28,12 +28,12 @@ $(document).ready(function () {
     });
 
     tReturnSalesDetail.on('click', 'a.act-return-delete', function (e) {
-        var product_id = $(this).data('id');
+        var id = $(this).data('id');
         if (confirm('Are you sure delete this data?')) {
             $.ajax({
                 type: 'POST',
                 url: $(this).data('url'),
-                data: {no: $('#no-rs').val(), product_id: product_id, _token: Laravel.csrfToken},
+                data: {no: $('#no-rs').val(), id: id, _token: Laravel.csrfToken},
                 success: function (data) {
                     tReturnSalesDetail.find('tbody').loadTemplate("#row-order", data);
                 }
@@ -45,6 +45,7 @@ $(document).ready(function () {
     });
 
     $('#save-return-sale-btn').click(function (e) {
+        var url = $(this).data('redirect');
         $.ajax({
             type: 'POST',
             url: $(this).data('url'),
@@ -54,6 +55,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 alert('Save Return Sale Success');
+                window.location.replace(url);
             }
         }).fail(function () {
             alert('Save Order Error. Try Again Later');

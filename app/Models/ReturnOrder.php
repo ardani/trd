@@ -15,4 +15,8 @@ class ReturnOrder extends Model {
     public function cashier() {
         return $this->belongsTo(Employee::class);
     }
+
+    public function transactions() {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

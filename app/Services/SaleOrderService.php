@@ -126,7 +126,8 @@ class SaleOrderService extends Service {
                 'disc' => $session['disc'],
                 'desc' => $session['desc'],
                 'product_id' => $session['product_id'],
-                'qty' => $session['qty'] * -1
+                'qty' => $session['qty'] * -1,
+                'created_at' => $created_at
             ]);
         }
         return $this->savePayment($model, $total);

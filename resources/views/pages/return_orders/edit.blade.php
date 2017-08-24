@@ -16,7 +16,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <a href="/return_orders/create" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> New</a>
-                            <button type="button" id="save-sale-btn" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                            <button type="button" id="save-return-order-btn" data-redirect="{{url('return_orders')}}" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
                             <a href="javascript:void(0)" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Print</a>
                             <a href="/return_orders" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Cancel</a>
                         </div>

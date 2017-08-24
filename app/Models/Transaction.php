@@ -12,7 +12,8 @@ class Transaction extends Model {
         'desc',
         'return_complete',
         'production_product_id',
-        'status'
+        'status',
+        'created_at'
     ];
 
     public function transactionable() {

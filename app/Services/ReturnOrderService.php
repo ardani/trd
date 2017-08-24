@@ -8,6 +8,7 @@
 
 namespace App\Services;
 use App\Models\ReturnOrder;
+use Carbon\Carbon;
 use Entrust;
 use Datatables;
 
@@ -48,7 +49,8 @@ class ReturnOrderService extends Service {
         foreach ($sessions as $session) {
             $model->transactions()->create([
                 'product_id' => $session['product_id'],
-                'qty' => $session['qty'] * -1
+                'qty' => $session['qty'] * -1,
+                'created_at' => $created_at
             ]);
         }
         return clear_nota($data['no']);

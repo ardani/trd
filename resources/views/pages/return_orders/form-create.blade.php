@@ -69,25 +69,9 @@
         </tr>
         </thead>
         <tbody>
-        @if($transactions)
-            @foreach($transactions as $transaction)
-                <tr>
-                    <td>{{$transaction['code']}}</td>
-                    <td>{{$transaction['name']}}</td>
-                    <td>{{$transaction['qty']}}</td>
-                    <td>
-                        <a class="act-return-delete" data-url="{{url('return_orders/actions/deleteTemp')}}"
-                           data-id="{{$transaction['product_id']}}" href="javascript:void(0)">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </a>
-                    </td>
-                </tr>
-            @endforeach
-        @else
             <tr class="empty-row">
                 <td colspan="7" class="text-center">empty data</td>
             </tr>
-        @endif
         </tbody>
     </table>
 </div>
@@ -98,7 +82,7 @@
         <td data-content="qty"></td>
         <td>
             <a class="act-return-delete" data-url="{{url('return_orders/actions/deleteTemp')}}"
-               data-template-bind='[{"attribute": "data-id", "value": "product_id"}]'
+               data-template-bind='[{"attribute": "data-id", "value": "id"}]'
                href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span>
             </a>
         </td>
