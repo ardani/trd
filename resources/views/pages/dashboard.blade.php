@@ -36,8 +36,8 @@
                                         <td>{{$row->customer->name}}</td>
                                         <td>{{$row->no}}</td>
                                         <td>{{$row->paid_until_at->format('d M Y')}}</td>
-                                        <td>{{number_format($row->total)}}</td>
-                                        <td>{{number_format($row->payment->total)}}</td>
+                                        <td>{{@number_format($row->total)}}</td>
+                                        <td>{{@number_format($row->payment->total)}}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
