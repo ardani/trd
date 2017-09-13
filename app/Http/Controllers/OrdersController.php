@@ -235,6 +235,7 @@ class OrdersController extends Controller
         }
         $printer->text(str_repeat('-', 95). "\n");
         $printer->text(str_pad('Total', 8) . ' : ' . number_format($order->total) . "\n");
+        $printer->text(str_pad('In Words', 8) . ' : ' . trim(ucwords(terbilang($order->total))) . "\n");
         $printer->text(str_pad('Pay', 8) . ' : ' . number_format($order->cash) . "\n");
         $remain = $order->payment_method_id == 2 ? abs($order->total - abs($order->payment->total)) : $order->total - $order->cash;
         $printer->text(str_pad('Remain', 8) . ' : ' . number_format($remain) . "\n");

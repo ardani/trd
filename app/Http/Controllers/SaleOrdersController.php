@@ -254,6 +254,7 @@ class SaleOrdersController extends Controller {
         $printer->text(str_repeat('-', 95). "\n");
         $printer->text(str_pad('Disc', 8) . ' : ' . number_format($sale->disc) . "\n");
         $printer->text(str_pad('Total', 8) . ' : ' . number_format($sale->total - $sale->disc) . "\n");
+        $printer->text(str_pad('In Words', 8) . ' : ' . trim(ucwords(terbilang($sale->total - $sale->disc))) . "\n");
         $printer->text(str_pad('Pay', 8) . ' : ' . number_format($sale->cash) . "\n");
         $remain = $sale->payment_method_id == 2 ? abs($sale->total - $sale->disc - abs($sale->payment->total)) : $sale->total - $sale->disc - $sale->cash;
         $printer->text(str_pad('Remain', 8) . ' : ' . number_format($remain) . "\n");
